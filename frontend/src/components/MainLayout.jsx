@@ -3,9 +3,10 @@ import Footer from "./Footer";
 
 export default function MainLayout({ Children }) {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Header />
-      {Children}
+      <div className="flex-auto">{Children}</div>
+
       <Footer />
     </div>
   );
