@@ -5,7 +5,6 @@ namespace Tazkartk.Models
 {
     public class User : IdentityUser<int>
     {
-        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? photo { get; set; }

@@ -2,18 +2,17 @@
 
 namespace Tazkartk.DTO
 {
-    public class RegisterDTO
+    public class CompanyRegisterDTO
     {
         [Required]
-        public string FirstName { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string LastName { get; set; }
-        [Required,EmailAddress]
         public string Email { get; set; }
         [Required, RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Invalid Phone Number")]
-
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
         [Required]
         public string Password { get; set; }
+        public string city { get; set; }
+        public string street { get; set; }
     }
 }

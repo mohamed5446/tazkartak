@@ -36,5 +36,37 @@ namespace Tazkartk.Controllers
             if (!result.isAuthenticated) return BadRequest(result.message);
             return Ok(result);
         }
+        [HttpPost("CompanyRegister")]
+        public async Task<IActionResult> RegisterCompany([FromBody] CompanyRegisterDTO CompanyRegisterDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _authService.CompanyRegisterAsync(CompanyRegisterDTO);
+            if (!result.isAuthenticated) return BadRequest(result.message);
+
+            //SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+
+            return Ok(result);
+
+        }
+        [HttpPost("CompanyLogin")]
+        public async Task<IActionResult> LoginCompany([FromBody] LoginDTO loginDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _authService.CompanyLoginAsync(loginDTO);
+            if (!result.isAuthenticated) return BadRequest(result.message);
+            //if(!string.IsNullOrEmpty(result.RefreshToken))
+            //{
+            //    SetRefreshTokenInCookie(result.RefreshToken,result.RefreshTokenExpiration);
+            //}
+            return Ok(result);
+
+        }
+
     }
 }
