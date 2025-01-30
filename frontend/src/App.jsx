@@ -4,6 +4,8 @@ import SignUpPage from "./pages/signUp";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
 import Profile from "./pages/user/profile";
+import About from "./pages/About";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   return (
@@ -18,11 +20,22 @@ function App() {
             path="/signup"
             element={<MainLayout Children={<SignUpPage />} />}
           />
+
           <Route path="/" element={<MainLayout Children={<Home />} />} />
           <Route
             path="/user/profile"
             element={<MainLayout Children={<Profile />} />}
           ></Route>
+
+          <Route path="/about" element={<MainLayout Children={<About />} />} />
+          <Route
+            path="/contact-us"
+            element={
+              <MainLayout>
+                <ContactUs />
+              </MainLayout>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
