@@ -3,6 +3,7 @@ import LoginPage from "./pages/login";
 import SignUpPage from "./pages/signUp";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
+import Profile from "./pages/user/profile";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
             element={<MainLayout Children={<SignUpPage />} />}
           />
           <Route path="/" element={<MainLayout Children={<Home />} />} />
+          <Route
+            path="/user/profile"
+            element={<MainLayout Children={<Profile />} />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>

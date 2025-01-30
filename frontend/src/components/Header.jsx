@@ -1,24 +1,28 @@
+import { Link } from "react-router";
 import logo from "../assets/file 1.png";
 
 export default function Header() {
   return (
     <header className="bg-cyan-dark text-white  flex justify-around">
       <nav className="flex flex-row-reverse  items-center grow-3 justify-around text-lg font-semibold ">
-        <a href="#" className="hover:underline">
+        <Link to={"/"} className="hover:text-gray-200">
           الرئيسية
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <a href="#" className="hover:text-gray-200">
           الشركات
         </a>
-        <a href="#" className="hover:underline">
+        <a href="#" className="hover:text-gray-200">
           من نحن
         </a>
-        <a href="#" className="hover:underline">
+        <a href="#" className="hover:text-gray-200">
           تواصل معنا
         </a>
-        <a className="bg-white font-normal text-black p-2 rounded" href="#">
+        <Link
+          to={"/user/profile"}
+          className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
+        >
           حسابى
-        </a>
+        </Link>
       </nav>
       <div className="grow-2"></div>
       <div className="flex items-center justify-center  grow-1">
