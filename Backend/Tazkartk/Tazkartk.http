@@ -1,6 +1,0 @@
-@Tazkartk_HostAddress = http://localhost:5153
-
-GET {{Tazkartk_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
