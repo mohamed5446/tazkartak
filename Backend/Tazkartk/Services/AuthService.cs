@@ -14,10 +14,12 @@ namespace Tazkartk.Services
     public class AuthService:IAuthService
     {
         private readonly UserManager<User> _UserManager;
+        private readonly UserManager<Company> _CompanyManager;
         private readonly JWT _jwt;
-        public AuthService(UserManager<User> UserManager, IOptions<JWT> jwt)
+        public AuthService(UserManager<User> UserManager,UserManager<Company>CompanyManager ,IOptions<JWT> jwt)
         {
             _UserManager = UserManager;
+            _CompanyManager = CompanyManager;
             _jwt = jwt.Value;
         }
 
@@ -76,6 +78,67 @@ namespace Tazkartk.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
             };
         }
+        public async Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO model)
+        {
+            if (await _CompanyManager.FindByEmailAsync(model.Email) != null)
+            {
+                return new AuthModel { message = "Email is already Registered" };
+            }
+            var company = new Company
+            {
+                Name = model.Name,
+                Email = model.Email,
+                PhoneNumber = model.Phone,
+                UserName = model.Email,
+                City = model.city,
+                Street = model.street,
+
+
+            };
+            var result = await _CompanyManager.CreateAsync(company, model.Password);
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+                foreach (var error in result.Errors)
+                {
+                    errors += $"{error.Description} , ";
+                }
+                return new AuthModel { message = errors };
+            }
+            //await _UserManager.AddToRoleAsync(user, Roles.User.ToString());
+            var JwtSecurityToken = await CreateJwtToken(company);
+            return new AuthModel
+            {
+                Email = model.Email,
+                ExpiresOn = JwtSecurityToken.ValidTo,
+                isAuthenticated = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
+            };
+        }
+        public async Task<AuthModel> CompanyLoginAsync(LoginDTO model)
+        {
+            var authModel = new AuthModel();
+
+            var Company = await _CompanyManager.FindByEmailAsync(model.Email);
+
+            if (Company is null || !await _CompanyManager.CheckPasswordAsync(Company, model.Password))
+            {
+                authModel.message = "Email or Password is incorrect!";
+                return authModel;
+            }
+
+            var jwtSecurityToken = await CreateJwtToken(Company);
+
+            authModel.isAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authModel.Email = Company.Email;
+            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+
+
+            return authModel;
+
+        }
+
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {
             var userClaims = await _UserManager.GetClaimsAsync(user);
@@ -103,6 +166,35 @@ namespace Tazkartk.Services
                 audience: _jwt.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(_jwt.DurationInMinutes),
+                signingCredentials: signingCredentials);
+
+            return jwtSecurityToken;
+        }
+        private async Task<JwtSecurityToken> CreateJwtToken(Company Company)
+        {
+            var CompanyClaims = await _CompanyManager.GetClaimsAsync(Company);
+            //var roles = await _CompanyManager.GetRolesAsync(Company);
+            //var roleClaims = new List<Claim>();
+
+            //foreach (var role in roles)
+            //    roleClaims.Add(new Claim("roles", role));
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, Company.Email),
+                new Claim("uid",Company.Id.ToString()),
+            }
+            .Union(CompanyClaims);
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddHours(_jwt.DurationInMinutes),
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
