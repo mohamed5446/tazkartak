@@ -95,6 +95,8 @@ namespace Tazkartk.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _authService.RegisterAsync(userRegisterDTO);
+            if(!result.Success) return BadRequest(result.message);
+            
             return Ok(result);
         }
         [HttpPost("Login")]

@@ -56,7 +56,7 @@ namespace Tazkartk.Services
         {
             if (await _UserManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new AuthModel { message = "Email is already Registered" };
+                return new AuthModel { message = "Email is already Registered", Success = false };
             }
             var user = new User
             {
@@ -70,12 +70,13 @@ namespace Tazkartk.Services
             var result = await _UserManager.CreateAsync(user, DTO.Password);
             if (!result.Succeeded)
             {
+               ;
                 var errors = string.Empty;
                 foreach (var error in result.Errors)
                 {
                     errors += $"{error.Description} , ";
                 }
-                return new AuthModel { message = errors };
+                return new AuthModel { message = errors ,Success=false};
             }
 
             await _UserManager.AddToRoleAsync(user, Roles.User.ToString());
