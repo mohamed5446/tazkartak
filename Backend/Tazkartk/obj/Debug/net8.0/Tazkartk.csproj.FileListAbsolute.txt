@@ -285,3 +285,9 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\refint\Tazkartk.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.pdb
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.genruntimeconfig.cache
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\ref\Tazkartk.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\MailKit.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\MimeKit.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Formats.Asn1.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

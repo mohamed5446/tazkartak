@@ -9,6 +9,8 @@ namespace Tazkartk.Models
         public string LastName { get; set; }
         public string? photo { get; set; }
         public List<Booking>? books { get; set; }
+        public string? OTP {  get; set; }
+        public DateTime? OTPExpiry { get; set; }
 
     }
 }

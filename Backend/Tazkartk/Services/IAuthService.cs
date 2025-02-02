@@ -5,9 +5,16 @@ namespace Tazkartk.Services
 {
     public interface IAuthService
     {
-        Task<AuthModel> RegisterAsync(RegisterDTO userRegisterDTO);
-        Task<AuthModel> LoginAsync(LoginDTO loginDTO);
-        Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO companyRegisterDTO);
-        Task<AuthModel> CompanyLoginAsync(LoginDTO loginDTO);
+        Task<AuthModel> RegisterAsync(RegisterDTO DTO);
+        Task<AuthModel> LoginAsync(LoginDTO DTO);
+        Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO DTO);
+        Task<AuthModel> CompanyLoginAsync(LoginDTO DTO);
+        Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp);
+        Task<AuthModel> SendOTP(string Email);
+        Task<AuthModel> ForgetPassword(string Email);
+        Task<AuthModel> ResetPassword(ResetPasswordDTO DTO);
+        Task<AuthModel> ChangePassword(ChangePasswordDTO DTO);
+        Task<AuthModel> AdminRegisterAsync(RegisterDTO model);
+
     }
 }
