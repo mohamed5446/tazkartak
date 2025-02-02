@@ -3,9 +3,9 @@ import LoginPage from "./pages/login";
 import SignUpPage from "./pages/signUp";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
+import Profile from "./pages/user/profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
-
 
 function App() {
   return (
@@ -14,33 +14,28 @@ function App() {
         <Routes>
           <Route
             path="/login"
-
             element={<MainLayout Children={<LoginPage />}></MainLayout>}
           />
           <Route
             path="/signup"
             element={<MainLayout Children={<SignUpPage />} />}
-
           />
 
           <Route path="/" element={<MainLayout Children={<Home />} />} />
-
           <Route
-            path="/about"
-            element={<MainLayout Children={<About />} />}
+            path="/user/profile"
+            element={<MainLayout Children={<Profile />} />}
+          ></Route>
 
+          <Route path="/about" element={<MainLayout Children={<About />} />} />
+          <Route
+            path="/contact-us"
+            element={
+              <MainLayout>
+                <ContactUs />
+              </MainLayout>
+            }
           />
-          <Route
-          path="/contact-us"
-          element={
-            <MainLayout>
-              <ContactUs />
-            </MainLayout>
-          }
-        />
-          
-          
-
         </Routes>
       </BrowserRouter>
     </>
