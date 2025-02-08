@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tazkartk.DTO;
-using Tazkartk.Services;
+using Tazkartk.Interfaces;
 
 namespace Tazkartk.Controllers
 {
