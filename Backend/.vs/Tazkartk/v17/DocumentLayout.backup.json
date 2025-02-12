@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -63,6 +59,10 @@
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -78,11 +78,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 13,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "CompanyService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\CompanyService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\CompanyService.cs",
@@ -94,7 +94,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "ICompanyService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\ICompanyService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\ICompanyService.cs",
@@ -106,7 +106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IAuthService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IAuthService.cs",
@@ -118,7 +118,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "CompanyController.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompanyController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\CompanyController.cs",
@@ -131,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\AccountController.cs",
@@ -143,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\UserController.cs",
@@ -155,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "CloudinarySettings.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Helpers\\CloudinarySettings.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Helpers\\CloudinarySettings.cs",
@@ -167,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "IPhotoService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IPhotoService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IPhotoService.cs",
@@ -179,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\UserService.cs",
@@ -191,7 +191,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "PhotoService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\PhotoService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\PhotoService.cs",
@@ -203,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\AuthService.cs",
@@ -215,7 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "IUserService.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IUserService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IUserService.cs",
@@ -227,7 +227,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\appsettings.json",
               "RelativeDocumentMoniker": "Tazkartk\\appsettings.json",
@@ -239,16 +239,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 14,
               "Title": "Company.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Company.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Models\\Company.cs",
               "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Company.cs",
               "RelativeToolTip": "Tazkartk\\Models\\Company.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-08T20:08:37.471Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-08T20:08:37.471Z"
             },
             {
               "$type": "Document",
@@ -276,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Program.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Program.cs",

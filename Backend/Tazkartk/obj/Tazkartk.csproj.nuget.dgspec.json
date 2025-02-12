@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj": {}
+    "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj": {}
   },
   "projects": {
-    "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj": {
+    "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj",
+        "projectUniqueName": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj",
         "projectName": "Tazkartk",
-        "projectPath": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj",
-        "packagesPath": "C:\\Users\\moha1\\.nuget\\packages\\",
-        "outputPath": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\obj\\",
+        "projectPath": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj",
+        "packagesPath": "C:\\Users\\Ali Hassan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\moha1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ali Hassan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -107,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
