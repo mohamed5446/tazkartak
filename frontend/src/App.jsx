@@ -5,7 +5,7 @@ import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
-
+import TripsManage from "./pages/companyPages/tripsManage";
 
 function App() {
   return (
@@ -32,11 +32,11 @@ function App() {
           />
           <Route
           path="/contact-us"
-          element={
-            <MainLayout>
-              <ContactUs />
-            </MainLayout>
-          }
+          element={<MainLayout Children={<ContactUs />} />}
+        />
+          <Route
+          path="/trips-manage"
+          element={<MainLayout Children={<TripsManage />} />}
         />
           
           
