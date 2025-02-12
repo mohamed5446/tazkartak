@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/user/profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
+import SearchResult from "./pages/searchResult";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
                 <ContactUs />
               </MainLayout>
             }
+          />
+          <Route
+            path="/search-Result"
+            element={<MainLayout Children={<SearchResult />} />}
           />
         </Routes>
       </BrowserRouter>
