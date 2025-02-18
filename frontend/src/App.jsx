@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Profile from "./pages/user/profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
+import SearchResult from "./pages/searchResult";
+
+import TripsManage from "./pages/companyPages/tripsManage";
 
 function App() {
   return (
@@ -35,6 +38,18 @@ function App() {
                 <ContactUs />
               </MainLayout>
             }
+          />
+          <Route
+            path="/search-Result"
+            element={<MainLayout Children={<SearchResult />} />}
+          />
+          <Route
+            path="/contact-us"
+            element={<MainLayout Children={<ContactUs />} />}
+          />
+          <Route
+            path="/trips-manage"
+            element={<MainLayout Children={<TripsManage />} />}
           />
         </Routes>
       </BrowserRouter>
