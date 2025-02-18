@@ -1,84 +1,102 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tazkartk.Data;
 using Tazkartk.DTO;
-//using Tazkartk.Dtos;
 using Tazkartk.Mappers;
+using Tazkartk.Models;
 
-namespace WebApplication12.Controllers
+namespace Tazkartk.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TripsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public bool True { get; private set; }
-
         public TripsController(ApplicationDbContext context) {
         
         _context = context;
         }
-
-        [HttpGet("Search")]
-        public IActionResult GetAll([FromQuery] string from, [FromQuery] string to, [FromQuery] DateTime? date)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var trip = _context.Trips.ToList().
-                Where(s => s.From == from && s.To == to && s.Date.Date == date.Value.Date && s.Avaliblility).
-                Select(s => s.ToTripDto()).ToList();
+            var trips = await _context.Trips.Select(trip=>trip.ToTripDto()).ToListAsync(); 
+            if(trips==null)return NotFound();
+            return Ok(trips);
+           
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var trip = await _context.Trips.FindAsync(id);
+            return trip == null ? NotFound() : Ok(trip.ToTripDto());
+        }
+        [HttpGet("Search")]
+        public async Task<IActionResult> GetAll( string from, string to, DateOnly date)
+        {
+            var trip = await _context.Trips
+                .Where(s => s.From == from && s.To == to && s.Date == date && s.Avaliblility)
+                .Select(s => s.ToTripDto()).
+                ToListAsync();
 
             return trip.Count == 0 ? NotFound("لا توجد رحلات متاحة للمعايير المحددة.") : Ok(trip);
         }
 
-        [HttpPost]
-        public IActionResult Create([FromBody] CreateTripDtos TripDtos)
+        [HttpPost("{CompanyId}")]
+        public async Task<IActionResult> Create(int CompanyId,CreateTripDtos TripDtos)
         {
+            var company = await _context.Companies.Include(c=>c.Trips).FirstOrDefaultAsync(c=>c.Id==CompanyId);
+
+            if (company == null) return BadRequest("company not found");
             var Tripmodel = TripDtos.ToTripFromCreateDtos();
-            _context.Trips.Add(Tripmodel);
-            _context.SaveChanges();
+           company.Trips.Add(Tripmodel);
+            Tripmodel.CompanyId = company.Id;
+            await _context.Trips.AddAsync(Tripmodel);
+           await  _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById),new { Id = Tripmodel.TripId },Tripmodel.ToTripDto());
 
         }
-        [HttpPut]
-        [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateTripDtos UpdateDtos)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update( int id, UpdateTripDtos UpdateDtos)
         {
-            var Tripmodel = _context.Trips.FirstOrDefault(s => s.TripId == id);
-            if (Tripmodel == null) { 
+            var Tripmodel = await _context.Trips.FirstOrDefaultAsync(s => s.TripId == id);
+            if (Tripmodel == null) 
+            { 
             return NotFound();
             }
-            Tripmodel.From = UpdateDtos.From;
-            Tripmodel.To = UpdateDtos.To;
-            Tripmodel.ArriveTime = UpdateDtos.ArriveTime;
-            Tripmodel.Time = UpdateDtos.Time;
-            Tripmodel.Price = UpdateDtos.Price;
-            Tripmodel.Avaliblility = UpdateDtos.Avaliblility;
-            Tripmodel.Class = UpdateDtos.Class;
-            Tripmodel.Date= UpdateDtos.Date;
-            Tripmodel.Location = UpdateDtos.Location;
-
-            _context.SaveChanges();
+            if (!string.IsNullOrEmpty(UpdateDtos.From)) Tripmodel.From = UpdateDtos.From;
+            if (!string.IsNullOrEmpty(UpdateDtos.To)) Tripmodel.To = UpdateDtos.To;
+            if (!string.IsNullOrEmpty(UpdateDtos.Class)) Tripmodel.Class = UpdateDtos.Class;
+            if (!string.IsNullOrEmpty(UpdateDtos.Location)) Tripmodel.Location = UpdateDtos.Location;
+            if (UpdateDtos.Price.HasValue) Tripmodel.Price = UpdateDtos.Price.Value;
+            if (UpdateDtos.Date.HasValue) Tripmodel.Date = UpdateDtos.Date.Value;
+            if (UpdateDtos.Time.HasValue) Tripmodel.Time = UpdateDtos.Time.Value;
+            if (UpdateDtos.ArriveTime.HasValue) Tripmodel.ArriveTime = UpdateDtos.ArriveTime.Value;
+            if (UpdateDtos.Avaliblility.HasValue) Tripmodel.Avaliblility = UpdateDtos.Avaliblility.Value;
+           // if (UpdateDtos.TripCode.HasValue) Tripmodel.TripCode = UpdateDtos.TripCode.Value;
+           await _context.SaveChangesAsync();
             return Ok(Tripmodel.ToTripDto());
-
-           
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public ActionResult Delete([FromRoute] int id) { 
-        
-        var Tripmodel= _context.Trips.FirstOrDefault(s => s.TripId == id);
-            if (Tripmodel == null) {
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) 
+        {        
+        var Tripmodel= await _context.Trips.FirstOrDefaultAsync(s => s.TripId == id);
+            if (Tripmodel==null) 
+            {
                 return NotFound();
             }
-
             _context.Trips.Remove(Tripmodel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
-
-        private object GetById()
+        [HttpGet("{companyId}/Trips")]
+        public async Task<IActionResult> GetCompanyTrips(int companyId)
         {
-            throw new NotImplementedException();
+            var company = await _context.Companies.Include(c => c.Trips).FirstOrDefaultAsync(c => c.Id == companyId);
+            if (company == null) return NotFound();
+            var trips = company.Trips.Select(trip => trip.ToTripDto());
+            return Ok(trips);
+
         }
     }
 }
