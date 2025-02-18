@@ -139,3 +139,10 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\Tazkartk.genruntim
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\ref\Tazkartk.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\CloudinaryDotNet.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Newtonsoft.Json.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Web.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Net.Http.Formatting.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Web.Http.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Web.Http.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.Logging.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Newtonsoft.Json.Bson.dll

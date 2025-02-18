@@ -151,3 +151,10 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\Tazkartk.genruntimeconfig.
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\ref\Tazkartk.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\CloudinaryDotNet.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\Newtonsoft.Json.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\System.Web.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\System.Net.Http.Formatting.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\System.Web.Http.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\System.Web.Http.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\Newtonsoft.Json.Bson.dll

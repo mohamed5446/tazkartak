@@ -445,3 +445,10 @@ C:\Users\Ali Hassan\OneDrive\Pictures\New folder (2)\tazkartak\Backend\Tazkartk\
 C:\Users\Ali Hassan\OneDrive\Pictures\New folder (2)\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.pdb
 C:\Users\Ali Hassan\OneDrive\Pictures\New folder (2)\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.genruntimeconfig.cache
 C:\Users\Ali Hassan\OneDrive\Pictures\New folder (2)\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\ref\Tazkartk.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Web.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Web.Http.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Web.Http.Cors.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
