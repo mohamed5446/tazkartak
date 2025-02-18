@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "D:\\gits\\tazkartak\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|D:\\gits\\tazkartak\\Backend\\tazkartk\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|D:\\gits\\tazkartak\\Backend\\tazkartk\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,37 +42,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\UserService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\UserService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\UserService.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAwCEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-18T15:48:23.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Models\\User.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Models\\User.cs",
+              "RelativeToolTip": "Tazkartk\\Models\\User.cs",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAcwBAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-18T15:47:54.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AuthService.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\AuthService.cs",
               "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\AuthService.cs",
               "RelativeToolTip": "Tazkartk\\Services\\AuthService.cs",
-              "ViewState": "AQIAAAEAAAAAAAAAAAAQwB0AAAAIAAAA",
+              "ViewState": "AQIAAGUBAAAAAAAAAAAowB0AAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-18T12:40:05.648Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Program.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Program.cs",
               "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Program.cs",
               "RelativeToolTip": "Tazkartk\\Program.cs",
-              "ViewState": "AQIAAD8AAAAAAAAAAAAQwFQAAAAAAAAA",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAQwFUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-18T12:38:00.482Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\UserController.cs",
@@ -72,12 +106,11 @@
               "RelativeToolTip": "Tazkartk\\Controllers\\UserController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-13T12:06:02.501Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-13T12:06:02.501Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "CompanyController.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompanyController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\CompanyController.cs",
@@ -85,12 +118,11 @@
               "RelativeToolTip": "Tazkartk\\Controllers\\CompanyController.cs",
               "ViewState": "AQIAAAwAAAAAAAAAAAAiwDQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-13T12:05:58.146Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-13T12:05:58.146Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "TripsController.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TripsController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\TripsController.cs",
@@ -98,12 +130,11 @@
               "RelativeToolTip": "Tazkartk\\Controllers\\TripsController.cs",
               "ViewState": "AQIAAA4AAAAAAAAAAAAAwAsAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T22:05:15.751Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T22:05:15.751Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "UpdateTripDtos.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\UpdateTripDtos.cs",
               "RelativeDocumentMoniker": "Tazkartk\\DTO\\UpdateTripDtos.cs",
@@ -111,8 +142,7 @@
               "RelativeToolTip": "Tazkartk\\DTO\\UpdateTripDtos.cs",
               "ViewState": "AQIAAAIAAAAAAAAAAAAxwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T16:02:50.14Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T16:02:50.14Z"
             }
           ]
         }
