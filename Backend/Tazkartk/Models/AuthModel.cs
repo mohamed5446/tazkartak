@@ -8,5 +8,6 @@
         public string Token { get; set; }
         public DateTime ExpiresOn { get; set; }
         public bool Success { get; set; }=true;
+        public IList<String> Roles { get; set; }
     }
 }

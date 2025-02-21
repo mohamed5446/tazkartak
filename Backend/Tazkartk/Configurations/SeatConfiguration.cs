@@ -9,7 +9,7 @@ namespace Tazkartk.Configurations
         public void Configure(EntityTypeBuilder<Seat> builder)
         {
             // seat has composite key of seatid+tripid
-            builder.HasKey(s => new { s.SeatId, s.TripId });
+            builder.HasKey(s => new { s.Number, s.TripId });
 
         }
     }

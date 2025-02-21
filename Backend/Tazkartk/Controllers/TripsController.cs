@@ -19,7 +19,7 @@ namespace Tazkartk.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var trips = await _context.Trips.Select(trip=>trip.ToTripDto()).ToListAsync(); 
+            var trips = await _context.Trips.AsNoTracking().Select(trip=>trip.ToTripDto()).ToListAsync(); 
             if(trips==null)return NotFound();
             return Ok(trips);
            
@@ -35,12 +35,21 @@ namespace Tazkartk.Controllers
         {
             var trip = await _context.Trips
                 .Where(s => s.From == from && s.To == to && s.Date == date && s.Avaliblility)
+                .AsNoTracking()
                 .Select(s => s.ToTripDto()).
                 ToListAsync();
 
             return trip.Count == 0 ? NotFound("لا توجد رحلات متاحة للمعايير المحددة.") : Ok(trip);
         }
+        [HttpGet("{companyId}/Trips")]
+        public async Task<IActionResult> GetCompanyTrips(int companyId)
+        {
+            var company = await _context.Companies.Include(c => c.Trips).AsNoTracking().FirstOrDefaultAsync(c => c.Id == companyId);
+            if (company == null) return NotFound();
+            var trips = company.Trips.Select(trip => trip.ToTripDto());
+            return Ok(trips);
 
+        }
         [HttpPost("{CompanyId}")]
         public async Task<IActionResult> Create(int CompanyId,CreateTripDtos TripDtos)
         {
@@ -89,14 +98,6 @@ namespace Tazkartk.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpGet("{companyId}/Trips")]
-        public async Task<IActionResult> GetCompanyTrips(int companyId)
-        {
-            var company = await _context.Companies.Include(c => c.Trips).FirstOrDefaultAsync(c => c.Id == companyId);
-            if (company == null) return NotFound();
-            var trips = company.Trips.Select(trip => trip.ToTripDto());
-            return Ok(trips);
-
-        }
+       
     }
 }

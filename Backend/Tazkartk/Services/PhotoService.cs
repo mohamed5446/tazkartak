@@ -13,7 +13,7 @@ namespace Tazkartk.Services
 
         public PhotoService(IOptions<CloudinarySettings> config)
         {
-            var acc = new Account(
+            var acc = new CloudinaryDotNet.Account(
                 config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret

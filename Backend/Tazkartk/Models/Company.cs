@@ -2,7 +2,7 @@
 
 namespace Tazkartk.Models
 {
-    public class Company:IdentityUser<int>
+    public class Company:Account
     {
         public string Name { get; set; }
         public string City { get; set; }

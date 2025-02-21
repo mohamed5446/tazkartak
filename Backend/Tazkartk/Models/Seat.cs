@@ -7,7 +7,7 @@ namespace Tazkartk.Models
 {
     public class Seat
     {
-        public int SeatId { get; set; }
+      //  public int SeatId { get; set; }
         public int TripId { get; set; }
         public int Number { get; set; }
         public SeatState State { get; set; }=SeatState.Available;
