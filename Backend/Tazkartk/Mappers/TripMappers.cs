@@ -6,17 +6,17 @@ namespace Tazkartk.Mappers
 {
     public static class TripMappers
     {
-        public static TripDtos ToTripDto(this Trip TripModel)
+        public static TripDtos ToTripDto(this Trip TripModel )
         {
             return new TripDtos
             {
                 TripId = TripModel.TripId,
                 From = TripModel.From,
                 To = TripModel.To,
-                ArriveTime = TripModel.ArriveTime,
+                ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt"),
                 Class = TripModel.Class,
-                Date = TripModel.Date,
-                Time = TripModel.Time,
+                Date = TripModel.Date.ToString("dddd yyyy-MM-dd"),
+                Time = TripModel.Time.ToString("hh:mm tt"),
                 Avaliblility = TripModel.Avaliblility,
                 Location = TripModel.Location,
                 Price = TripModel.Price
