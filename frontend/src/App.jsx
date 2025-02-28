@@ -11,6 +11,7 @@ import SearchResult from "./pages/searchResult";
 import TripsManage from "./pages/companyPages/tripsManage";
 import { useAuthStore } from "./store/authStore";
 import EmailVerification from "./pages/EmailVerification";
+import CompanySignUpPage from "./pages/companyPages/CompanyRegister";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
@@ -54,6 +55,14 @@ function App() {
             element={
               <RedirectAuthenticatedUser>
                 <MainLayout Children={<SignUpPage />} />
+              </RedirectAuthenticatedUser>
+            }
+          />
+          <Route
+            path="/company-signup"
+            element={
+              <RedirectAuthenticatedUser>
+                <MainLayout Children={<CompanySignUpPage />} />
               </RedirectAuthenticatedUser>
             }
           />
