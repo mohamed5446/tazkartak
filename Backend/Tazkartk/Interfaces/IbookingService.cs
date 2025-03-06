@@ -9,12 +9,11 @@ namespace Tazkartk.Interfaces
 
         Task<bool> Refund(int bookingId);
         Task<bool> Cancel(string trxId);
-        Task<Booking> GetBookingById(int id);
         Task<List<TicketDTO>?> GetUserBookings(int userId);
         Task<List<TicketDTO>?> GetBookings();
         
 
         // Task<bool> CancelSeat(int UserId, int BookingId);
-        Task<bool> DeleteBooking(int Id);
+       
     }
 }

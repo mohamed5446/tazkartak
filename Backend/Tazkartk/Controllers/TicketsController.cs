@@ -45,14 +45,8 @@ namespace Tazkartk.Controllers
         public async Task<IActionResult> CancelBooking(int BookingId)
         {
             var result = await _BookingService.Refund(BookingId);
-            return !result ? NotFound() : Ok("refund requested");
+            return !result ? NotFound() : Ok("refund requested"); 
         }
-        //[HttpDelete]
-        //public async Task<IActionResult>Delete(int bookinId)
-        //{
-        //    var Deleted = await _BookingService.DeleteBooking(bookinId);
-        //    if(!Deleted) return NotFound(); 
-        //    return NoContent();
-        //}
+       
     }
 }

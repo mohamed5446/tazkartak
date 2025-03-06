@@ -194,12 +194,7 @@ namespace Tazkartk.Services
                    SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
                }).ToListAsync();
         }
-        public async Task<Booking?> GetBookingById(int  id)
-        {
-            var Ticket = await _context.bookings.FindAsync(id);
-            if (Ticket == null) return null;
-            return Ticket;
-        }
+       
         
     }
 }
