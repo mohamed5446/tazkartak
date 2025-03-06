@@ -3,7 +3,7 @@ import LoginPage from "./pages/LogIn";
 import SignUpPage from "./pages/SignUp";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
-import Profile from "./pages/user/profile";
+import Profile from "./pages/user/Profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import SearchResult from "./pages/searchResult";
@@ -12,6 +12,9 @@ import TripsManage from "./pages/companyPages/tripsManage";
 import { useAuthStore } from "./store/authStore";
 import EmailVerification from "./pages/EmailVerification";
 import CompanySignUpPage from "./pages/companyPages/CompanyRegister";
+import AdminProfile from "./pages/admin/Profile";
+import Companies from "./pages/admin/Companies";
+import Users from "./pages/admin/users";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
@@ -42,74 +45,58 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/login"
-            element={
-              <RedirectAuthenticatedUser>
-                <MainLayout Children={<LoginPage />} />
-              </RedirectAuthenticatedUser>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <RedirectAuthenticatedUser>
-                <MainLayout Children={<SignUpPage />} />
-              </RedirectAuthenticatedUser>
-            }
-          />
-          <Route
-            path="/company-signup"
-            element={
-              <RedirectAuthenticatedUser>
-                <MainLayout Children={<CompanySignUpPage />} />
-              </RedirectAuthenticatedUser>
-            }
-          />
+          <Route path="/" element={<MainLayout />}>
+            <Route path="" element={<Home />} />
+            <Route
+              path="login"
+              element={
+                <RedirectAuthenticatedUser>
+                  <LoginPage />
+                </RedirectAuthenticatedUser>
+              }
+            />
+            <Route
+              path="signup"
+              element={
+                <RedirectAuthenticatedUser>
+                  <SignUpPage />
+                </RedirectAuthenticatedUser>
+              }
+            />
+            <Route
+              path="company-signup"
+              element={
+                <RedirectAuthenticatedUser>
+                  <CompanySignUpPage />
+                </RedirectAuthenticatedUser>
+              }
+            />
+            <Route
+              path="user/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="about" element={<About />} />
+            <Route path="contact-us" element={<ContactUs />} />
+            <Route path="search-Result" element={<SearchResult />} />
+            <Route path="contact-us" element={<ContactUs />} />
+            <Route path="trips-manage" element={<TripsManage />} />
+            <Route
+              path="verify-email"
+              element={
+                <RedirectAuthenticatedUser>
+                  <EmailVerification />
+                </RedirectAuthenticatedUser>
+              }
+            />
 
-          <Route path="/" element={<MainLayout Children={<Home />} />} />
-          <Route
-            path="/user/profile"
-            element={
-              <ProtectedRoute>
-                <MainLayout Children={<Profile />} />
-              </ProtectedRoute>
-            }
-          ></Route>
-
-          <Route path="/about" element={<MainLayout Children={<About />} />} />
-          <Route
-            path="/contact-us"
-            element={
-              <MainLayout>
-                <ContactUs />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/search-Result"
-            element={<MainLayout Children={<SearchResult />} />}
-          />
-          <Route
-            path="/contact-us"
-            element={<MainLayout Children={<ContactUs />} />}
-          />
-          <Route
-            path="/trips-manage"
-            element={<MainLayout Children={<TripsManage />} />}
-          />
-          <Route
-            path="/verify-email"
-            element={
-              <MainLayout
-                Children={
-                  <RedirectAuthenticatedUser>
-                    <EmailVerification />
-                  </RedirectAuthenticatedUser>
-                }
-              />
-            }
-          />
+            <Route path="admin/profile" element={<AdminProfile />} />
+            <Route path="admin/Companies" element={<Companies />} />
+            <Route path="admin/users" element={<Users />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
