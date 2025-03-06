@@ -16,8 +16,15 @@ namespace Tazkartk.Configurations
 
             // 1 trip -> m seats 
             builder.HasMany(t => t.seats)
-                .WithOne(s => s.trip)
-                .HasForeignKey(s => s.TripId);
+               .WithOne(s => s.trip)
+               .HasForeignKey(s => s.TripId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // 1 trip->M bookings
+            builder.HasMany(t => t.bookings)
+                  .WithOne(b => b.trip).
+                  HasForeignKey(b => b.tripId)
+                  .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

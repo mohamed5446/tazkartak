@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tazkartk.Data;
-using Tazkartk.DTO;
+using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 
@@ -17,7 +17,6 @@ namespace Tazkartk.Services
             _photoService = photoService;
         }
 
-       
         public async Task<List<CompanyDTO>> GetAllCompanies()
         {
             return await _context.Companies.AsNoTracking().Select(c => new CompanyDTO
@@ -33,14 +32,9 @@ namespace Tazkartk.Services
         }
 
         public async Task<Company?> GetCompanyById(int id)
-        {
-            
+        {      
           var company=await  _context.Companies.FindAsync(id);
-            if (company == null)
-            {
-                return null;
-            }
-            return company; 
+            return company != null ? company : null;
         }
 
         public async Task<CompanyDTO?> GetCompanyDetailsById(int id)
@@ -58,7 +52,6 @@ namespace Tazkartk.Services
                 Logo = Company.Logo,
             };
         }
-
         public async Task<CompanyDTO?> EditCompany(Company Company, CompanyEditDTO DTO)
         {
             if (!string.IsNullOrEmpty(DTO.PhoneNumber))
@@ -87,7 +80,7 @@ namespace Tazkartk.Services
                 var photoResult = await _photoService.AddPhotoAsync(DTO.Logo);
                 Company.Logo = photoResult.Url.ToString();
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return new CompanyDTO
             {
                 Id = Company.Id,
@@ -98,7 +91,6 @@ namespace Tazkartk.Services
                 Street = Company.Street,
                 Logo = Company.Logo,
             };
-
         }
 
         public async Task DeleteCompany(Company company)
@@ -108,7 +100,7 @@ namespace Tazkartk.Services
                 await _photoService.DeletePhotoAsync(company.Logo);
             }
             _context.Companies.Remove(company);
-            _context.SaveChanges();
+           await  _context.SaveChangesAsync();
 
         }
 

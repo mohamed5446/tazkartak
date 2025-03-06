@@ -1,4 +1,4 @@
-﻿namespace Tazkartk.DTO
+﻿namespace Tazkartk.DTO.TripDTOs
 {
     public class UpdateTripDtos
     {
@@ -10,6 +10,6 @@
         public TimeOnly? Time { get; set; }
         public DateTime? ArriveTime { get; set; }
         public string? Location { get; set; }
-        public Double? Price { get; set; }
+        public double? Price { get; set; }
     }
 }

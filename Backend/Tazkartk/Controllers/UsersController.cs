@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tazkartk.DTO;
+using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Interfaces;
 
 namespace Tazkartk.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
+       
         }
        
         [HttpGet]
@@ -34,7 +35,7 @@ namespace Tazkartk.Controllers
 
         [HttpPut("{id:int}")]
         //[Authorize]
-        public async Task<IActionResult>EditUser(int id ,[FromForm]UserDTO DTO)
+        public async Task<IActionResult>EditUser(int id ,[FromForm]EditUserDTO DTO)
         {
             
             var user=await _userService.GetUserById(id);
@@ -55,5 +56,6 @@ namespace Tazkartk.Controllers
              await _userService.DeleteUser(user);
             return NoContent();
         }
+       
     }
 }

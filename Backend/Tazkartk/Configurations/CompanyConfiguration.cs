@@ -16,7 +16,8 @@ namespace Tazkartk.Configurations
             //1 company->m Trips
             builder.HasMany(c => c.Trips)
                  .WithOne(t => t.company)
-                 .HasForeignKey(t => t.CompanyId);
+                 .HasForeignKey(t => t.CompanyId)
+                  .OnDelete(DeleteBehavior.Restrict);
 
 
 

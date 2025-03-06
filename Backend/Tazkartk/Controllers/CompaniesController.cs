@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tazkartk.DTO;
+using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Interfaces;
 
 namespace Tazkartk.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompanyController : ControllerBase
+    public class CompaniesController : ControllerBase
     {
         private readonly ICompanyService _companyService;
 
-        public CompanyController(ICompanyService companyService)
+        public CompaniesController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
@@ -29,6 +29,7 @@ namespace Tazkartk.Controllers
             var company=await _companyService.GetCompanyDetailsById(id);
             return company==null ? NotFound("company not found") : Ok(company);
         }
+
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult>EditCompany(int id,[FromForm]CompanyEditDTO DTO)

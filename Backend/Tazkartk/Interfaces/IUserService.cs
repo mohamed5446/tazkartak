@@ -1,4 +1,5 @@
-﻿using Tazkartk.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Models;
 
 namespace Tazkartk.Interfaces
@@ -8,7 +9,8 @@ namespace Tazkartk.Interfaces
         Task<List<UserDetails>> GetUsers();
         Task<UserDetails> GetUserDetailsById(int id);
         Task<User> GetUserById(int id);
-        Task<UserDetails?> EditUser(User user, UserDTO DTO);
+        Task<UserDetails?> EditUser(User user, EditUserDTO DTO);
         Task DeleteUser(User user);
+        
     }
 }
