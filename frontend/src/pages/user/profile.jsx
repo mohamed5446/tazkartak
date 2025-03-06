@@ -1,17 +1,30 @@
 import { useForm } from "react-hook-form";
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 export default function Profile() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const { logout } = useAuthStore();
   const onSubmit = (data) => {
     console.log(data);
   };
+  const navigate = useNavigate();
+  const signOut = async () => {
+    await logout();
+    navigate("/");
+  };
 
   return (
-    <div className="p-10 flex flex-col-reverse md:flex-row md:items-start items-end justify-center gap-10">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="p-10 flex flex-col-reverse md:flex-row md:items-start items-end justify-center gap-10"
+    >
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl space-y-4">
         <h2 className="text-3xl font-bold text-end">حسابي</h2>
         <h3 className="text-xl text-end text-cyan-dark">البيانات الشخصية</h3>
@@ -151,12 +164,15 @@ export default function Profile() {
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
               تغيير كلمة السر
             </li>
-            <li className="text-red-600 hover:text-red-800 cursor-pointer border-t-2 pt-4 border-dashed border-black ">
+            <li
+              onClick={signOut}
+              className="text-red-600 hover:text-red-800 cursor-pointer border-t-2 pt-4 border-dashed border-black "
+            >
               تسجيل الخروج
             </li>
           </ul>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

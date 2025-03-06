@@ -1,0 +1,151 @@
+import { create } from "zustand";
+import axios from "axios";
+import { devtools, persist } from "zustand/middleware";
+
+export const useAuthStore = create(
+  devtools(
+    persist((set) => ({
+      user: null,
+      isAuthenticated: false,
+      error: null,
+      isLoading: false,
+      isCheckingAuth: true,
+      role: null,
+
+      userSignup: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          await axios.post(
+            "https://tazkartk-api.runasp.net/api/Account/Register",
+            data
+          );
+          set({
+            user: data.email,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+            role: "user",
+          });
+          console.log(data);
+        } catch (error) {
+          set({
+            error: error.response.data || "error signing up",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+      companySignup: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          await axios.post(
+            "https://tazkartk-api.runasp.net/api/Account/Company-Register",
+            data
+          );
+          set({
+            user: data.email,
+            role: "company",
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+          });
+          console.log(data);
+        } catch (error) {
+          set({
+            error: error.response.data || "error signing up",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+      adminSignup: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          await axios.post(
+            "https://tazkartk-api.runasp.net/api/Account/Admin-Register",
+            data
+          );
+          set({
+            user: data.email,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+            role: "admin",
+          });
+          console.log(data);
+        } catch (error) {
+          set({
+            error: error.response.data || "error signing up",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+      verifyEmail: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await axios.post(
+            "https://tazkartk-api.runasp.net/api/Account/Verify-OTP",
+            data
+          );
+          set({
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+          return response.data;
+        } catch (error) {
+          set({
+            error: error.response.data || "error verifying email",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
+      login: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await axios.post(
+            "https://tazkartk-api.runasp.net/api/Account/Login",
+            data
+          );
+          set({
+            isAuthenticated: true,
+            user: response.data.email,
+            error: null,
+            isLoading: false,
+            role: response.data.roles[0],
+          });
+          return response.data;
+        } catch (error) {
+          set({
+            error: error.response.data || "Error logging in",
+            isLoading: false,
+          });
+          console.log(error.response.data);
+          throw error;
+        }
+      },
+      logout: () => {
+        set({
+          user: null,
+          isAuthenticated: false,
+          error: null,
+          isLoading: false,
+          role: null,
+        });
+      },
+      setdefaulte: async () => {
+        set({
+          user: null,
+          isAuthenticated: false,
+          error: null,
+          isLoading: false,
+          isCheckingAuth: true,
+          role: null,
+        });
+      },
+    }))
+  )
+);

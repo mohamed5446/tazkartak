@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import companyImage from "../assets/3 1.png";
 import playStore from "../assets/play-store.62f26490 1.png";
@@ -12,7 +13,12 @@ const Home = () => {
   };
 
   return (
-    <div className=" mx-auto p-4 flex flex-col items-center 2xl:px-14">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className=" mx-auto p-4 flex flex-col items-center 2xl:px-14"
+    >
       {/* Hero Section */}
       <div className="relative w-full">
         <img className="z-10 w-full h-full" src={HeroImage} alt="" />
@@ -106,7 +112,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

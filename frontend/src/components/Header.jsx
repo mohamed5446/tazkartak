@@ -1,7 +1,9 @@
 import { Link } from "react-router";
 import logo from "../assets/file 1.png";
+import { useAuthStore } from "../store/authStore";
 
 export default function Header() {
+  const { user } = useAuthStore();
   return (
     <header className="bg-cyan-dark text-white  flex justify-around">
       <nav className="flex flex-row-reverse  items-center grow-3 justify-around text-lg font-semibold ">
@@ -17,12 +19,21 @@ export default function Header() {
         <a href="#" className="hover:text-gray-200">
           تواصل معنا
         </a>
-        <Link
-          to={"/user/profile"}
-          className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
-        >
-          حسابى
-        </Link>
+        {user ? (
+          <Link
+            to={"/user/profile"}
+            className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
+          >
+            حسابى
+          </Link>
+        ) : (
+          <Link
+            to={"/login"}
+            className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
+          >
+            تسجيل الدخول
+          </Link>
+        )}
       </nav>
       <div className="grow-2"></div>
       <div className="flex items-center justify-center  grow-1">
