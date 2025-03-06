@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using Tazkartk.Data;
-using Tazkartk.DTO;
+using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 
@@ -54,7 +54,7 @@ namespace Tazkartk.Services
             };
         }
 
-        public async Task<UserDetails> EditUser(User user,UserDTO DTO)
+        public async Task<UserDetails> EditUser(User user,EditUserDTO DTO)
         {
            
             if (!string.IsNullOrEmpty(DTO.firstName))
@@ -84,7 +84,7 @@ namespace Tazkartk.Services
                 user.photo = photoResult.Url.ToString();
             }
 
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return new UserDetails
             {
                 Id=user.Id,
@@ -103,8 +103,9 @@ namespace Tazkartk.Services
             }
             // var user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
-              _context.SaveChanges();
+              await _context.SaveChangesAsync();
 
         }
+       
     }
 }

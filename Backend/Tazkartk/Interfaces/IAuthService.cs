@@ -1,4 +1,5 @@
-﻿using Tazkartk.DTO;
+﻿using Tazkartk.DTO.AccontDTOs;
+using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Models;
 using Tazkartk.Models.Enums;
 

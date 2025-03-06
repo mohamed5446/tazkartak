@@ -1,6 +1,6 @@
 ﻿namespace Tazkartk.DTO
 {
-    public class BookingDetails
+    public class TicketDTO
     {
         public int BookingId { get; set; }
         public int UserId { get; set; }

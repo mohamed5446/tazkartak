@@ -268,9 +268,14 @@ namespace Tazkartk.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("tripId")
+                        .HasColumnType("int");
+
                     b.HasKey("BookingId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("tripId");
 
                     b.ToTable("bookings");
                 });
@@ -293,6 +298,13 @@ namespace Tazkartk.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("amount")
+                        .HasColumnType("float");
 
                     b.Property<int>("bookingId")
                         .HasColumnType("int");
@@ -488,6 +500,14 @@ namespace Tazkartk.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Tazkartk.Models.Trip", "trip")
+                        .WithMany("bookings")
+                        .HasForeignKey("tripId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("trip");
+
                     b.Navigation("user");
                 });
 
@@ -507,7 +527,7 @@ namespace Tazkartk.Migrations
                     b.HasOne("Tazkartk.Models.Trip", "trip")
                         .WithMany("seats")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Tazkartk.Models.Booking", "booking")
@@ -524,7 +544,7 @@ namespace Tazkartk.Migrations
                     b.HasOne("Tazkartk.Models.Company", "company")
                         .WithMany("Trips")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("company");
@@ -558,6 +578,8 @@ namespace Tazkartk.Migrations
 
             modelBuilder.Entity("Tazkartk.Models.Trip", b =>
                 {
+                    b.Navigation("bookings");
+
                     b.Navigation("seats");
                 });
 

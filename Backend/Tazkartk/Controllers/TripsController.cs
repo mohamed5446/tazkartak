@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tazkartk.Data;
-using Tazkartk.DTO;
+using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Mappers;
 using Tazkartk.Models;
 
@@ -41,7 +41,7 @@ namespace Tazkartk.Controllers
 
             return trip.Count == 0 ? NotFound("لا توجد رحلات متاحة للمعايير المحددة.") : Ok(trip);
         }
-        [HttpGet("{companyId}/Trips")]
+        [HttpGet("/api/{companyId}/Trips")]
         public async Task<IActionResult> GetCompanyTrips(int companyId)
         {
             var company = await _context.Companies.Include(c => c.Trips).AsNoTracking().FirstOrDefaultAsync(c => c.Id == companyId);

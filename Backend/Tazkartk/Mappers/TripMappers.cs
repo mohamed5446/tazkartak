@@ -1,5 +1,4 @@
-﻿using Tazkartk.DTO;
-
+﻿using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Models;
 
 namespace Tazkartk.Mappers

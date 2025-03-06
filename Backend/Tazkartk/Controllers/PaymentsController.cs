@@ -1,0 +1,26 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Tazkartk.Interfaces;
+
+namespace Tazkartk.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentsController : ControllerBase
+    {
+        private readonly IPaymentService _paymentService;
+
+        public PaymentsController(IPaymentService paymentService)
+        {
+            _paymentService = paymentService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>GetPayments()
+        {
+            var payments=await _paymentService.GetAllPayments();
+            return Ok(payments);
+        }
+    }
+
+}

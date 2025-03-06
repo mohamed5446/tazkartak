@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tazkartk.DTO
+namespace Tazkartk.DTO.AccontDTOs
 {
     public class LoginDTO
     {

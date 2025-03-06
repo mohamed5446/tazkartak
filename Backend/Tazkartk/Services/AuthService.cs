@@ -4,7 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Tazkartk.DTO;
+using Tazkartk.DTO.AccontDTOs;
+using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Email;
 using Tazkartk.Helpers;
 using Tazkartk.Interfaces;
@@ -18,13 +19,17 @@ namespace Tazkartk.Services
         private readonly UserManager<Account> _AccountManager;
         private readonly JWT _jwt;
         private readonly IEmailService _EmailService;
-        public AuthService(UserManager<Account> AccountManager ,IOptions<JWT> jwt,IEmailService emailService)
+        private readonly IConfiguration _conf;
+        public AuthService(IConfiguration conf, UserManager<Account> AccountManager ,IOptions<JWT> jwt,IEmailService emailService)
         {
             _AccountManager = AccountManager;
             _jwt = jwt.Value;
             _EmailService = emailService;
+            _conf = conf;
 
         }
+
+
         #region User
         public async Task<AuthModel> RegisterAsync(RegisterDTO DTO, Roles Role = Roles.User)
         {
@@ -40,6 +45,7 @@ namespace Tazkartk.Services
                 Email = DTO.Email,
                 PhoneNumber = DTO.PhoneNumber,
                 UserName = DTO.Email,
+                photo = _conf["Avatar"]
 
             };
             var result = await _AccountManager.CreateAsync(user, DTO.Password);
@@ -55,14 +61,7 @@ namespace Tazkartk.Services
 
             await _AccountManager.AddToRoleAsync(user, Role.ToString());
             return await SendOTP(user.Email);
-            //var JwtSecurityToken = await CreateJwtToken(user);
-            //return new AuthModel
-            //{
-            //    Email = DTO.Email,
-            //    ExpiresOn = JwtSecurityToken.ValidTo,
-            //    isAuthenticated = true,
-            //    Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
-            //};
+           
         }
         public async Task<AuthModel> LoginAsync(LoginDTO DTO)
         {
@@ -72,17 +71,20 @@ namespace Tazkartk.Services
 
             if (Account is null || !await _AccountManager.CheckPasswordAsync(Account, DTO.Password))
             {
+                authModel.IsEmailConfirmed = Account.EmailConfirmed;
                 authModel.message = "Email or Password is incorrect!";
                 return authModel;
             }
             if (!Account.EmailConfirmed)
             {
+                authModel.IsEmailConfirmed = Account.EmailConfirmed;
                 authModel.message = "Email is not confirmed yet";
                 return authModel;
             }
 
             var jwtSecurityToken = await CreateJwtToken(Account);
-
+            authModel.Id = Account.Id;
+            authModel.IsEmailConfirmed = Account.EmailConfirmed;
             authModel.isAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = Account.Email;
@@ -150,7 +152,7 @@ namespace Tazkartk.Services
                 Body = $"Your OTP is {OTP}"
             };
             await _EmailService.SendEmail(emailrequest);
-            return new AuthModel { message = "OTP has been sent to your email" };
+            return new AuthModel { Email=account.Email , message = "OTP has been sent to your email" };
         }
         public async Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp)
         {
@@ -159,9 +161,13 @@ namespace Tazkartk.Services
             {
                 return new AuthModel { message = "User not found" };
             }
+            if(Account.EmailConfirmed)
+            {
+                return new AuthModel { message = "email is already confirmed",IsEmailConfirmed=Account.EmailConfirmed };
+            }
             if (enteredOtp == null || enteredOtp != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
-                return new AuthModel { message = "Invalid OTP" };
+                return new AuthModel { message = "Invalid OTP",IsEmailConfirmed=Account.EmailConfirmed };
             }
 
             Account.OTP = null;
@@ -172,9 +178,12 @@ namespace Tazkartk.Services
             var JwtSecurityToken = await CreateJwtToken(Account);
             return new AuthModel
             {
+                Id= Account.Id,
+                IsEmailConfirmed=Account.EmailConfirmed,
                 Email = Account.Email,
                 ExpiresOn = JwtSecurityToken.ValidTo,
                 isAuthenticated = true,
+                Roles = await _AccountManager.GetRolesAsync(Account),
                 Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
             };
 
@@ -251,16 +260,6 @@ namespace Tazkartk.Services
             }
             return new AuthModel { message = "Password Changed successfully" };
             //var result=await _UserManager.ResetPasswordAsync(user, token, NewPassword);
-            //if(!result.Succeeded)
-            //{
-            //    var errors = string.Empty;
-            //    foreach (var error in result.Errors)
-            //    {
-            //        errors += $"{error.Description} , ";
-            //    }
-            //    return new AuthModel { message = errors };
-
-            // return new AuthModel { message = "Password reset successfully" };
         }
         #endregion
 
@@ -285,7 +284,6 @@ namespace Tazkartk.Services
             .Union(AccountClaims)
             .Union(roleClaims);
 
-
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
@@ -293,7 +291,7 @@ namespace Tazkartk.Services
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(_jwt.DurationInMinutes),
+                expires: DateTime.Now.AddMinutes(_jwt.DurationInMinutes),
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;

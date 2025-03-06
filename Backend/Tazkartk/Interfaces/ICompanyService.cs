@@ -1,4 +1,4 @@
-﻿using Tazkartk.DTO;
+﻿using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Models;
 
 namespace Tazkartk.Interfaces

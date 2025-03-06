@@ -27,6 +27,11 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IPaymobService, PaymobService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -40,6 +45,7 @@ builder.Services.AddIdentityCore<Account>().AddRoles<IdentityRole<int>>()
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.Configure<PaymobSettings>(builder.Configuration.GetSection("Paymob"));
 
 
 builder.Services.AddAuthentication(options =>
