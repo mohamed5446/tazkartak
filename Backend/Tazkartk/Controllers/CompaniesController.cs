@@ -29,7 +29,12 @@ namespace Tazkartk.Controllers
             var company=await _companyService.GetCompanyDetailsById(id);
             return company==null ? NotFound("company not found") : Ok(company);
         }
-
+        [HttpPost]
+        public async Task<IActionResult>CreateCompany(CompanyRegisterDTO DTO)
+        {
+            var result = await _companyService.CreateCompany(DTO);
+            return result ==null ?BadRequest(): Ok(result);
+        }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult>EditCompany(int id,[FromForm]CompanyEditDTO DTO)

@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Interfaces;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Controllers
 {
@@ -31,7 +34,18 @@ namespace Tazkartk.Controllers
             var user = await _userService.GetUserDetailsById(id);
             return user==null? NotFound("user not found ") : Ok(user);   
         }
-
+        [HttpPost]
+        public async Task<IActionResult>CreateUser(RegisterDTO DTO)
+        {
+            var result = await _userService.AddUser(DTO,Roles.User);
+            return result == null ? BadRequest() : Ok(result);
+        }
+        [HttpPost("Add-Admin")]
+        public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
+        {
+            var result = await _userService.AddUser(DTO, Roles.Admin);
+            return result == null ? BadRequest() : Ok(result);
+        }
 
         [HttpPut("{id:int}")]
         //[Authorize]

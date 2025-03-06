@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Tazkartk.Data;
 using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Services
 {
@@ -10,14 +12,50 @@ namespace Tazkartk.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IPhotoService _photoService;
+        private readonly UserManager<Account> _AccountManager;
 
-        public CompanyService(ApplicationDbContext context, IPhotoService photoService)
+        public CompanyService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager)
         {
             _context = context;
             _photoService = photoService;
+            _AccountManager = accountManager;
+        }
+        public async Task<CompanyDTO?> CreateCompany(CompanyRegisterDTO DTO)
+        {
+
+            if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
+            {
+                return null;
+            }
+            var Company = new Company
+            {
+                Name = DTO.Name,
+                Email = DTO.Email,
+                PhoneNumber = DTO.Phone,
+                UserName = DTO.Email,
+                City = DTO.city,
+                Street = DTO.street,
+                EmailConfirmed=true
+            };
+            var result = await _AccountManager.CreateAsync(Company, DTO.Password);
+            if (!result.Succeeded)
+            {
+                return null;
+            }
+            await _AccountManager.AddToRoleAsync(Company, Roles.Company.ToString());
+            return new CompanyDTO
+            {
+                Id = Company.Id,
+                Email = Company.Email,
+                Name = Company.Name,
+                Phone=Company.PhoneNumber,
+                City = Company.City,
+                Street= Company.Street,
+            };
         }
 
-        public async Task<List<CompanyDTO>> GetAllCompanies()
+
+            public async Task<List<CompanyDTO>> GetAllCompanies()
         {
             return await _context.Companies.AsNoTracking().Select(c => new CompanyDTO
             {

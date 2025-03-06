@@ -5,6 +5,7 @@ namespace Tazkartk.Interfaces
 {
     public interface ICompanyService
     {
+        Task<CompanyDTO> CreateCompany(CompanyRegisterDTO DTO);
         Task<List<CompanyDTO>> GetAllCompanies();
         Task<CompanyDTO> GetCompanyDetailsById(int id);
         Task<Company?> GetCompanyById(int id);
