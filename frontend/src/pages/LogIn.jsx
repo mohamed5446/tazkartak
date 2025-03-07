@@ -12,7 +12,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const { isLoading, error, login, setdefaulte } = useAuthStore();
+  const { isLoading, error, login, setdefaulte, role } = useAuthStore();
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -20,6 +20,8 @@ export default function LoginPage() {
       const token = response.token;
       Cookies.set("token", token, { expires: 7, secure: true });
       console.log(error);
+      if (role === "admin") navigate("admin/profile");
+      else if (role === "company") navigate("company/profile");
       navigate("/");
     } catch (error) {
       console.log(error.response.data);

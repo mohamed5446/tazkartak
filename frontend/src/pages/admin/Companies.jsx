@@ -173,7 +173,7 @@ export default function Companies() {
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             }
             alt=""
-            className="rounded place-self-center size-44"
+            className="rounded place-self-center size-36"
           />
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -433,7 +433,7 @@ export default function Companies() {
               <button
                 type="button"
                 onClick={deleteCompany}
-                className="w-full bg-red-500 text-white py-2 rounded hover:bg-cyan-900"
+                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-800"
               >
                 حذف
               </button>
