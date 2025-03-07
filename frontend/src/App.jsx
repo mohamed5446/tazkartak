@@ -7,7 +7,6 @@ import Profile from "./pages/user/Profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import SearchResult from "./pages/searchResult";
-
 import TripsManage from "./pages/companyPages/tripsManage";
 import { useAuthStore } from "./store/authStore";
 import EmailVerification from "./pages/EmailVerification";
@@ -15,17 +14,31 @@ import CompanySignUpPage from "./pages/companyPages/CompanyRegister";
 import AdminProfile from "./pages/admin/Profile";
 import Companies from "./pages/admin/Companies";
 import Users from "./pages/admin/users";
+import AdminLayout from "./components/AdminLayout";
+const AdminPages = ({ children }) => {
+  const { isAuthenticated, role } = useAuthStore();
 
+  if (isAuthenticated && role === "Admin") {
+    return children;
+  } else {
+    return <Navigate to={"/"} />;
+  }
+};
+const CompanyPages = ({ children }) => {
+  const { isAuthenticated, role } = useAuthStore();
+
+  if (isAuthenticated && role === "Company") {
+    return children;
+  } else {
+    return <Navigate to={"/"} />;
+  }
+};
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  // if (!user.isVerified) {
-  //   return <Navigate to="/verify-email" replace />;
-  // }
 
   return children;
 };
@@ -92,10 +105,32 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
-
-            <Route path="admin/profile" element={<AdminProfile />} />
-            <Route path="admin/Companies" element={<Companies />} />
-            <Route path="admin/users" element={<Users />} />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route
+              path="profile"
+              element={
+                <AdminPages>
+                  <AdminProfile />
+                </AdminPages>
+              }
+            />
+            <Route
+              path="Companies"
+              element={
+                <AdminPages>
+                  <Companies />
+                </AdminPages>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <AdminPages>
+                  <Users />
+                </AdminPages>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>

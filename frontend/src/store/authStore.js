@@ -24,7 +24,7 @@ export const useAuthStore = create(
             isAuthenticated: false,
             isLoading: false,
             error: null,
-            role: "user",
+            role: "User",
           });
           console.log(data);
         } catch (error) {
@@ -44,7 +44,7 @@ export const useAuthStore = create(
           );
           set({
             user: data.email,
-            role: "company",
+            role: "Company",
             isAuthenticated: false,
             isLoading: false,
             error: null,
@@ -70,7 +70,7 @@ export const useAuthStore = create(
             isAuthenticated: false,
             isLoading: false,
             error: null,
-            role: "admin",
+            role: "Admin",
           });
           console.log(data);
         } catch (error) {

@@ -3,7 +3,7 @@ import logo from "../assets/file 1.png";
 import { useAuthStore } from "../store/authStore";
 
 export default function Header() {
-  const { user } = useAuthStore();
+  const { user, role } = useAuthStore();
   return (
     <header className="bg-cyan-dark text-white  flex justify-around">
       <nav className="flex flex-row-reverse  items-center grow-3 justify-around text-lg font-semibold ">
@@ -19,19 +19,33 @@ export default function Header() {
         <a href="#" className="hover:text-gray-200">
           تواصل معنا
         </a>
-        {user ? (
+        {!user ? (
+          <Link
+            to={"/login"}
+            className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
+          >
+            تسجيل الدخول
+          </Link>
+        ) : role === "user" ? (
           <Link
             to={"/user/profile"}
             className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
           >
             حسابى
           </Link>
-        ) : (
+        ) : role === "admin" ? (
           <Link
-            to={"/login"}
+            to={"/admin/profile"}
             className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
           >
-            تسجيل الدخول
+            حسابى
+          </Link>
+        ) : (
+          <Link
+            to={"/company/profile"}
+            className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
+          >
+            حسابى
           </Link>
         )}
       </nav>
