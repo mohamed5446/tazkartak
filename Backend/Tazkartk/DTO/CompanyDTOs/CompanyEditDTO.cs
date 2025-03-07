@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Tazkartk.DTO.CompanyDTOs
+{
+    public class CompanyEditDTO
+    {
+        public string? Name { get; set; }
+        public string? City { get; set; }
+        public string? Street { get; set; }
+        public IFormFile? Logo { get; set; }
+        [ RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Invalid Phone Number")]
+
+        public string? PhoneNumber { get; set; }
+    }
+}
