@@ -31,15 +31,14 @@ namespace Tazkartk.Controllers
             return trip == null ? NotFound() : Ok(trip.ToTripDto());
         }
         [HttpGet("Search")]
-        public async Task<IActionResult> GetAll( string from, string to, DateOnly date)
+        public async Task<IActionResult> GetAll( string? from, string? to, DateOnly? date)
         {
-            var trip = await _context.Trips
-                .Where(s => s.From == from && s.To == to && s.Date == date && s.Avaliblility)
+            var trips = await _context.Trips.Where(s => (from == null || s.From == from) &&(to == null || s.To == to) && (date == null || s.Date == date) &&s.Avaliblility)
                 .AsNoTracking()
                 .Select(s => s.ToTripDto()).
                 ToListAsync();
 
-            return trip.Count == 0 ? NotFound("لا توجد رحلات متاحة للمعايير المحددة.") : Ok(trip);
+            return trips.Count == 0 ? NotFound("لا توجد رحلات متاحة للمعايير المحددة.") : Ok(trips);
         }
         [HttpGet("/api/{companyId}/Trips")]
         public async Task<IActionResult> GetCompanyTrips(int companyId)
