@@ -36,7 +36,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BookSeat(BookSeatDTO DTO)
+        public async Task<IActionResult> BookSeat(BookingDTO DTO)
         {
             var Url = await _BookingService.BookSeat(DTO);
             return Url== null ? NotFound() : Ok(new { url = Url });
@@ -45,7 +45,7 @@ namespace Tazkartk.Controllers
         public async Task<IActionResult> CancelBooking(int BookingId)
         {
             var result = await _BookingService.Refund(BookingId);
-            return !result ? NotFound() : Ok("refund requested"); 
+            return !result ? BadRequest() : Ok("refund requested"); 
         }
        
     }

@@ -11,7 +11,7 @@ namespace Tazkartk.Interfaces
         Task<List<UserDetails>> GetUsers();
         Task<UserDetails?> AddUser(RegisterDTO DTO, Roles role);
         Task<UserDetails> GetUserDetailsById(int id);
-        Task<User> GetUserById(int id);
+        Task<User?> GetUserById(int id);
         Task<UserDetails?> EditUser(User user, EditUserDTO DTO);
         Task DeleteUser(User user);
         

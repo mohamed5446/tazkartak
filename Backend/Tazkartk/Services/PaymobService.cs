@@ -19,7 +19,7 @@ namespace Tazkartk.Services
             _paymob = paymob.Value;
             _httpClient = httpClientFactory.CreateClient();
         }
-        public async Task<string> CreatePaymentIntent(BookSeatDTO DTO, double amount, UserDetailsDTO UserDTO)
+        public async Task<string> CreatePaymentIntent(BookingDTO DTO, double amount, UserDetailsDTO UserDTO)
         {
             string bookingInfoJson = JsonConvert.SerializeObject(DTO);
             var requestData = new

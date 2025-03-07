@@ -18,7 +18,7 @@ namespace Tazkartk.Services
             _paymobService = paymobService;
         }
         #region Booking
-        public async Task<string?> BookSeat(BookSeatDTO DTO)
+        public async Task<string?> BookSeat(BookingDTO DTO)
         {
             var user = await _context.Users.FindAsync(DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
@@ -47,7 +47,7 @@ namespace Tazkartk.Services
             return null;
         }
 
-        public async Task<bool> ConfirmBooking(BookSeatDTO DTO, string PaymentIntentId, string PaymentMethod)
+        public async Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId, string PaymentMethod)
         {
             var user = await _context.Users.Include(u => u.books).FirstOrDefaultAsync(u => u.Id == DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
@@ -103,11 +103,11 @@ namespace Tazkartk.Services
         public async Task<bool> Refund(int bookingId)
         {
             var booking = await _context.bookings.Include(b => b.seats).Include(b => b.trip).Include(b => b.payment).FirstOrDefaultAsync(b => b.BookingId == bookingId);
-            if (booking == null) return false;
+            if (booking == null||booking.IsCanceled) return false;
             var count = booking.seats.Count();
             var total = (count * booking.trip.Price) * 100;
             var paymemnt = await _context.Payments.FirstOrDefaultAsync(p => p.bookingId == bookingId);
-            if (paymemnt == null) return false;
+            if (paymemnt == null||paymemnt.IsRefunded) return false;
             var trxId = paymemnt.PaymentIntentId;
             var success = await _paymobService.RefundTransaction(bookingId, trxId, total);
             if (!success) return false;

@@ -19,12 +19,15 @@ namespace Tazkartk.Services
         private readonly ApplicationDbContext _context;
         private readonly IPhotoService _photoService;
         private readonly UserManager<Account> _AccountManager;
+        private readonly IConfiguration _conf;
 
-        public UserService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager)
+
+        public UserService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf)
         {
             _context = context;
             _photoService = photoService;
             _AccountManager = accountManager;
+            _conf = conf;
         }
         public async Task<List<UserDetails>> GetUsers()
         {
@@ -74,7 +77,8 @@ namespace Tazkartk.Services
                 Email = DTO.Email,
                 PhoneNumber = DTO.PhoneNumber,
                 UserName = DTO.Email,
-                EmailConfirmed=true
+                photo = _conf["Avatar"],
+                EmailConfirmed = true
             };
             var result = await _AccountManager.CreateAsync(user, DTO.Password);
             if (!result.Succeeded)
