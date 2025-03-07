@@ -75,7 +75,7 @@ namespace Tazkartk.Controllers
             }
             JToken extra = obj["payment_key_claims"]?["extra"];
 
-            var bookingDTO = new BookSeatDTO
+            var bookingDTO = new BookingDTO
             {
                 UserId = extra["userid"].Value<int>() ,
                 TripId = extra["tripid"].Value<int>(),

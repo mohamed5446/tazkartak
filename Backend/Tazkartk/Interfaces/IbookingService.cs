@@ -4,8 +4,8 @@ namespace Tazkartk.Interfaces
 {
     public interface IBookingService
     {
-        Task<string?> BookSeat(BookSeatDTO DTO);
-        Task<bool> ConfirmBooking(BookSeatDTO DTO, string PaymentIntentId,string PaymentMethod);
+        Task<string?> BookSeat(BookingDTO DTO);
+        Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId,string PaymentMethod);
 
         Task<bool> Refund(int bookingId);
         Task<bool> Cancel(string trxId);
