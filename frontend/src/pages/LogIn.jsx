@@ -17,12 +17,13 @@ export default function LoginPage() {
     console.log(data);
     try {
       const response = await login(data);
+      console.log(response.roles[0]);
       const token = response.token;
       Cookies.set("token", token, { expires: 7, secure: true });
       console.log(error);
-      if (role === "admin") navigate("admin/profile");
-      else if (role === "company") navigate("company/profile");
-      navigate("/");
+      if (response.roles[0] == "Admin") navigate("/admin/profile");
+      else if (response.roles[0] == "Company") navigate("/company/profile");
+      else navigate("/");
     } catch (error) {
       console.log(error.response.data);
     }

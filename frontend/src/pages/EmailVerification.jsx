@@ -24,9 +24,9 @@ export default function EmailVerification() {
       const response = await verifyEmail(data);
       const token = response.token;
       Cookies.set("token", token, { expires: 7, secure: true });
-      if (role === "admin") navigate("admin/profile");
-      else if (role === "company") navigate("company/profile");
-      navigate("/");
+      if (role == "Admin") navigate("admin/profile");
+      else if (role == "Company") navigate("company/profile");
+      else navigate("/");
     } catch (error) {
       console.log(error);
     }
