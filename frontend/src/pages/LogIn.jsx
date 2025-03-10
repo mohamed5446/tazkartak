@@ -20,8 +20,8 @@ export default function LoginPage() {
       const token = response.token;
       Cookies.set("token", token, { expires: 7, secure: true });
       console.log(error);
-      if (role === "admin") navigate("admin/profile");
-      else if (role === "company") navigate("company/profile");
+      if (role === "Admin") navigate("admin/profile");
+      else if (role === "Company") navigate("company/profile");
       navigate("/");
     } catch (error) {
       console.log(error.response.data);

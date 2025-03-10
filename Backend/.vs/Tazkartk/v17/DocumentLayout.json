@@ -3,20 +3,40 @@
   "WorkspaceRootPath": "D:\\gits\\tazkartak\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|D:\\gits\\tazkartak\\Backend\\tazkartk\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\dto\\tripdtos\\tripdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\dto\\tripdtos\\tripdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\interfaces\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\interfaces\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\paymobcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\paymobcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\dto\\userdtos\\userdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\dto\\userdtos\\userdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\dto\\userdtos\\userdetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\dto\\userdtos\\userdetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\models\\trip.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\trip.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +46,123 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TripDtos.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\TripDTOs\\TripDtos.cs",
-              "RelativeDocumentMoniker": "Tazkartk\\DTO\\TripDTOs\\TripDtos.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\TripDTOs\\TripDtos.cs",
-              "RelativeToolTip": "Tazkartk\\DTO\\TripDTOs\\TripDtos.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T19:39:54.904Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "TripsController.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TripsController.cs",
-              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\TripsController.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TripsController.cs",
-              "RelativeToolTip": "Tazkartk\\Controllers\\TripsController.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAIwCcAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T19:36:50.809Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "TicketsController.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TicketsController.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Controllers\\TicketsController.cs",
               "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TicketsController.cs",
               "RelativeToolTip": "Tazkartk\\Controllers\\TicketsController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAYwA8AAAAAAAAA",
+              "ViewState": "AQIAABYAAAAAAAAAAAAQwCQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T19:26:01.583Z",
+              "WhenOpened": "2025-03-10T12:50:10.247Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "PaymobController.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\PaymobController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\PaymobController.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\PaymobController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\PaymobController.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAYwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:49:53.145Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IBookingService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IBookingService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IBookingService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IBookingService.cs",
+              "RelativeToolTip": "Tazkartk\\Interfaces\\IBookingService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:49:37.028Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CompanyService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\CompanyService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\CompanyService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\CompanyService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\CompanyService.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAYwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:42:45.532Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Trip.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Models\\Trip.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Models\\Trip.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Models\\Trip.cs",
+              "RelativeToolTip": "Tazkartk\\Models\\Trip.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAowAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:34:32.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserDetailsDTO.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\UserDTOs\\UserDetailsDTO.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\DTO\\UserDTOs\\UserDetailsDTO.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\UserDTOs\\UserDetailsDTO.cs",
+              "RelativeToolTip": "Tazkartk\\DTO\\UserDTOs\\UserDetailsDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:32:48.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserDetails.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\UserDTOs\\UserDetails.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\DTO\\UserDTOs\\UserDetails.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\DTO\\UserDTOs\\UserDetails.cs",
+              "RelativeToolTip": "Tazkartk\\DTO\\UserDTOs\\UserDetails.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T12:32:34.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "BookingService.cs",
               "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\BookingService.cs",
               "RelativeDocumentMoniker": "Tazkartk\\Services\\BookingService.cs",
               "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Services\\BookingService.cs",
               "RelativeToolTip": "Tazkartk\\Services\\BookingService.cs",
-              "ViewState": "AQIAACQAAAAAAAAAAAAYwBMAAAAXAAAA",
+              "ViewState": "AQIAABQAAAAAAAAAAAAAAIoAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T19:12:49.061Z",
+              "WhenOpened": "2025-03-10T12:31:37.923Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\appsettings.json",
+              "RelativeDocumentMoniker": "Tazkartk\\appsettings.json",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\appsettings.json",
+              "RelativeToolTip": "Tazkartk\\appsettings.json",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAACUAAABLAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-10T12:26:44.002Z",
               "EditorCaption": ""
             }
           ]

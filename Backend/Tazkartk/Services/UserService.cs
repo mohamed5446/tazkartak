@@ -1,12 +1,10 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Tazkartk.Data;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.CompanyDTOs;
+using Tazkartk.DTO.Response;
 using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
@@ -20,6 +18,7 @@ namespace Tazkartk.Services
         private readonly IPhotoService _photoService;
         private readonly UserManager<Account> _AccountManager;
         private readonly IConfiguration _conf;
+        const string Pattern = "^[^@]+@[^@]+\\.[^@]+$";
 
 
         public UserService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf)
@@ -43,33 +42,46 @@ namespace Tazkartk.Services
                 }).ToListAsync();
         }
 
-        public async Task<User?> GetUserById(int id)
+        public async Task<UserDetails?> GetUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user == null) return null;
-            return user;
-        }
-
-        public async Task<UserDetails?> GetUserDetailsById(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null) return null;
-            return new UserDetails
+            if (user == null)
             {
-                Id = id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                phoneNumber = user.PhoneNumber,
-                PhotoUrl = user.photo
-            };
-        }
-        public async Task<UserDetails?>AddUser(RegisterDTO DTO,Roles role)
-        {
-             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
-             {
                 return null;
-             }
+            }
+            return new UserDetails
+                {
+                    Id = id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    phoneNumber = user.PhoneNumber,
+                    PhotoUrl = user.photo   
+                };
+        }
+        public async Task<ApiResponse<UserDetails?>> AddUser(RegisterDTO DTO, Roles role)
+        {
+
+            bool match = Regex.IsMatch(DTO.Email, Pattern);
+            if (!match)
+            {
+                return new ApiResponse<UserDetails?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
+            var response = new ApiResponse<UserDetails?>();
+            if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
+            {
+                return new ApiResponse<UserDetails?>()
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "User already exist "
+                };
+            }
             var user = new User
             {
                 FirstName = DTO.FirstName,
@@ -83,22 +95,43 @@ namespace Tazkartk.Services
             var result = await _AccountManager.CreateAsync(user, DTO.Password);
             if (!result.Succeeded)
             {
-                return null;
+                return new ApiResponse<UserDetails?>()
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = result.Errors.FirstOrDefault()?.Description ?? "Failed to create user "
+                };
             }
             await _AccountManager.AddToRoleAsync(user, role.ToString());
-
-            return new UserDetails
+            return new ApiResponse<UserDetails?>()
             {
-                Id=user.Id,
-                FirstName= user.FirstName,
-                LastName= user.LastName,
-                Email= user.Email,
-                phoneNumber= user.PhoneNumber,
+                Success = true,
+                StatusCode=StatusCode.Created,
+                message = "User Created Successfully",
+                Data = new UserDetails
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    phoneNumber = user.PhoneNumber,
+                    PhotoUrl = user.photo
+                }
             };
+
         }
-        public async Task<UserDetails> EditUser(User user,EditUserDTO DTO)
+        public async Task<ApiResponse<UserDetails?>> EditUser(int Id, EditUserDTO DTO)
         {
-           
+            var user = await _context.Users.FindAsync(Id);
+            if(user==null)
+            {
+                return new ApiResponse<UserDetails?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.NotFound,
+                    message = "user not found "
+                };
+            }
             if (!string.IsNullOrEmpty(DTO.firstName))
             {
                 user.FirstName = DTO.firstName;
@@ -115,39 +148,92 @@ namespace Tazkartk.Services
             }
 
 
-            if (DTO.photo!=null)
+            if (DTO.photo != null)
             {
-                if(!string.IsNullOrEmpty(user.photo))
+                if (!string.IsNullOrEmpty(user.photo))
                 {
-                    await _photoService.DeletePhotoAsync(user.photo);
+                    var res = await _photoService.DeletePhotoAsync(user.photo);
+                    if (res.Error != null)
+                    {
+                        return new ApiResponse<UserDetails?>
+                        {
+                            Success = false,
+                            StatusCode = StatusCode.BadRequest,
+                            message = "error while updating image"
+                        };
+                    }
                 }
 
                 var photoResult = await _photoService.AddPhotoAsync(DTO.photo);
+                if (photoResult.Error != null)
+                {
+                    return new ApiResponse<UserDetails?>
+                    {
+                        Success = false,
+                        StatusCode = StatusCode.BadRequest,
+                        message = "error while updating image"
+                    };
+                }
                 user.photo = photoResult.Url.ToString();
             }
-
-           await _context.SaveChangesAsync();
-            return new UserDetails
+            await _context.SaveChangesAsync();
+            return new ApiResponse<UserDetails?>()
             {
-                Id=user.Id,
-                Email=user.Email,
-                FirstName=user.FirstName,
-                LastName=user.LastName,
-                phoneNumber=user.PhoneNumber,
-                PhotoUrl=user.photo
+                Success = true,
+                StatusCode = StatusCode.Ok,
+                message = "User Editted Successfully ",
+                Data = new UserDetails
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    phoneNumber = user.PhoneNumber,
+                    PhotoUrl = user.photo
+                }
             };
         }
-        public async Task DeleteUser(User user)
+        
+        public async Task<ApiResponse<string?>> DeleteUser(int Id)
         {
-            if (!string.IsNullOrEmpty(user.photo))
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            if(user==null)
             {
-                await _photoService.DeletePhotoAsync(user.photo);
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.NotFound,
+                    message = "user not found",
+                };
             }
-            // var user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
-              await _context.SaveChangesAsync();
+              if (!string.IsNullOrEmpty(user.photo))
+                {
+                   var res= await _photoService.DeletePhotoAsync(user.photo);
+                   if(res.Error != null)
+                    {
+                    return new ApiResponse<string?>
+                    {
+                        Success = false,
+                        StatusCode = StatusCode.BadRequest,
+                        message = "error while Deleting image"
+                    };
+                }
+
+                }
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return new ApiResponse<string?>()
+                {
+                    StatusCode=StatusCode.Ok,
+                    Success = true,
+                    message = "User Deleted Successfully "
+                };
+
+            }
+            
+           
 
         }
        
     }
-}
+

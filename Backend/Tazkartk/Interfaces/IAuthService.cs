@@ -1,6 +1,6 @@
 ﻿using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.CompanyDTOs;
-using Tazkartk.Models;
+using Tazkartk.DTO.Response;
 using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Interfaces

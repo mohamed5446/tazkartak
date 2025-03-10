@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tazkartk.Data;
+using Tazkartk.DTO;
+using Tazkartk.DTO.Response;
 using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Mappers;
 using Tazkartk.Models;
@@ -19,7 +21,7 @@ namespace Tazkartk.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var trips = await _context.Trips.AsNoTracking().Select(trip=>trip.ToTripDto()).ToListAsync(); 
+            var trips = await _context.Trips.Include(t=>t.company).AsNoTracking().Select(trip=>trip.ToTripDto()).ToListAsync(); 
             if(trips==null)return NotFound();
             return Ok(trips);
            
@@ -27,13 +29,13 @@ namespace Tazkartk.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.Trips.Include(t=>t.company).FirstOrDefaultAsync(t=>t.TripId==id);
             return trip == null ? NotFound() : Ok(trip.ToTripDto());
         }
         [HttpGet("Search")]
         public async Task<IActionResult> GetAll( string? from, string? to, DateOnly? date)
         {
-            var trips = await _context.Trips.Where(s => (from == null || s.From == from) &&(to == null || s.To == to) && (date == null || s.Date == date) &&s.Avaliblility)
+            var trips = await _context.Trips.Include(t=>t.company).Where(s => (from == null || s.From == from) &&(to == null || s.To == to) && (date == null || s.Date == date) &&s.Avaliblility)
                 .AsNoTracking()
                 .Select(s => s.ToTripDto()).
                 ToListAsync();
@@ -86,16 +88,29 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id) 
-        {        
-        var Tripmodel= await _context.Trips.FirstOrDefaultAsync(s => s.TripId == id);
-            if (Tripmodel==null) 
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
             {
-                return NotFound();
+                var Tripmodel = await _context.Trips.FirstOrDefaultAsync(s => s.TripId == id);
+                if (Tripmodel == null)
+                {
+                    return NotFound();
+                }
+                _context.Trips.Remove(Tripmodel);
+                await _context.SaveChangesAsync();
+                return NoContent();
+
             }
-            _context.Trips.Remove(Tripmodel);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {   
+                return BadRequest(new ApiResponse<string>()
+                {
+                    Success=false,
+                    message="error while deleting trip make sure it has no bookings and try again"
+                });
+            }
+       
         }
        
     }

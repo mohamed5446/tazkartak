@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
+using Tazkartk.DTO.Response;
 using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Models.Enums;
@@ -28,47 +30,86 @@ namespace Tazkartk.Controllers
         }
 
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult>GetUser(int id)
+        [HttpGet("{Id:int}")]
+        public async Task<IActionResult>GetUser(int Id)
         {
-            var user = await _userService.GetUserDetailsById(id);
-            return user==null? NotFound("user not found ") : Ok(user);   
+            var user = await _userService.GetUserById(Id);
+            return user == null ? NotFound("User Not Found"):Ok(user);
         }
         [HttpPost]
         public async Task<IActionResult>CreateUser(RegisterDTO DTO)
         {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
             var result = await _userService.AddUser(DTO,Roles.User);
-            return result == null ? BadRequest() : Ok(result);
+            return StatusCode((int)result.StatusCode,result);   
         }
         [HttpPost("Add-Admin")]
         public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
         {
-            var result = await _userService.AddUser(DTO, Roles.Admin);
-            return result == null ? BadRequest() : Ok(result);
-        }
-
-        [HttpPut("{id:int}")]
-        //[Authorize]
-        public async Task<IActionResult>EditUser(int id ,[FromForm]EditUserDTO DTO)
-        {
-            
-            var user=await _userService.GetUserById(id);
-            if(user == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
             }
-          var updated =await _userService.EditUser(user, DTO);
-            
-            return Ok(new { message = "edit succeed", User = updated });
+            var result = await _userService.AddUser(DTO, Roles.Admin);
+            return StatusCode((int)result.StatusCode,result);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpPut("{Id:int}")]
+        //[Authorize]
+        public async Task<IActionResult>EditUser(int Id ,[FromForm]EditUserDTO DTO)
         {
-            var user =await _userService.GetUserById(id);
-            if (user == null) return NotFound();
-             await _userService.DeleteUser(user);
-            return NoContent();
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _userService.EditUser(Id, DTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpDelete("{Id:int}")]
+        public async Task<IActionResult> DeleteUser(int Id)
+        {
+           var result=  await _userService.DeleteUser(Id);
+            return StatusCode((int)result.StatusCode,result);
         }
        
     }

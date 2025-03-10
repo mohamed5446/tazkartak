@@ -12,6 +12,7 @@
         public string ArriveTime { get; set; }
         public string Location { get; set; }
         public double Price { get; set; }
+        public string CompanyName {  get; set; }
 
     }
 }

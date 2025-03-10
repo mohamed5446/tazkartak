@@ -5,6 +5,7 @@ using Tazkartk.Interfaces;
 using Tazkartk.Models.Enums;
 using Tazkartk.Models;
 using Tazkartk.Data;
+using Tazkartk.DTO.Response;
 
 namespace Tazkartk.Services
 {
@@ -135,7 +136,8 @@ namespace Tazkartk.Services
         #endregion
 
 
-
+      
+        
 
         public async Task<bool> DeleteBooking(int Id)
         {

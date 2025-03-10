@@ -4,8 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
+using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.CompanyDTOs;
+using Tazkartk.DTO.Response;
 using Tazkartk.Email;
 using Tazkartk.Helpers;
 using Tazkartk.Interfaces;
@@ -14,13 +17,15 @@ using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Services
 {
-    public class AuthService:IAuthService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<Account> _AccountManager;
         private readonly JWT _jwt;
         private readonly IEmailService _EmailService;
         private readonly IConfiguration _conf;
-        public AuthService(IConfiguration conf, UserManager<Account> AccountManager ,IOptions<JWT> jwt,IEmailService emailService)
+        const string Pattern = "^[^@]+@[^@]+\\.[^@]+$";
+
+        public AuthService(IConfiguration conf, UserManager<Account> AccountManager, IOptions<JWT> jwt, IEmailService emailService)
         {
             _AccountManager = AccountManager;
             _jwt = jwt.Value;
@@ -33,9 +38,25 @@ namespace Tazkartk.Services
         #region User
         public async Task<AuthModel> RegisterAsync(RegisterDTO DTO, Roles Role = Roles.User)
         {
+           
+            bool match = Regex.IsMatch(DTO.Email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new AuthModel { message = "Email is already Registered", Success = false };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Email is already registered",
+                };
             }
 
             var user = new User
@@ -56,41 +77,56 @@ namespace Tazkartk.Services
                 {
                     errors += $"{error.Description} , ";
                 }
-                return new AuthModel { message = errors, Success = false };
+                return
+                    new AuthModel
+                    {
+                        Success = false,
+                        StatusCode = StatusCode.BadRequest,
+                        message = errors
+                    };
             }
 
             await _AccountManager.AddToRoleAsync(user, Role.ToString());
             return await SendOTP(user.Email);
-           
+
         }
         public async Task<AuthModel> LoginAsync(LoginDTO DTO)
         {
-            var authModel = new AuthModel();
-
             var Account = await _AccountManager.FindByEmailAsync(DTO.Email);
 
             if (Account is null || !await _AccountManager.CheckPasswordAsync(Account, DTO.Password))
             {
-                authModel.IsEmailConfirmed = Account.EmailConfirmed;
-                authModel.message = "Email or Password is incorrect!";
-                return authModel;
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Email or password is incorrect "
+                };
             }
             if (!Account.EmailConfirmed)
             {
-                authModel.IsEmailConfirmed = Account.EmailConfirmed;
-                authModel.message = "Email is not confirmed yet";
-                return authModel;
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    IsEmailConfirmed = Account.EmailConfirmed,
+                    message = "please confirm your email",
+                };
             }
 
             var jwtSecurityToken = await CreateJwtToken(Account);
-            authModel.Id = Account.Id;
-            authModel.IsEmailConfirmed = Account.EmailConfirmed;
-            authModel.isAuthenticated = true;
-            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            authModel.Email = Account.Email;
-            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-            authModel.Roles = await _AccountManager.GetRolesAsync(Account);
-            return authModel;
+            return new AuthModel
+            {
+                Success = true,
+                StatusCode = StatusCode.Ok,
+                Id = Account.Id,
+                IsEmailConfirmed = Account.EmailConfirmed,
+                isAuthenticated = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Email = Account.Email,
+                ExpiresOn = jwtSecurityToken.ValidTo,
+                Roles = await _AccountManager.GetRolesAsync(Account),
+            };
         }
         #endregion
 
@@ -99,9 +135,24 @@ namespace Tazkartk.Services
 
         public async Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO DTO)
         {
+            bool match = Regex.IsMatch(DTO.Email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new AuthModel { message = "Email is already Registered", Success = false };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Email is already Registered"
+                };
             }
             var Company = new Company
             {
@@ -111,6 +162,7 @@ namespace Tazkartk.Services
                 UserName = DTO.Email,
                 City = DTO.city,
                 Street = DTO.street,
+                Logo = _conf["Logo"]
             };
             var result = await _AccountManager.CreateAsync(Company, DTO.Password);
             if (!result.Succeeded)
@@ -120,9 +172,13 @@ namespace Tazkartk.Services
                 {
                     errors += $"{error.Description} , ";
                 }
-                return new AuthModel { message = errors, Success = false };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = errors,
+                };
             }
-
             await _AccountManager.AddToRoleAsync(Company, Roles.Company.ToString());
             return await SendOTP(Company.Email);
         }
@@ -132,14 +188,34 @@ namespace Tazkartk.Services
         #region OTP
         public async Task<AuthModel> SendOTP(string email)
         {
+            bool match = Regex.IsMatch(email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             var account = await _AccountManager.FindByEmailAsync(email);
             if (account == null)
             {
-                return new AuthModel { message = "account not found " };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "account not found "
+                };
             }
             if (account.OTP != null && account.OTPExpiry > DateTime.UtcNow)
             {
-                return new AuthModel { message = "there is already otp sent" };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "there is already otp sent"
+                };
             }
             string OTP = GenerateOTP();
             account.OTP = OTP;
@@ -152,22 +228,53 @@ namespace Tazkartk.Services
                 Body = $"Your OTP is {OTP}"
             };
             await _EmailService.SendEmail(emailrequest);
-            return new AuthModel { Email=account.Email , message = "OTP has been sent to your email" };
+            return new AuthModel
+            {
+                Success = true,
+                StatusCode = StatusCode.Ok,
+                Email = account.Email,
+                message = "OTP has been sent to your email"
+            };
         }
         public async Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp)
         {
+            bool match = Regex.IsMatch(Email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             Account? Account = await _AccountManager.FindByEmailAsync(Email);
             if (Account == null)
             {
-                return new AuthModel { message = "User not found" };
+                return new AuthModel {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "User not found"
+                };
             }
-            if(Account.EmailConfirmed)
+            if (Account.EmailConfirmed)
             {
-                return new AuthModel { message = "email is already confirmed",IsEmailConfirmed=Account.EmailConfirmed };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "email is already confirmed",
+                    IsEmailConfirmed = Account.EmailConfirmed
+                };
             }
             if (enteredOtp == null || enteredOtp != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
-                return new AuthModel { message = "Invalid OTP",IsEmailConfirmed=Account.EmailConfirmed };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid OTP",
+                    IsEmailConfirmed = Account.EmailConfirmed };
             }
 
             Account.OTP = null;
@@ -178,8 +285,10 @@ namespace Tazkartk.Services
             var JwtSecurityToken = await CreateJwtToken(Account);
             return new AuthModel
             {
-                Id= Account.Id,
-                IsEmailConfirmed=Account.EmailConfirmed,
+                Success = true,
+                StatusCode = StatusCode.Ok,
+                Id = Account.Id,
+                IsEmailConfirmed = Account.EmailConfirmed,
                 Email = Account.Email,
                 ExpiresOn = JwtSecurityToken.ValidTo,
                 isAuthenticated = true,
@@ -201,10 +310,25 @@ namespace Tazkartk.Services
         #region password
         public async Task<AuthModel> ForgetPassword(string Email)
         {
+            bool match = Regex.IsMatch(Email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             var Account = await _AccountManager.FindByEmailAsync(Email);
             if (Account == null)
             {
-                return new AuthModel { message = "user not found" };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "user not found"
+                };
             }
 
             return await SendOTP(Email);
@@ -214,12 +338,22 @@ namespace Tazkartk.Services
             var Account = await _AccountManager.FindByEmailAsync(DTO.Email);
             if (Account == null)
             {
-                return new AuthModel { message = "user not found" };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "user not found"
+                };
             }
             var checkpassword = await _AccountManager.CheckPasswordAsync(Account, DTO.OldPassword);
             if (!checkpassword)
             {
-                return new AuthModel { message = "wrong password " };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "wrong password "
+                };
             }
             var result = await _AccountManager.ChangePasswordAsync(Account, DTO.OldPassword, DTO.newPassword);
             if (!result.Succeeded)
@@ -229,20 +363,51 @@ namespace Tazkartk.Services
                 {
                     errors += $"{error.Description} , ";
                 }
-                return new AuthModel { message = errors };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = errors
+                };
             }
-            return new AuthModel { message = "Password changed successfully" };
+            return new AuthModel
+            {
+                Success = true,
+                StatusCode = StatusCode.Ok,
+                message = "Password changed successfully" 
+            };
         }
+    
         public async Task<AuthModel> ResetPassword(ResetPasswordDTO DTO)
         {
+            bool match = Regex.IsMatch(DTO.email, Pattern);
+            if (!match)
+            {
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Invalid Email Address"
+                };
+            }
             var Account = await _AccountManager.FindByEmailAsync(DTO.email);
             if (Account == null)
             {
-                return new AuthModel { message = "user not found" };
+                return new AuthModel
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest, 
+                    message = "user not found"
+                };
             }
             if (DTO.token == null || DTO.token != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
-                return new AuthModel { message = "Invalid OTP" };
+                return new AuthModel 
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest, 
+                    message = "Invalid OTP"
+                };
             }
             string NewHashedPassword = _AccountManager.PasswordHasher.HashPassword(Account, DTO.newPasswod);
             Account.PasswordHash = NewHashedPassword;
@@ -256,9 +421,19 @@ namespace Tazkartk.Services
                 {
                     errors += $"{error.Description} , ";
                 }
-                return new AuthModel { message = errors };
+                return new AuthModel 
+                {
+                    Success = false, 
+                    StatusCode = StatusCode.BadRequest,
+                    message = errors
+                };
             }
-            return new AuthModel { message = "Password Changed successfully" };
+            return new AuthModel
+            { 
+                Success=true,
+                StatusCode=StatusCode.Ok,
+                message = "Password Changed successfully"
+            };
             //var result=await _UserManager.ResetPasswordAsync(user, token, NewPassword);
         }
         #endregion

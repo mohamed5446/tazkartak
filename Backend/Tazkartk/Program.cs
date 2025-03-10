@@ -10,6 +10,7 @@ using Tazkartk.Models;
 using Tazkartk.Services;
 using Tazkartk.Email;
 using Tazkartk.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,11 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymobService, PaymobService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
+
+
+builder.Services.Configure<ApiBehaviorOptions>(options
+    => options.SuppressModelStateInvalidFilter = true);
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

@@ -18,7 +18,8 @@ namespace Tazkartk.Mappers
                 Time = TripModel.Time.ToString("hh:mm tt"),
                 Avaliblility = TripModel.Avaliblility,
                 Location = TripModel.Location,
-                Price = TripModel.Price
+                Price = TripModel.Price,
+                CompanyName = TripModel.company.Name,
             };
         }
         public static Trip ToTripFromCreateDtos(this CreateTripDtos TripDtos)

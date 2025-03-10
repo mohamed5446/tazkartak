@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.CompanyDTOs;
+using Tazkartk.DTO.Response;
 using Tazkartk.Interfaces;
 using Tazkartk.Models.Enums;
 
@@ -20,68 +22,207 @@ namespace Tazkartk.Controllers
             [HttpPost("Register")]
             public async Task<IActionResult> Register( RegisterDTO userRegisterDTO)
             {
-                var result = await _authService.RegisterAsync(userRegisterDTO);
-                if (!result.Success) return BadRequest(result.message);
-                return Ok(result);
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.RegisterAsync(userRegisterDTO);
+                return StatusCode((int)result.StatusCode, result);
             }
 
             [HttpPost("Company-Register")]
             public async Task<IActionResult> RegisterCompany(CompanyRegisterDTO CompanyRegisterDTO)
             {
-                var result = await _authService.CompanyRegisterAsync(CompanyRegisterDTO);
-                if (!result.Success) return BadRequest(result.message);
-                return Ok(result);
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.CompanyRegisterAsync(CompanyRegisterDTO);
+               return StatusCode((int)result.StatusCode, result);
             }
 
             [HttpPost("Admin-Register")]
             public async Task<IActionResult> AdminRegister(RegisterDTO userRegisterDTO)
             {
-                var result = await _authService.RegisterAsync(userRegisterDTO, Roles.Admin);
-                if (!result.Success) return BadRequest(result.message);
-                return Ok(result);
-            }
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-            [HttpPost("Login")]
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.RegisterAsync(userRegisterDTO, Roles.Admin);
+                return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPost("Login")]
             public async Task<IActionResult> Login(LoginDTO loginDTO)
             {
-                var result = await _authService.LoginAsync(loginDTO);
-                if (!result.isAuthenticated) return BadRequest(result);
-                return Ok(result);
-            }
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-            [HttpPost("Send-OTP")]
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.LoginAsync(loginDTO);
+               return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPost("Send-OTP")]
             public async Task<IActionResult> SendOtp(SendOTPDTO DTO)
             {
-                var result = await _authService.SendOTP(DTO.Email);
-                return Ok(result);
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
             }
-            [HttpPost("Verify-OTP")]
+            var result = await _authService.SendOTP(DTO.Email);
+            return StatusCode((int)result.StatusCode, result);
+        }
+        [HttpPost("Verify-OTP")]
             public async Task<IActionResult> VerifyOtp(VerifyOTPDTO verifyOtpDTO)
             {
-                var result = await _authService.VerifyOtpAsync(verifyOtpDTO.Email, verifyOtpDTO.EnteredOtp);
-                if (!result.isAuthenticated) return BadRequest(result);
-                return Ok(result);
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
             }
+            var result = await _authService.VerifyOtpAsync(verifyOtpDTO.Email, verifyOtpDTO.EnteredOtp);
+               return StatusCode((int)result.StatusCode, result);
+        }
 
 
-            [HttpPost("Forget-Password")]
+        [HttpPost("Forget-Password")]
             public async Task<IActionResult> ForgetPassword(SendOTPDTO DTO)
-            {          
-                var result = await _authService.ForgetPassword(DTO.Email);
-                return Ok(result);
+            {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
             }
-            [HttpPut("Reset-Password")]
+            var result = await _authService.ForgetPassword(DTO.Email);
+                return StatusCode((int)result.StatusCode, result);
+        }
+        [HttpPut("Reset-Password")]
 
             public async Task<IActionResult> ResetPassword(ResetPasswordDTO DTO)
-            {         
-                var result = await _authService.ResetPassword(DTO);
-                return Ok(result);
+            {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.ResetPassword(DTO);
+                return StatusCode((int)result.StatusCode, result);
             }
             [HttpPut("Change-Password")]
             public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)
-            {          
-                var result = await _authService.ChangePassword(DTO);
-                return Ok(result);
+            {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var errorMessage = string.Join("; ", errorMessages);
+
+                return StatusCode(400, new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = Models.Enums.StatusCode.BadRequest,
+                    message = errorMessage
+                });
+            }
+            var result = await _authService.ChangePassword(DTO);
+                return StatusCode((int)result.StatusCode, result);
             }
       
        
