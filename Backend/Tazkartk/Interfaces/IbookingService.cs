@@ -1,13 +1,14 @@
 ﻿using Tazkartk.DTO;
+using Tazkartk.DTO.Response;
 using Tazkartk.Models;
 namespace Tazkartk.Interfaces
 {
     public interface IBookingService
     {
-        Task<string?> BookSeat(BookingDTO DTO);
+        Task<ApiResponse<string?>> BookSeat(BookingDTO DTO);
         Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId,string PaymentMethod);
 
-        Task<bool> Refund(int bookingId);
+        Task<ApiResponse<bool>> Refund(int bookingId);
         Task<bool> Cancel(string trxId);
         Task<List<TicketDTO>?> GetUserBookings(int userId);
         Task<List<TicketDTO>?> GetBookings();

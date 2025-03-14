@@ -146,3 +146,4 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Web.Http.Co
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.Logging.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Newtonsoft.Json.Bson.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Swashbuckle.AspNetCore.Annotations.dll

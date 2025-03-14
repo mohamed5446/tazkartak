@@ -128,7 +128,7 @@ namespace Tazkartk.Services
                 return new ApiResponse<CompanyDTO?>
                 {
                     Success = false,
-                    StatusCode = StatusCode.NotFound,
+                    StatusCode = StatusCode.BadRequest,
                     message = "company not found "
                 };
             }
@@ -205,7 +205,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     message = "Company Not found",
-                    StatusCode = StatusCode.NotFound
+                    StatusCode = StatusCode.BadRequest
                 };
             }
             if (!string.IsNullOrEmpty(company.Logo))

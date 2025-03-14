@@ -19,11 +19,19 @@ namespace Tazkartk.Services
             _paymobService = paymobService;
         }
         #region Booking
-        public async Task<string?> BookSeat(BookingDTO DTO)
+        public async Task<ApiResponse<string?>> BookSeat(BookingDTO DTO)
         {
             var user = await _context.Users.FindAsync(DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
-            if (trip == null || user == null) { return null; }
+            if (trip == null || user == null)
+            {
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Error happened"
+                };
+            }
             if (trip.seats == null)
             {
                 trip.seats = new List<Seat>();
@@ -39,13 +47,32 @@ namespace Tazkartk.Services
 
             if (isbooked)
             {
-                return null;
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "already booked"
+                };
             }
             int count = DTO.SeatsNumbers.Count;
             double total = trip.Price * count;
             var Url = await _paymobService.CreatePaymentIntent(DTO, total, UserDetailsDTO);
-            if (!string.IsNullOrEmpty(Url)) return Url;
-            return null;
+            if (!string.IsNullOrEmpty(Url))
+            {
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "payment url",
+                    Data = Url
+                };
+            }
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Error happened"
+                };
         }
 
         public async Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId, string PaymentMethod)
@@ -101,18 +128,57 @@ namespace Tazkartk.Services
         #endregion
 
         #region Cancel
-        public async Task<bool> Refund(int bookingId)
+        public async Task<ApiResponse<bool>> Refund(int bookingId)
         {
             var booking = await _context.bookings.Include(b => b.seats).Include(b => b.trip).Include(b => b.payment).FirstOrDefaultAsync(b => b.BookingId == bookingId);
-            if (booking == null||booking.IsCanceled) return false;
-            var count = booking.seats.Count();
+            if (booking == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    StatusCode=StatusCode.BadRequest,
+                    message="Booking not found",
+                };
+            }
+            if (booking.IsCanceled)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success=false,
+                    StatusCode=StatusCode.BadRequest,
+                    message="Already Canceled"
+                };
+            }
+                var count = booking.seats.Count();
             var total = (count * booking.trip.Price) * 100;
             var paymemnt = await _context.Payments.FirstOrDefaultAsync(p => p.bookingId == bookingId);
-            if (paymemnt == null||paymemnt.IsRefunded) return false;
+            if (paymemnt == null||paymemnt.IsRefunded)
+                 {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    StatusCode=StatusCode.BadRequest,
+                    message="Error happened"
+                };
+                 }
             var trxId = paymemnt.PaymentIntentId;
             var success = await _paymobService.RefundTransaction(bookingId, trxId, total);
-            if (!success) return false;
-            return true;
+            if (!success)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "Error happened"
+                };
+            }
+                 
+            return new ApiResponse<bool>
+            {
+                Success=true,
+                StatusCode=StatusCode.Ok,
+                message="refund requested please wait "
+            };
         }
         public async Task<bool> Cancel(string trxId)
         {

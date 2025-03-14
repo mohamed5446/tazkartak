@@ -452,3 +452,4 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Web.Http.Cors.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll

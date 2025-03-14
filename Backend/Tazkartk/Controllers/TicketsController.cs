@@ -38,14 +38,16 @@ namespace Tazkartk.Controllers
         [HttpPost]
         public async Task<IActionResult> BookSeat(BookingDTO DTO)
         {
-            var Url = await _BookingService.BookSeat(DTO);
-            return Url== null ? NotFound() : Ok(new { url = Url });
+            var result = await _BookingService.BookSeat(DTO);
+            return StatusCode((int)result.StatusCode, result);  
+           // return Url== null ? NotFound() : Ok(new { url = Url });
         }
         [HttpPost("{BookingId}/cancel")]
         public async Task<IActionResult> CancelBooking(int BookingId)
         {
             var result = await _BookingService.Refund(BookingId);
-            return !result ? BadRequest() : Ok("refund requested"); 
+            return StatusCode((int)result.StatusCode, result);
+          //  return !result ? BadRequest() : Ok("refund requested"); 
         }
        
     }

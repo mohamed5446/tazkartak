@@ -43,6 +43,7 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microso
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\MimeKit.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Newtonsoft.Json.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Newtonsoft.Json.Bson.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.Annotations.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
