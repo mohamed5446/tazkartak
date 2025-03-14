@@ -120,10 +120,10 @@ export const useAuthStore = create(
           return response.data;
         } catch (error) {
           set({
-            error: error.response.data || "Error logging in",
+            error: error.response.data.message || "Error logging in",
             isLoading: false,
           });
-          console.log(error.response.data);
+          console.log(error);
           throw error;
         }
       },

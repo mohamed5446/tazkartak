@@ -26,14 +26,14 @@ export default function Header() {
           >
             تسجيل الدخول
           </Link>
-        ) : role === "user" ? (
+        ) : role === "User" ? (
           <Link
             to={"/user/profile"}
             className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
           >
             حسابى
           </Link>
-        ) : role === "admin" ? (
+        ) : role === "Admin" ? (
           <Link
             to={"/admin/profile"}
             className="bg-white font-normal text-black p-2 rounded hover:bg-gray-300"
