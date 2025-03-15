@@ -13,8 +13,9 @@ import EmailVerification from "./pages/EmailVerification";
 import CompanySignUpPage from "./pages/companyPages/CompanyRegister";
 import AdminProfile from "./pages/admin/Profile";
 import Companies from "./pages/admin/Companies";
-import Users from "./pages/admin/users";
+import Users from "./pages/admin/Users";
 import AdminLayout from "./components/AdminLayout";
+import TripDetails from "./pages/TripDetails";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -24,15 +25,15 @@ const AdminPages = ({ children }) => {
     return <Navigate to={"/"} />;
   }
 };
-const CompanyPages = ({ children }) => {
-  const { isAuthenticated, role } = useAuthStore();
+// const CompanyPages = ({ children }) => {
+//   const { isAuthenticated, role } = useAuthStore();
 
-  if (isAuthenticated && role === "Company") {
-    return children;
-  } else {
-    return <Navigate to={"/"} />;
-  }
-};
+//   if (isAuthenticated && role === "Company") {
+//     return children;
+//   } else {
+//     return <Navigate to={"/"} />;
+//   }
+// };
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
 
@@ -55,7 +56,7 @@ const RedirectAuthenticatedUser = ({ children }) => {
 
 function App() {
   return (
-    <>
+    <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -105,6 +106,7 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
+            <Route path="trip-details/:id" element={<TripDetails />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
             <Route
@@ -134,7 +136,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

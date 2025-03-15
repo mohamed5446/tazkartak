@@ -26,7 +26,7 @@ export default function AdminHeader() {
       <div className="grow-2"></div>
       <div className="flex items-center justify-center  grow-1">
         <h1 className="text-2xl p-2 font-bold">Tazkartk</h1>
-        <img className="w-20" src={logo} />
+        <img className="w-16" src={logo} />
       </div>
     </header>
   );

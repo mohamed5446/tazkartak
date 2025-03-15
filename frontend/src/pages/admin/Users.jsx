@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -28,6 +31,18 @@ export default function Users() {
   const [isDeleting, setisDeleting] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const editeSuccessfull = () =>
+    toast.success("edited successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   const {
     register,
     handleSubmit,
@@ -56,8 +71,8 @@ export default function Users() {
   function openModal(user) {
     setuser(user);
     console.log(user);
-    setValue("name", user.name);
-    setValue("email", user.email);
+    setValue("firstName", user.firstName);
+    setValue("lastName", user.lastName);
     setValue("phone", user.phoneNumber);
     setValue("city", user.city);
     setValue("street", user.street);
@@ -92,6 +107,7 @@ export default function Users() {
       console.log(response);
       forceUpdate();
       setisLoading(false);
+      editeSuccessfull();
     } catch (error) {
       setisLoading(false);
       console.log(error);
@@ -133,7 +149,9 @@ export default function Users() {
             تعديل
           </button>
           <div className="flex gap-4 items-center">
-            <h3 className="text-lg font-bold mt-2 text-center"> {user.name}</h3>
+            <h3 className="text-lg font-bold mt-2 text-center">
+              {user.firstName} {user.lastName}
+            </h3>
             <img
               src={user.photoUrl}
               alt="user image"
@@ -173,7 +191,7 @@ export default function Users() {
                 })}
                 className="w-full border p-2 my-2 rounded text-end"
               />
-              {errors.name && (
+              {errors.firstName && (
                 <p className="text-red-500 text-sm">
                   {errors.firstName.message}
                 </p>
@@ -193,7 +211,7 @@ export default function Users() {
                 })}
                 className="w-full border p-2 my-2 rounded text-end"
               />
-              {errors.name && (
+              {errors.lastName && (
                 <p className="text-red-500 text-sm">
                   {errors.lastName.message}
                 </p>
@@ -297,6 +315,19 @@ export default function Users() {
           </form>
         </div>
       </Modal>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 }

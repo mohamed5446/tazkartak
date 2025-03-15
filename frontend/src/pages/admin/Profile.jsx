@@ -18,7 +18,9 @@ export default function AdminProfile() {
     await logout();
     navigate("/");
   };
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("admin Profile");
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

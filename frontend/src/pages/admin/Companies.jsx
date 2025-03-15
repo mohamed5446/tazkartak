@@ -4,6 +4,9 @@ import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -26,6 +29,7 @@ export default function Companies() {
   const [companies, setCompanies] = useState([]);
   const [companylogo, setLogo] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const [isDeleting, setisDeleting] = useState(false);
   const [company, setCompany] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modal2IsOpen, set2IsOpen] = useState(false);
@@ -48,6 +52,12 @@ export default function Companies() {
     formState: { errors },
     setValue,
   } = useForm();
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    formState: { errors: errors2 },
+    setValue: setValue2,
+  } = useForm();
   useEffect(() => {
     try {
       fetchCompanies();
@@ -55,7 +65,30 @@ export default function Companies() {
       console.log(error);
     }
   }, [ignored]);
-
+  const editeSuccessfull = () =>
+    toast.success("edited successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+  const addedSuccessfully = () =>
+    toast.success("added successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   function openModal(company) {
     setCompany(company);
     console.log(company);
@@ -73,16 +106,15 @@ export default function Companies() {
     setIsOpen(false);
   }
   function openModal2() {
-    setValue("name", "");
-    setValue("email", "");
-    setValue("phone", "");
-    setValue("city", "");
-    setValue("street", "");
+    setValue2("name", "");
+    setValue2("email", "");
+    setValue2("phone", "");
+    setValue2("city", "");
+    setValue2("street", "");
     set2IsOpen(true);
   }
 
   function closeModal2() {
-    setLogo(undefined);
     set2IsOpen(false);
   }
   const onSubmit = async (data) => {
@@ -107,7 +139,35 @@ export default function Companies() {
           },
         }
       );
+      editeSuccessfull();
       closeModal();
+      console.log(response);
+      forceUpdate();
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
+      console.log(error);
+    }
+  };
+  const onSubmit2 = async (data) => {
+    console.log(data);
+    // const formData = new FormData();
+    // formData.append("Name", data.name);
+    // formData.append("City", data.city);
+    // formData.append("Street", data.street);
+    // formData.append("Logo", data.logo[0]);
+    // formData.append("PhoneNumber", data.phone);
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+    try {
+      setisLoading(true);
+      const response = await axios.post(
+        "https://tazkartk-api.runasp.net/api/Companies",
+        data
+      );
+      addedSuccessfully();
+      closeModal2();
       console.log(response);
       forceUpdate();
       setisLoading(false);
@@ -118,13 +178,16 @@ export default function Companies() {
   };
   const deleteCompany = async () => {
     try {
+      setisDeleting(true);
       const response = await axios.delete(
         `https://tazkartk-api.runasp.net/api/Companies/${company.id}`
       );
       closeModal();
+      setisDeleting(false);
       console.log(response);
       forceUpdate();
     } catch (error) {
+      setisDeleting(false);
       console.log(error);
     }
   };
@@ -167,22 +230,22 @@ export default function Companies() {
         <div className="bg-white opacity-100 p-6 rounded-lg shadow-lg w-full  text-black   space-y-4">
           <h2 className="text-3xl font-bold text-center">اضافة شركة</h2>
 
-          <img
+          {/* <img
             src={
               companylogo ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             }
             alt=""
             className="rounded place-self-center size-36"
-          />
+          /> */}
           <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 "
+            onSubmit={handleSubmit2(onSubmit2)}
+            className="flex flex-col gap-2 "
           >
             <label className="text-end">
               الاسم
               <input
-                {...register("name", {
+                {...register2("name", {
                   required: "الاسم مطلوب",
                   minLength: {
                     value: 3,
@@ -191,14 +254,15 @@ export default function Companies() {
                 })}
                 className="w-full border p-2 my-2 rounded text-end"
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name.message}</p>
+              {errors2.name && (
+                <p className="text-red-500 text-sm">{errors2.name.message}</p>
               )}
             </label>
-            <label className="text-end">
+
+            <label className="text-end w-full">
               البريد الإلكتروني
               <input
-                {...register("email", {
+                {...register2("email", {
                   required: "البريد الإلكتروني مطلوب",
                   pattern: {
                     value: /^\S+@\S+\.\S+$/,
@@ -207,14 +271,15 @@ export default function Companies() {
                 })}
                 className="w-full border p-2 my-2 rounded text-end"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              {errors2.email && (
+                <p className="text-red-500 text-sm">{errors2.email.message}</p>
               )}
             </label>
-            <label className="text-end">
+
+            <label className="text-end w-full">
               رقم الهاتف
               <input
-                {...register("phone", {
+                {...register2("phone", {
                   required: "رقم الهاتف مطلوب",
                   pattern: {
                     value: /^[0-9]{10,11}$/,
@@ -223,18 +288,32 @@ export default function Companies() {
                 })}
                 className="w-full border p-2 my-2 rounded text-end"
               />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone.message}</p>
+              {errors2.phone && (
+                <p className="text-red-500 text-sm">{errors2.phone.message}</p>
               )}
             </label>
-            <hr className="border m-2 w-3/4 place-self-end" />
+
+            <label className="text-end">
+              كلمة المرور
+              <input
+                type="password"
+                {...register2("password", {
+                  required: "يرجى إدخال كلمة المرور",
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+            </label>
+
+            {errors2.password && (
+              <p className="text-red-600 text-sm">{errors2.password.message}</p>
+            )}
             <div>
               <h3 className="text-xl text-end mb-2 text-cyan-dark ">العنوان</h3>
               <div className="flex gap-1.5">
                 <label className="w-full text-end">
                   المدينة
                   <select
-                    {...register("city", {
+                    {...register2("city", {
                       required: "يجب اختيار المدينة",
                     })}
                     className="w-full border p-2 my-2 rounded text-end"
@@ -244,33 +323,34 @@ export default function Companies() {
                     <option value="string">المعادي</option>
                     <option value="الزمالك">الزمالك</option>
                   </select>
-                  {errors.city && (
+                  {errors2.city && (
                     <p className="text-red-500 text-sm">
-                      {errors.city.message}
+                      {errors2.city.message}
+                    </p>
+                  )}
+                </label>
+                <label className="text-end w-full">
+                  الشارع
+                  <input
+                    {...register2("street", {
+                      required: "يجب إدخال اسم الشارع",
+                      minLength: {
+                        value: 3,
+                        message: "يجب أن يكون اسم الشارع 3 أحرف على الأقل",
+                      },
+                    })}
+                    className="w-full border p-2 my-2 rounded"
+                  />
+                  {errors2.street && (
+                    <p className="text-red-500 text-sm">
+                      {errors2.street.message}
                     </p>
                   )}
                 </label>
               </div>
             </div>
 
-            <label className="text-end">
-              الشارع
-              <input
-                {...register("street", {
-                  required: "يجب إدخال اسم الشارع",
-                  minLength: {
-                    value: 3,
-                    message: "يجب أن يكون اسم الشارع 3 أحرف على الأقل",
-                  },
-                })}
-                className="w-full border p-2 my-2 rounded"
-              />
-              {errors.street && (
-                <p className="text-red-500 text-sm">{errors.street.message}</p>
-              )}
-            </label>
-
-            <input
+            {/* <input
               {...register("logo")}
               className="bg-cyan-dark rounded text-white p-4"
               type="file"
@@ -279,15 +359,21 @@ export default function Companies() {
                 const file = e.target.files?.[0];
                 setLogo(file ? URL.createObjectURL(file) : undefined);
               }}
-            />
+            /> */}
 
             <div className="flex gap-2 ">
-              <button
+              <motion.button
                 type="submit"
+                disabled={isLoading}
                 className="w-full bg-cyan-dark text-white py-2 rounded hover:bg-cyan-900"
               >
-                اضافة
-              </button>
+                {isLoading ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "اضافة"
+                )}
+              </motion.button>
+
               <button
                 type="button"
                 onClick={closeModal2}
@@ -304,7 +390,7 @@ export default function Companies() {
         onRequestClose={closeModal}
         style={customStyles}
       >
-        <div className="bg-white opacity-100 p-6 rounded-lg shadow-lg w-full  text-black   space-y-4">
+        <div className="bg-white opacity-100 p-6 rounded-lg shadow-lg w-full  text-black">
           <h2 className="text-3xl font-bold text-center">تعديل البيانات</h2>
 
           <img
@@ -314,7 +400,7 @@ export default function Companies() {
           />
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 "
+            className="flex flex-col  gap-2 "
           >
             <label className="text-end">
               الاسم
@@ -387,25 +473,26 @@ export default function Companies() {
                     </p>
                   )}
                 </label>
+                <label className=" w-full text-end">
+                  الشارع
+                  <input
+                    {...register("street", {
+                      required: "يجب إدخال اسم الشارع",
+                      minLength: {
+                        value: 3,
+                        message: "يجب أن يكون اسم الشارع 3 أحرف على الأقل",
+                      },
+                    })}
+                    className="w-full border p-2 my-2 rounded"
+                  />
+                  {errors.street && (
+                    <p className="text-red-500 text-sm">
+                      {errors.street.message}
+                    </p>
+                  )}
+                </label>
               </div>
             </div>
-
-            <label className="text-end">
-              الشارع
-              <input
-                {...register("street", {
-                  required: "يجب إدخال اسم الشارع",
-                  minLength: {
-                    value: 3,
-                    message: "يجب أن يكون اسم الشارع 3 أحرف على الأقل",
-                  },
-                })}
-                className="w-full border p-2 my-2 rounded"
-              />
-              {errors.street && (
-                <p className="text-red-500 text-sm">{errors.street.message}</p>
-              )}
-            </label>
 
             <input
               {...register("logo")}
@@ -430,17 +517,35 @@ export default function Companies() {
                   "تعديل"
                 )}
               </motion.button>
-              <button
+              <motion.button
                 type="button"
+                disabled={isDeleting}
                 onClick={deleteCompany}
                 className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-800"
               >
-                حذف
-              </button>
+                {isDeleting ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "حذف"
+                )}
+              </motion.button>
             </div>
           </form>
         </div>
       </Modal>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 }

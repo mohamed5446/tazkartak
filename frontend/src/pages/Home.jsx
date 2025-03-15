@@ -7,6 +7,7 @@ import HeroImage from "../assets/HeroImage.png";
 import CompanyCard from "../components/CompanyCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { createSearchParams, useNavigate } from "react-router";
 const Home = () => {
   const {
     register,
@@ -14,6 +15,7 @@ const Home = () => {
     formState: { errors },
   } = useForm();
   const [companies, setCompanies] = useState([]);
+  const navigate = useNavigate();
   const fetchCompanies = async () => {
     try {
       const res = await axios.get(
@@ -33,6 +35,14 @@ const Home = () => {
     }
   }, []);
   const onSubmit = (data) => {
+    navigate({
+      pathname: "search-Result",
+      search: createSearchParams({
+        to: data.to,
+        from: data.from,
+        date: data.date,
+      }).toString(),
+    });
     console.log(data);
   };
 
@@ -44,68 +54,86 @@ const Home = () => {
       className=" mx-auto p-4 flex flex-col items-center 2xl:px-14"
     >
       {/* Hero Section */}
-      <div className="relative w-full">
-        <img className="z-10 w-full h-full" src={HeroImage} alt="" />
-        <div className="absolute   bottom-4 left-4 m-2 w-lg  text-center">
+      <div className="md:relative md:inline flex justify-center w-full">
+        <img
+          className="z-10 hidden md:inline w-full h-full"
+          src={HeroImage}
+          alt=""
+        />
+        <div className="md:absolute  bottom-4 left-4 m-2 w-lg  text-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white p-6 rounded-lg shadow-lg mt-4 max-w-2xl mx-auto"
+            className="bg-white p-6 rounded-lg shadow-lg mt-4 max-w-lg mx-auto"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-700 mb-2">إلى</label>
-                <select
-                  defaultValue=""
+
+                <input
                   {...register("to", {
                     required: "حدد وجهة السفر",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg  text-start"
-                >
-                  <option disabled value="">
-                    اختر
-                  </option>
-                  <option value="الإسكندرية">الإسكندرية</option>
-                  <option value="القاهرة">القاهرة</option>
-                </select>
+                  className="w-full border border-gray-300 p-2 rounded-lg"
+                  list="cities"
+                />
                 {errors.to && (
                   <p className="text-red-500">{errors.to.message}</p>
                 )}
               </div>
               <div>
                 <label className="block text-gray-700 mb-2">من</label>
-                <select
-                  defaultValue=""
-                  name="from"
+
+                <input
                   {...register("from", {
                     required: "حدد وجهة السفر",
                   })}
                   className="w-full border border-gray-300 p-2 rounded-lg"
-                >
-                  <option value="" disabled>
-                    اختر{" "}
-                  </option>
-                  <option value="القاهرة">القاهرة</option>
-                  <option value="الإسكندرية">الإسكندرية</option>
-                </select>
+                  type="text"
+                  list="cities"
+                  minLength={2}
+                />
+                <datalist id="cities" className="overflow-hidden h-16">
+                  <option>القاهرة</option>
+                  <option>الجيزة</option>
+                  <option>الأسكندرية</option>
+                  <option>الدقهلية</option>
+                  <option>البحر الأحمر</option>
+                  <option>البحيرة</option>
+                  <option>الفيوم</option>
+                  <option>الغربية</option>
+                  <option>الإسماعلية</option>
+                  <option>المنوفية</option>
+                  <option>المنيا</option>
+                  <option>القليوبية</option>
+                  <option>الوادي الجديد</option>
+                  <option>السويس</option>
+                  <option>اسوان</option>
+                  <option>اسيوط</option>
+                  <option>بني سويف</option>
+                  <option>بورسعيد</option>
+                  <option>دمياط</option>
+                  <option>الشرقية</option>
+                  <option>جنوب سيناء</option>
+                  <option>كفر الشيخ</option>
+                  <option>مطروح</option>
+                  <option>الأقصر</option>
+                  <option>قنا</option>
+                  <option>شمال سيناء</option>
+                  <option>سوهاج</option>
+                </datalist>
                 {errors.from && (
                   <p className="text-red-500">{errors.from.message}</p>
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="mt-4">
-                <label className="block text-gray-700 mb-2">تاريخ العودة</label>
-                <input
-                  type="date"
-                  {...register("date")}
-                  className="w-full border border-gray-300 p-2 rounded-lg "
-                />
-              </div>
+            <div className="">
               <div className="mt-4">
                 <label className="block text-gray-700 mb-2">تاريخ السفر</label>
                 <input
                   type="date"
-                  {...register("date")}
+                  {...register("date", {
+                    required: "ادخل تاريخ السفر",
+                  })}
                   className="w-full border border-gray-300 p-2 rounded-lg "
                 />
               </div>
