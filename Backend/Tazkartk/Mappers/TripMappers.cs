@@ -1,5 +1,7 @@
-﻿using Tazkartk.DTO.TripDTOs;
+﻿using System.Globalization;
+using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Models;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Mappers
 {
@@ -7,19 +9,22 @@ namespace Tazkartk.Mappers
     {
         public static TripDtos ToTripDto(this Trip TripModel )
         {
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
             return new TripDtos
             {
                 TripId = TripModel.TripId,
                 From = TripModel.From,
                 To = TripModel.To,
-                ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt"),
+                ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt", arabicCulture),
                 Class = TripModel.Class,
-                Date = TripModel.Date.ToString("dddd yyyy-MM-dd"),
-                Time = TripModel.Time.ToString("hh:mm tt"),
+                Date = TripModel.Date.ToString("dddd yyyy-MM-dd",arabicCulture),
+                Time = TripModel.Time.ToString("hh:mm tt", arabicCulture),
                 Avaliblility = TripModel.Avaliblility,
                 Location = TripModel.Location,
                 Price = TripModel.Price,
                 CompanyName = TripModel.company.Name,
+                //Seats = TripModel.bookings.SelectMany(b => b.seats.Where(s => s.State == SeatState.Available).Select(s => s.Number)).ToList(),
             };
         }
         public static Trip ToTripFromCreateDtos(this CreateTripDtos TripDtos)

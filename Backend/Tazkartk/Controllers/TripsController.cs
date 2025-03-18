@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Tazkartk.Data;
 using Tazkartk.DTO;
 using Tazkartk.DTO.Response;
 using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Mappers;
 using Tazkartk.Models;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Controllers
 {
@@ -29,8 +31,25 @@ namespace Tazkartk.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var trip = await _context.Trips.Include(t=>t.company).FirstOrDefaultAsync(t=>t.TripId==id);
-            return trip == null ? NotFound() : Ok(trip.ToTripDto());
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            var trip = await _context.Trips.Where(t=>t.TripId==id).Select(TripModel=>new TripDTO
+            {
+                TripId = TripModel.TripId,
+                From = TripModel.From,
+                To = TripModel.To,
+                ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt",arabicCulture),
+                Class = TripModel.Class,
+                Date = TripModel.Date.ToString("dddd yyyy-MM-dd",arabicCulture),
+                Time = TripModel.Time.ToString("hh:mm tt", arabicCulture),
+                Avaliblility = TripModel.Avaliblility,
+                Location = TripModel.Location,
+                Price = TripModel.Price,
+                CompanyName = TripModel.company.Name,
+                BookedSeats = TripModel.bookings.SelectMany(b => b.seats.Where(s => s.State == SeatState.Booked).Select(s => s.Number)).ToList(),
+            }).FirstOrDefaultAsync();
+         
+            return trip == null ? NotFound() : Ok(trip);
         }
         [HttpGet("Search")]
         public async Task<IActionResult> GetAll( string? from, string? to, DateOnly? date)

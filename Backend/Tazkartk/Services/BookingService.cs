@@ -6,6 +6,7 @@ using Tazkartk.Models.Enums;
 using Tazkartk.Models;
 using Tazkartk.Data;
 using Tazkartk.DTO.Response;
+using System.Globalization;
 
 namespace Tazkartk.Services
 {
@@ -43,7 +44,7 @@ namespace Tazkartk.Services
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber
             };
-            var isbooked = DTO.SeatsNumbers.Any(number => trip.seats.Any(s => s.Number == number));
+            var isbooked = DTO.SeatsNumbers.Any(number => trip.seats.Any(s => s.Number == number&&s.State==SeatState.Booked));
 
             if (isbooked)
             {
@@ -62,7 +63,7 @@ namespace Tazkartk.Services
                 return new ApiResponse<string?>
                 {
                     Success = false,
-                    StatusCode = StatusCode.BadRequest,
+                    StatusCode = StatusCode.Ok,
                     message = "payment url",
                     Data = Url
                 };
@@ -222,6 +223,8 @@ namespace Tazkartk.Services
 
         public async Task<List<TicketDTO>?> GetBookings()
         {
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
             return await _context.bookings
                .AsNoTracking()
                .Select(b => new TicketDTO
@@ -231,8 +234,8 @@ namespace Tazkartk.Services
                    CompanyName = b.trip.company.Name,
                    From = b.trip.From,
                    To = b.trip.To,
-                   Date = b.trip.Date.ToString("dddd yyyy-MM-dd"),
-                   Time = b.trip.Time.ToString("HH:mm tt"),
+                   Date = b.trip.Date.ToString("dddd yyyy-MM-dd", arabicCulture),
+                   Time = b.trip.Time.ToString("HH:mm tt",arabicCulture),
                    BookingId = b.BookingId,
                    Name = b.user.FirstName,
                    IsCanceled = b.IsCanceled,
@@ -246,6 +249,8 @@ namespace Tazkartk.Services
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
             return await _context.bookings.Where(b => b.UserId == userId).AsNoTracking()
                .Select(b => new TicketDTO
                {
@@ -254,8 +259,8 @@ namespace Tazkartk.Services
                    CompanyName = b.trip.company.Name,
                    From = b.trip.From,
                    To = b.trip.To,
-                   Date = b.trip.Date.ToString("dddd yyyy-MM-dd"),
-                   Time = b.trip.Time.ToString("HH:mm tt"),
+                   Date = b.trip.Date.ToString("dddd yyyy-MM-dd", arabicCulture),
+                   Time = b.trip.Time.ToString("HH:mm tt",arabicCulture),
                    BookingId = b.BookingId,
                    Name = b.user.FirstName,
                    IsCanceled = b.IsCanceled,

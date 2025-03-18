@@ -50,9 +50,9 @@ namespace Tazkartk.Services
             var Company = new Company
             {
                 Name = DTO.Name,
-                Email = DTO.Email,
+                Email = DTO.Email.Trim(),
                 PhoneNumber = DTO.Phone,
-                UserName = DTO.Email,
+                UserName = DTO.Email.Trim(),
                 City = DTO.city,
                 Street = DTO.street,
                 EmailConfirmed=true,
@@ -134,19 +134,19 @@ namespace Tazkartk.Services
             }
             if (!string.IsNullOrEmpty(DTO.PhoneNumber))
             {
-                Company.PhoneNumber = DTO.PhoneNumber;
+                Company.PhoneNumber = DTO.PhoneNumber.Trim();
             }
             if (!string.IsNullOrEmpty(DTO.Name))
             {
-                Company.Name = DTO.Name;
+                Company.Name = DTO.Name.Trim();
             }
             if (!string.IsNullOrEmpty(DTO.City))
             {
-                Company.City = DTO.City;
+                Company.City = DTO.City.Trim();
             }
             if (!string.IsNullOrEmpty(DTO.Street))
             {
-                Company.Street = DTO.Street;
+                Company.Street = DTO.Street.Trim();
             }
                 if (DTO.Logo != null)
                 {

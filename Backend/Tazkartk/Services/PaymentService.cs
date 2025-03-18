@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Tazkartk.Data;
 using Tazkartk.DTO;
 using Tazkartk.DTO;
@@ -17,6 +18,8 @@ namespace Tazkartk.Services
 
         public async Task<List<PaymentDTO>> GetAllPayments()
         {
+            var arabicCulture = new CultureInfo("ar-EG");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
             return await _context.Payments.AsNoTracking().Select( p =>new PaymentDTO
             {
                 UserId=p.booking.UserId,
@@ -24,7 +27,7 @@ namespace Tazkartk.Services
                 UserEmail=p.booking.user.Email,
                 PaymentId=p.PaymentId,
                 PaymentIntentId=p.PaymentIntentId,
-                time=p.Date.ToString("dddd yyyy-MM-dd HH:mm tt"),
+                time=p.Date.ToString("dddd yyyy-MM-dd HH:mm tt",arabicCulture),
                 Method=p.Method,
                 Amount=p.amount,
                 SeatNumbers=p.booking.seats.Select(s=>s.Number).ToList(),
