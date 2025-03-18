@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/user/Profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
-import SearchResult from "./pages/searchResult";
+import SearchResult from "./pages/SearchResult";
 import TripsManage from "./pages/companyPages/tripsManage";
 import { useAuthStore } from "./store/authStore";
 import EmailVerification from "./pages/EmailVerification";
