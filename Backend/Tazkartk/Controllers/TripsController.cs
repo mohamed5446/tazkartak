@@ -16,6 +16,7 @@ namespace Tazkartk.Controllers
     public class TripsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private const char RightToLeftCharacter = (char)0x200F;
         public TripsController(ApplicationDbContext context) {
         
         _context = context;
@@ -38,15 +39,22 @@ namespace Tazkartk.Controllers
                 TripId = TripModel.TripId,
                 From = TripModel.From,
                 To = TripModel.To,
-                ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt",arabicCulture),
                 Class = TripModel.Class,
-                Date = TripModel.Date.ToString("dddd yyyy-MM-dd",arabicCulture),
-                Time = TripModel.Time.ToString("hh:mm tt", arabicCulture),
+
+                DepartureDate = TripModel.Date.ToString("yyyy-MM-dd", arabicCulture),
+                DepartureTime = RightToLeftCharacter + TripModel.Time.ToString("hh:mm tt", arabicCulture),
+                DepartureDay = TripModel.Date.ToString("dddd", arabicCulture),
+                ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
+                ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
+                ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
                 Avaliblility = TripModel.Avaliblility,
                 Location = TripModel.Location,
                 Price = TripModel.Price,
                 CompanyName = TripModel.company.Name,
                 BookedSeats = TripModel.bookings.SelectMany(b => b.seats.Where(s => s.State == SeatState.Booked).Select(s => s.Number)).ToList(),
+                //ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt",arabicCulture),
+                //Date = TripModel.Date.ToString("dddd yyyy-MM-dd",arabicCulture),
+                //Time = TripModel.Time.ToString("hh:mm tt", arabicCulture),
             }).FirstOrDefaultAsync();
          
             return trip == null ? NotFound() : Ok(trip);
