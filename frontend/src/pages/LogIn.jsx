@@ -83,7 +83,7 @@ export default function LoginPage() {
               )}
             </div>
             {error && (
-              <p className="text-red-500 font-semibold mt-2">{error}</p>
+              <p className="text-red-500 font-semibold mt-2">{error.message}</p>
             )}
             <motion.button
               whileHover={{ scale: 1.05 }}

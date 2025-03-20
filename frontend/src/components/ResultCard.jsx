@@ -34,14 +34,15 @@ export default function ResultsList({ trips }) {
                 <p className="text-lg font-semibold text-center">
                   ميعاد المغادرة
                 </p>
-                <p className="text-center">{trip.date}</p>
-                <p className="text-center">{trip.time}</p>
+                <p className="text-center">{trip.departureDay}</p>
+                <p className="text-center">{trip.departureDate}</p>
               </div>
               <div>
                 <p className="text-lg font-semibold text-center">
                   توقيت الوصول
                 </p>
-                <p className="text-center">{trip.arriveTime}</p>
+                <p className="text-center">{trip.arrivalDay}</p>
+                <p className="text-center">{trip.arrivalTime}</p>
               </div>
               <div>
                 <p className="text-lg font-semibold text-center">مكان التحرك</p>

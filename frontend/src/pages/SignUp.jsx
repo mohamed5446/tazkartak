@@ -121,7 +121,12 @@ export default function SignUpPage() {
                 <input
                   type="password"
                   {...register("password", {
-                    required: "يرجى إدخال كلمة المرور",
+                    required: "Password is required",
+                    pattern: {
+                      value: /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/, // Requires at least one digit and one uppercase letter
+                      message:
+                        " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
+                    },
                   })}
                   className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
                 />
@@ -164,8 +169,11 @@ export default function SignUpPage() {
               )}
             </div>
             <div>
+              {console.log(error)}
               {error && (
-                <p className="text-red-500 font-semibold mt-2">{error}</p>
+                <p className="text-red-500 font-semibold mt-2">
+                  {error.message}
+                </p>
               )}
             </div>
             <motion.button
