@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Reflection.Emit;
 using Tazkartk.Models;
-using static System.Net.Mime.MediaTypeNames;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Data
 {

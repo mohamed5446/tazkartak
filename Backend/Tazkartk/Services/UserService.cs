@@ -84,11 +84,11 @@ namespace Tazkartk.Services
             }
             var user = new User
             {
-                FirstName = DTO.FirstName,
-                LastName = DTO.LastName,
-                Email = DTO.Email,
-                PhoneNumber = DTO.PhoneNumber,
-                UserName = DTO.Email,
+                FirstName = DTO.FirstName.Trim(),
+                LastName = DTO.LastName.Trim(),
+                Email = DTO.Email.Trim(),
+                PhoneNumber = DTO.PhoneNumber.Trim(),
+                UserName = DTO.Email.Trim(),
                 photo = _conf["Avatar"],
                 EmailConfirmed = true
             };
@@ -134,17 +134,17 @@ namespace Tazkartk.Services
             }
             if (!string.IsNullOrEmpty(DTO.firstName))
             {
-                user.FirstName = DTO.firstName;
+                user.FirstName = DTO.firstName.Trim();
             }
 
             if (!string.IsNullOrEmpty(DTO.lastName))
             {
-                user.LastName = DTO.lastName;
+                user.LastName = DTO.lastName.Trim();
             }
 
             if (!string.IsNullOrEmpty(DTO.Phone))
             {
-                user.PhoneNumber = DTO.Phone;
+                user.PhoneNumber = DTO.Phone.Trim();
             }
 
 
@@ -159,7 +159,7 @@ namespace Tazkartk.Services
                         {
                             Success = false,
                             StatusCode = StatusCode.BadRequest,
-                            message = "error while updating image"
+                            message = res.Error.Message
                         };
                     }
                 }
@@ -171,7 +171,7 @@ namespace Tazkartk.Services
                     {
                         Success = false,
                         StatusCode = StatusCode.BadRequest,
-                        message = "error while updating image"
+                        message = photoResult.Error.Message
                     };
                 }
                 user.photo = photoResult.Url.ToString();
@@ -202,7 +202,7 @@ namespace Tazkartk.Services
                 return new ApiResponse<string?>
                 {
                     Success = false,
-                    StatusCode = StatusCode.NotFound,
+                    StatusCode = StatusCode.BadRequest,
                     message = "user not found",
                 };
             }
@@ -215,7 +215,7 @@ namespace Tazkartk.Services
                     {
                         Success = false,
                         StatusCode = StatusCode.BadRequest,
-                        message = "error while Deleting image"
+                        message =res.Error.Message
                     };
                 }
 

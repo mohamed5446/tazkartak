@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Tazkartk.Data;
 using Tazkartk.DTO;
 using Tazkartk.DTO.Response;
 using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Mappers;
 using Tazkartk.Models;
+using Tazkartk.Models.Enums;
 
 namespace Tazkartk.Controllers
 {
@@ -14,6 +16,7 @@ namespace Tazkartk.Controllers
     public class TripsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private const char RightToLeftCharacter = (char)0x200F;
         public TripsController(ApplicationDbContext context) {
         
         _context = context;
@@ -29,8 +32,32 @@ namespace Tazkartk.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var trip = await _context.Trips.Include(t=>t.company).FirstOrDefaultAsync(t=>t.TripId==id);
-            return trip == null ? NotFound() : Ok(trip.ToTripDto());
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            var trip = await _context.Trips.Where(t=>t.TripId==id).Select(TripModel=>new TripDTO
+            {
+                TripId = TripModel.TripId,
+                From = TripModel.From,
+                To = TripModel.To,
+                Class = TripModel.Class,
+
+                DepartureDate = TripModel.Date.ToString("yyyy-MM-dd", arabicCulture),
+                DepartureTime = RightToLeftCharacter + TripModel.Time.ToString("hh:mm tt", arabicCulture),
+                DepartureDay = TripModel.Date.ToString("dddd", arabicCulture),
+                ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
+                ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
+                ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
+                Avaliblility = TripModel.Avaliblility,
+                Location = TripModel.Location,
+                Price = TripModel.Price,
+                CompanyName = TripModel.company.Name,
+                BookedSeats = TripModel.bookings.SelectMany(b => b.seats.Where(s => s.State == SeatState.Booked).Select(s => s.Number)).ToList(),
+                //ArriveTime = TripModel.ArriveTime.ToString("dddd yyyy-MM-dd hh:mm tt",arabicCulture),
+                //Date = TripModel.Date.ToString("dddd yyyy-MM-dd",arabicCulture),
+                //Time = TripModel.Time.ToString("hh:mm tt", arabicCulture),
+            }).FirstOrDefaultAsync();
+         
+            return trip == null ? NotFound() : Ok(trip);
         }
         [HttpGet("Search")]
         public async Task<IActionResult> GetAll( string? from, string? to, DateOnly? date)

@@ -61,11 +61,11 @@ namespace Tazkartk.Services
 
             var user = new User
             {
-                FirstName = DTO.FirstName,
-                LastName = DTO.LastName,
-                Email = DTO.Email,
-                PhoneNumber = DTO.PhoneNumber,
-                UserName = DTO.Email,
+                FirstName = DTO.FirstName.Trim(),
+                LastName = DTO.LastName.Trim(),
+                Email = DTO.Email.Trim(),
+                PhoneNumber = DTO.PhoneNumber.Trim(),
+                UserName = DTO.Email.Trim(),
                 photo = _conf["Avatar"]
 
             };
@@ -156,12 +156,12 @@ namespace Tazkartk.Services
             }
             var Company = new Company
             {
-                Name = DTO.Name,
-                Email = DTO.Email,
-                PhoneNumber = DTO.Phone,
-                UserName = DTO.Email,
-                City = DTO.city,
-                Street = DTO.street,
+                Name = DTO.Name.Trim(),
+                Email = DTO.Email.Trim(),
+                PhoneNumber = DTO.Phone.Trim(),
+                UserName = DTO.Email.Trim(),
+                City = DTO.city.Trim(),
+                Street = DTO.street.Trim(),
                 Logo = _conf["Logo"]
             };
             var result = await _AccountManager.CreateAsync(Company, DTO.Password);
