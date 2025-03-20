@@ -12,7 +12,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const { isLoading, error, login, setdefaulte, role } = useAuthStore();
+  const { isLoading, error, login, setdefaulte } = useAuthStore();
   const onSubmit = async (data) => {
     console.log(data);
     try {

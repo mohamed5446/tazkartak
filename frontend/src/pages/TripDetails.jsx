@@ -1,32 +1,32 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-const seatsData = [
-  { id: 1, booked: false },
-  { id: 2, booked: false },
-  { id: 3, booked: false },
-  { id: 4, booked: false },
-  { id: 5, booked: true },
-  { id: 6, booked: false },
-  { id: 7, booked: false },
-  { id: 8, booked: true },
-  { id: 9, booked: true },
-  { id: 10, booked: false },
-  { id: 11, booked: false },
-  { id: 12, booked: false },
-  { id: 13, booked: true },
-  { id: 14, booked: false },
-  { id: 15, booked: false },
-  { id: 16, booked: false },
-  { id: 17, booked: false },
-  { id: 18, booked: false },
-  { id: 19, booked: false },
-];
+
 export default function TripDetails() {
   const { id } = useParams();
   const [trip, setTrip] = useState({});
   const [selectedSeat, setSelectedSeat] = useState(null);
-
+  const [seatsData, setSeatData] = useState([
+    { id: 1, booked: false },
+    { id: 2, booked: false },
+    { id: 3, booked: false },
+    { id: 4, booked: false },
+    { id: 5, booked: false },
+    { id: 6, booked: false },
+    { id: 7, booked: false },
+    { id: 8, booked: false },
+    { id: 9, booked: false },
+    { id: 10, booked: false },
+    { id: 11, booked: false },
+    { id: 12, booked: false },
+    { id: 13, booked: false },
+    { id: 14, booked: false },
+    { id: 15, booked: false },
+    { id: 16, booked: false },
+    { id: 17, booked: false },
+    { id: 18, booked: false },
+    { id: 19, booked: false },
+  ]);
   const handleSeatClick = (seat) => {
     if (!seat.booked) {
       setSelectedSeat(seat.id);
@@ -38,13 +38,20 @@ export default function TripDetails() {
         `https://tazkartk-api.runasp.net/api/Trips/${id}`
       );
       setTrip(res.data);
+      console.log(res.data);
+      const updatedSeatsData = seatsData.map((seat) => ({
+        ...seat,
+        booked: res.data.bookedSeats.includes(seat.id),
+      }));
+      setSeatData(updatedSeatsData);
+      console.log(updatedSeatsData);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     tripDetail();
-  });
+  }, []);
   return (
     <div className="flex flex-col h-full m-4 gap-2 pb-6">
       <p className="text-end text-2xl  font-semibold">بيانات الرحلة</p>
@@ -88,13 +95,13 @@ export default function TripDetails() {
           <h3 className="text-center font-semibold mb-2">Legend</h3>
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 bg-cyan-dark text-white flex justify-center items-center rounded">
-              8
+              {`${trip.bookedSeats.length}`}
             </div>
             <span>محجوز</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gray-300 text-black flex justify-center items-center rounded">
-              8
+              {`${19 - trip.bookedSeats.length}`}
             </div>
             <span>متاح</span>
           </div>

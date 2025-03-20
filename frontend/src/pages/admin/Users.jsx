@@ -27,10 +27,18 @@ export default function Users() {
   const [users, setusers] = useState([]);
   const [user, setuser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modal2IsOpen, set2IsOpen] = useState(false);
+
   const [isLoading, setisLoading] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    formState: { errors: errors2 },
+    setValue: setValue2,
+  } = useForm();
   const editeSuccessfull = () =>
     toast.success("edited successfully", {
       position: "top-right",
@@ -58,6 +66,18 @@ export default function Users() {
       console.log(error);
     }
   };
+  const addedSuccessfully = () =>
+    toast.success("added successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   useEffect(() => {
     try {
       setisLoading(true);
@@ -81,6 +101,18 @@ export default function Users() {
   }
   function closeModal() {
     setIsOpen(false);
+  }
+  function openModal2() {
+    setValue2("firstName", "");
+    setValue2("email", "");
+    setValue2("phoneNumber", "");
+    setValue2("lastName", "");
+    setValue2("password", "");
+    set2IsOpen(true);
+  }
+
+  function closeModal2() {
+    set2IsOpen(false);
   }
   const onSubmit = async (data) => {
     console.log(data);
@@ -129,10 +161,41 @@ export default function Users() {
       console.log(error);
     }
   };
+  const onSubmit2 = async (data) => {
+    console.log(data);
+    // const formData = new FormData();
+    // formData.append("Name", data.name);
+    // formData.append("City", data.city);
+    // formData.append("Street", data.street);
+    // formData.append("Logo", data.logo[0]);
+    // formData.append("PhoneNumber", data.phone);
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+    try {
+      setisLoading(true);
+      const response = await axios.post(
+        "https://tazkartk-api.runasp.net/api/Users",
+        data
+      );
+      addedSuccessfully();
+      closeModal2();
+      console.log(response);
+      forceUpdate();
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col m-4 items-end  gap-4 p-2">
       <div className="flex items-center  justify-between w-sm  md:w-2xl lg:w-1/2 ">
-        <button className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer">
+        <button
+          type="button"
+          onClick={openModal2}
+          className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer"
+        >
           اضافة مستخدم
         </button>
         <p className="text-3xl text-cyan-dark font-bold ">الشركات</p>
@@ -160,7 +223,143 @@ export default function Users() {
           </div>
         </div>
       ))}
+      <Modal
+        isOpen={modal2IsOpen}
+        onRequestClose={closeModal2}
+        style={customStyles}
+      >
+        <div className="bg-white opacity-100 p-6 rounded-lg shadow-lg w-full  text-black   space-y-4">
+          <h2 className="text-3xl font-bold text-center">اضافة مستخدم</h2>
 
+          {/* <img
+            src={
+              companylogo ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
+            alt=""
+            className="rounded place-self-center size-36"
+          /> */}
+          <form
+            onSubmit={handleSubmit2(onSubmit2)}
+            className="flex flex-col gap-2 "
+          >
+            <label className="text-end">
+              الاسم الاول
+              <input
+                {...register2("firstName", {
+                  required: "الاسم الاول مطلوب",
+                  minLength: {
+                    value: 3,
+                    message: "يجب أن يكون الاسم 3 أحرف على الأقل",
+                  },
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+              {errors2.name && (
+                <p className="text-red-500 text-sm">{errors2.name.message}</p>
+              )}
+            </label>
+            <label className="text-end">
+              الاسم الثانى
+              <input
+                {...register2("lastName", {
+                  required: "الاسم الاخير مطلوب",
+                  minLength: {
+                    value: 3,
+                    message: "يجب أن يكون الاسم 3 أحرف على الأقل",
+                  },
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+              {errors2.name && (
+                <p className="text-red-500 text-sm">{errors2.name.message}</p>
+              )}
+            </label>
+
+            <label className="text-end w-full">
+              البريد الإلكتروني
+              <input
+                {...register2("email", {
+                  required: "البريد الإلكتروني مطلوب",
+                  pattern: {
+                    value: /^\S+@\S+\.\S+$/,
+                    message: "البريد الإلكتروني غير صالح",
+                  },
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+              {errors2.email && (
+                <p className="text-red-500 text-sm">{errors2.email.message}</p>
+              )}
+            </label>
+
+            <label className="text-end w-full">
+              رقم الهاتف
+              <input
+                {...register2("phoneNumber", {
+                  required: "رقم الهاتف مطلوب",
+                  pattern: {
+                    value: /^[0-9]{10,11}$/,
+                    message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
+                  },
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+              {errors2.phone && (
+                <p className="text-red-500 text-sm">{errors2.phone.message}</p>
+              )}
+            </label>
+
+            <label className="text-end">
+              كلمة المرور
+              <input
+                type="password"
+                {...register2("password", {
+                  required: "يرجى إدخال كلمة المرور",
+                })}
+                className="w-full border p-2 my-2 rounded text-end"
+              />
+            </label>
+
+            {errors2.password && (
+              <p className="text-red-600 text-sm">{errors2.password.message}</p>
+            )}
+
+            {/* <input
+              {...register("logo")}
+              className="bg-cyan-dark rounded text-white p-4"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setLogo(file ? URL.createObjectURL(file) : undefined);
+              }}
+            /> */}
+
+            <div className="flex gap-2 ">
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-cyan-dark text-white py-2 rounded hover:bg-cyan-900"
+              >
+                {isLoading ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "اضافة"
+                )}
+              </motion.button>
+
+              <button
+                type="button"
+                onClick={closeModal2}
+                className="w-full bg-red-500 text-white py-2 rounded hover:bg-cyan-900"
+              >
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
