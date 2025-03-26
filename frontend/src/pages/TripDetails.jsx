@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useAuthStore } from "../store/authStore";
 
 export default function TripDetails() {
-  const { id } = useParams();
+  const { id: tripId } = useParams();
   const [trip, setTrip] = useState({});
-  const [selectedSeat, setSelectedSeat] = useState(null);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const { id } = useAuthStore();
   const [seatsData, setSeatData] = useState([
     { id: 1, booked: false },
     { id: 2, booked: false },
@@ -29,15 +31,23 @@ export default function TripDetails() {
   ]);
   const handleSeatClick = (seat) => {
     if (!seat.booked) {
-      setSelectedSeat(seat.id);
+      setSelectedSeats((prevSelectedSeats) => {
+        if (prevSelectedSeats.includes(seat.id)) {
+          // If seat is already selected, remove it
+          return prevSelectedSeats.filter((id) => id !== seat.id);
+        } else {
+          // Otherwise, add it to the selection
+          return [...prevSelectedSeats, seat.id];
+        }
+      });
     }
   };
   const tripDetail = async () => {
     try {
       const res = await axios.get(
-        `https://tazkartk-api.runasp.net/api/Trips/${id}`
+        `https://tazkartk-api.runasp.net/api/Trips/${tripId}`
       );
-      console.log(id);
+      console.log(tripId);
       setTrip(res.data);
       console.log(res);
       console.log(res.data);
@@ -51,13 +61,31 @@ export default function TripDetails() {
       console.log(error);
     }
   };
+  const bookTicket = async () => {
+    try {
+      const data = {
+        userId: id,
+        tripId: parseInt(tripId),
+        seatsNumbers: selectedSeats,
+      };
+      console.log(data);
+      const res = await axios.post(
+        "https://tazkartk-api.runasp.net/api/Tickets",
+        data
+      );
+      window.location.href = res.data.data;
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     tripDetail();
     console.log(trip);
   }, []);
   return (
     <div className="flex flex-col h-full m-4 gap-2 pb-6">
-      <p className="text-end text-2xl  font-semibold">بيانات الرحلة</p>
+      <p className="text-end m-4 text-2xl  font-semibold">بيانات الرحلة</p>
       <div className=" flex w-full justify-around flex-row-reverse">
         <div>
           <p className="text-lg font-semibold text-center">الشركة</p>
@@ -119,7 +147,7 @@ export default function TripDetails() {
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
                     seat.booked
                       ? "bg-cyan-dark text-white cursor-not-allowed"
-                      : selectedSeat === seat.id
+                      : selectedSeats.includes(seat.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
@@ -137,7 +165,7 @@ export default function TripDetails() {
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
                     seat.booked
                       ? "bg-cyan-dark text-white cursor-not-allowed"
-                      : selectedSeat === seat.id
+                      : selectedSeats.includes(seat.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
@@ -155,7 +183,7 @@ export default function TripDetails() {
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
                     seat.booked
                       ? "bg-cyan-dark text-white cursor-not-allowed"
-                      : selectedSeat === seat.id
+                      : selectedSeats.includes(seat.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
@@ -173,7 +201,7 @@ export default function TripDetails() {
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
                     seat.booked
                       ? "bg-cyan-dark text-white cursor-not-allowed"
-                      : selectedSeat === seat.id
+                      : selectedSeats.includes(seat.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
@@ -191,7 +219,7 @@ export default function TripDetails() {
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
                     seat.booked
                       ? "bg-cyan-dark text-white cursor-not-allowed"
-                      : selectedSeat === seat.id
+                      : selectedSeats.includes(seat.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
@@ -205,7 +233,8 @@ export default function TripDetails() {
           </div>
           <button
             className="mt-4 w-full bg-cyan-dark text-white py-2 rounded hover:bg-cyan-800 disabled:bg-gray-400"
-            disabled={!selectedSeat}
+            disabled={!selectedSeats}
+            onClick={bookTicket}
           >
             إتمام الحجز
           </button>

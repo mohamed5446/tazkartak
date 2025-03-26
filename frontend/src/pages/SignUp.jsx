@@ -60,7 +60,7 @@ export default function SignUpPage() {
                   {...register("lastName", {
                     required: "يرجى إدخال اسم العائلة",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
                 />
                 {errors.lastName && (
                   <p className="text-red-600 text-sm">
@@ -75,7 +75,7 @@ export default function SignUpPage() {
                   {...register("firstName", {
                     required: "يرجى إدخال الاسم الاول",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
                 />
                 {errors.firstName && (
                   <p className="text-red-600 text-sm">
@@ -91,7 +91,7 @@ export default function SignUpPage() {
                   {...register("phoneNumber", {
                     required: "يرجى إدخال رقم الهاتف",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
                 />
                 {errors.phoneNumber && (
                   <p className="text-red-600 text-sm">
@@ -109,14 +109,14 @@ export default function SignUpPage() {
                   {...register("email", {
                     required: "يرجى إدخال البريد الإلكتروني",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
                 />
                 {errors.email && (
                   <p className="text-red-600 text-sm">{errors.email.message}</p>
                 )}
               </div>
 
-              <div className="col-span-2">
+              <div className="md:col-span-2">
                 <label className="block text-gray-700 mb-2">كلمة المرور</label>
                 <input
                   type="password"
@@ -128,7 +128,7 @@ export default function SignUpPage() {
                         " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
                     },
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
                 />
                 {errors.password && (
                   <p className="text-red-600 text-sm">

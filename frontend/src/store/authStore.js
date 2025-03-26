@@ -11,6 +11,8 @@ export const useAuthStore = create(
       isLoading: false,
       isCheckingAuth: true,
       role: null,
+      isEmailConfirmed: false,
+      id: null,
 
       userSignup: async (data) => {
         set({ isLoading: true, error: null });
@@ -116,6 +118,8 @@ export const useAuthStore = create(
             error: null,
             isLoading: false,
             role: response.data.roles[0],
+            id: response.data.id,
+            isEmailConfirmed: response.data.isEmailConfirmed,
           });
           return response.data;
         } catch (error) {

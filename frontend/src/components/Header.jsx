@@ -92,13 +92,13 @@ export default function Header() {
           <Link
             to={
               role === "User"
-                ? "/user/profile"
+                ? "/profile"
                 : role === "Admin"
                 ? "/admin/profile"
                 : "/company/profile"
             }
             className={`bg-white w-fit self-center text-black px-6 py-2 rounded hover:bg-gray-300 ${
-              isActive("/user/profile") ||
+              isActive("/profile") ||
               isActive("/admin/profile") ||
               isActive("/company/profile")
                 ? "border-2 border-cyan-dark"
@@ -113,8 +113,9 @@ export default function Header() {
       {/* Logo & Site Name */}
       <Link to={"/"}>
         <div className={`flex items-center ${isOpen ? "hidden" : ""}`}>
-          <img className="w-16 md:w-16" src={logo} alt="Tazkartk Logo" />
           <h1 className="text-xl md:text-2xl font-bold ml-2">Tazkartk</h1>
+
+          <img className="w-16 md:w-16" src={logo} alt="Tazkartk Logo" />
         </div>
       </Link>
     </header>

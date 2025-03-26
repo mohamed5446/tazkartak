@@ -16,6 +16,8 @@ import Companies from "./pages/admin/Companies";
 import Users from "./pages/admin/Users";
 import AdminLayout from "./components/AdminLayout";
 import TripDetails from "./pages/TripDetails";
+import Tickets from "./pages/user/Tickets";
+import InfoForm from "./components/InfoForm";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -85,14 +87,7 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
-            <Route
-              path="user/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
+
             <Route path="about" element={<About />} />
             <Route path="contact-us" element={<ContactUs />} />
             <Route path="search-Result" element={<SearchResult />} />
@@ -106,6 +101,11 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
+            <Route path="profile" element={<Profile />}>
+              <Route path="" element={<InfoForm />} />
+              <Route path="tickets" element={<Tickets />} />
+            </Route>
+            <Route path="/tickets" element={<Tickets />} />
             <Route path="trip-details/:id" element={<TripDetails />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
