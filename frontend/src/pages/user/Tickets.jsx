@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 import axios from "axios";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-
+import { Loader } from "lucide-react";
+import { motion } from "framer-motion";
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
   const { id } = useAuthStore();
+  const [loadingStates, setisLoading] = useState({});
   const getTickets = async () => {
     try {
       const res = await axios.get(
@@ -34,13 +36,16 @@ export default function Tickets() {
   }, []);
   const cancelTicket = async (bookingId) => {
     try {
+      setisLoading((prev) => ({ ...prev, [bookingId]: true }));
       const res = await axios.post(
         `https://tazkartk-api.runasp.net/api/Tickets/${bookingId}/cancel`,
         {}
       );
+      setisLoading((prev) => ({ ...prev, [bookingId]: false }));
       console.log(res);
     } catch (error) {
       console.log(error);
+      setisLoading((prev) => ({ ...prev, [bookingId]: false }));
       errorCancelling(error.response.data.message);
     }
   };
@@ -74,13 +79,19 @@ export default function Tickets() {
             <p className="text-center">{ticket.departureDate}</p>
           </div>
 
-          <button
+          <button type="button"> </button>
+          <motion.button
             type="button"
             onClick={() => cancelTicket(ticket.bookingId)}
+            disabled={loadingStates[ticket.bookingId]}
             className="bg-cyan-dark p-2 text-white rounded "
           >
-            الغاء الحجز
-          </button>
+            {loadingStates[ticket.bookingId] ? (
+              <Loader className="animate-spin  mx-auto" size={24} />
+            ) : (
+              "الغاء الحجز"
+            )}
+          </motion.button>
         </div>
       ))}
       <ToastContainer

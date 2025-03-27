@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 export default function Profile() {
   const { logout, id } = useAuthStore();
   const [user, setUser] = useState({});
