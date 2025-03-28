@@ -18,6 +18,7 @@ import AdminLayout from "./components/AdminLayout";
 import TripDetails from "./pages/TripDetails";
 import Tickets from "./pages/user/Tickets";
 import InfoForm from "./components/InfoForm";
+import ChangePassword from "./pages/user/ChangePassword";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -104,6 +105,7 @@ function App() {
             <Route path="profile" element={<Profile />}>
               <Route path="" element={<InfoForm />} />
               <Route path="tickets" element={<Tickets />} />
+              <Route path="change-password" element={<ChangePassword />} />
             </Route>
             <Route path="/tickets" element={<Tickets />} />
             <Route path="trip-details/:id" element={<TripDetails />} />
@@ -134,6 +136,7 @@ function App() {
               }
             />
           </Route>
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       </BrowserRouter>
     </div>

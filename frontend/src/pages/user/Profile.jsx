@@ -77,7 +77,7 @@ export default function Profile() {
               </Link>
             </li>
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
-              تغيير كلمة السر
+              <Link to={"change-password"}>تغيير كلمة السر</Link>
             </li>
             <li
               onClick={signOut}
