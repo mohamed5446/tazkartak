@@ -21,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors();
 builder.Services.AddSwaggerGen(c=>c.EnableAnnotations());
-
+builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -80,12 +80,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c=>c.DefaultModelsExpandDepth(-1));
 }
 if (app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.DefaultModelsExpandDepth(-1));
 }
 
 app.UseHttpsRedirection();

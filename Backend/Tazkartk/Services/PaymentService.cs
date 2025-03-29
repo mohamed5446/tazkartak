@@ -20,6 +20,8 @@ namespace Tazkartk.Services
         {
             var arabicCulture = new CultureInfo("ar-EG");
             arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
+            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
             return await _context.Payments.AsNoTracking().Select( p =>new PaymentDTO
             {
                 UserId=p.booking.UserId,

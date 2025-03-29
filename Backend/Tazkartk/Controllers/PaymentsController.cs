@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Tazkartk.Interfaces;
 
 namespace Tazkartk.Controllers
@@ -16,6 +17,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "List All Payments")]
+
         public async Task<IActionResult>GetPayments()
         {
             var payments=await _paymentService.GetAllPayments();

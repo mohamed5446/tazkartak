@@ -1,5 +1,6 @@
 ﻿using Tazkartk.DTO;
 using Tazkartk.DTO.Response;
+using Tazkartk.DTO.UserDTOs;
 using Tazkartk.Models;
 namespace Tazkartk.Interfaces
 {
@@ -12,7 +13,7 @@ namespace Tazkartk.Interfaces
         Task<bool> Cancel(string trxId);
         Task<List<TicketDTO>?> GetUserBookings(int userId);
         Task<List<TicketDTO>?> GetBookings();
-        
+        Task<TicketDTO> GetTicket(int id);  
 
         // Task<bool> CancelSeat(int UserId, int BookingId);
        

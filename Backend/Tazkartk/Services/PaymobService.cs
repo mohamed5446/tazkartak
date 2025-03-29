@@ -27,6 +27,7 @@ namespace Tazkartk.Services
                 amount = amount * 100,
                 currency = "EGP",
                 payment_methods = new[] { "wallet", "card" },
+                expiration= 120,
                 billing_data = new
                 {
                     first_name = UserDTO.FirstName,
@@ -87,11 +88,17 @@ namespace Tazkartk.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Refund Failed: {responseString}");
+                var errorData = JsonConvert.DeserializeObject<dynamic>(responseString);
+
+                throw new Exception($"Refund Failed: {errorData.message}");
             }
 
             var responseData = JsonConvert.DeserializeObject<dynamic>(responseString);
-            return responseData.success == true;
+            if (!(bool)responseData.success)
+            {
+                throw new Exception($"Refund Failed: {responseData.message}");
+            }
+            return(bool) responseData.success == true;
         }
     }
 }

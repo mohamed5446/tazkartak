@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.Response;
@@ -23,6 +24,8 @@ namespace Tazkartk.Controllers
         }
        
         [HttpGet]
+        [SwaggerOperation(Summary = "List All Users")]
+
         public async Task<IActionResult>GetUsers()
         {
             var users = await _userService.GetUsers(); 
@@ -31,12 +34,16 @@ namespace Tazkartk.Controllers
 
 
         [HttpGet("{Id:int}")]
+        [SwaggerOperation(Summary = "Get User By Id")]
+
         public async Task<IActionResult>GetUser(int Id)
         {
             var user = await _userService.GetUserById(Id);
             return user == null ? NotFound("User Not Found"):Ok(user);
         }
         [HttpPost]
+        [SwaggerOperation(Summary = "Add User")]
+
         public async Task<IActionResult>CreateUser(RegisterDTO DTO)
         {
             if (!ModelState.IsValid)
@@ -59,6 +66,8 @@ namespace Tazkartk.Controllers
             return StatusCode((int)result.StatusCode,result);   
         }
         [HttpPost("Add-Admin")]
+        [SwaggerOperation(Summary = "Add Admin")]
+
         public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
         {
             if (!ModelState.IsValid)
@@ -82,6 +91,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpPut("{Id:int}")]
+        [SwaggerOperation(Summary = "Edit User")]
+
         //[Authorize]
         public async Task<IActionResult>EditUser(int Id ,[FromForm]EditUserDTO DTO)
         {
@@ -106,6 +117,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{Id:int}")]
+        [SwaggerOperation(Summary = "Delete User")]
+
         public async Task<IActionResult> DeleteUser(int Id)
         {
            var result=  await _userService.DeleteUser(Id);

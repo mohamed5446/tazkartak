@@ -29,6 +29,7 @@ namespace Tazkartk.Controllers
             string body = await reader.ReadToEndAsync();
             JObject jsonObject = JObject.Parse(body);
             JObject obj = jsonObject["obj"] as JObject;
+
             string receivedHmac = Request.Query["hmac"].ToString();
 
             List<string> values = new List<string>
@@ -59,20 +60,32 @@ namespace Tazkartk.Controllers
             if (computedHmac != receivedHmac)
             {
                 return Unauthorized(new { c = concatenatedString, computedhmac = computedHmac, message = "Invalid HMAC" });
+            } 
+
+            var success= JsonConvert.SerializeObject(obj["success"]);
+            if (success != "true")
+            {
+                return BadRequest();
             }
+
             string transactionId = obj["id"]?.ToString();
             var isrefunded = JsonConvert.SerializeObject(obj["is_refunded"]);
             var paymentMethod = JsonConvert.SerializeObject(obj["source_data"]?["sub_type"]).Trim('"');
+            var transactionTime = obj["created_at"].Value<DateTime>();
+
+
             if (isrefunded == "true")
             {
-                var done = await _BookingService.Cancel(transactionId);
-                if (!done)
+                var Done = await _BookingService.Cancel(transactionId);
+                if (!Done)
                 {
                     return BadRequest("failed to refund");
                 }
                 return Ok("refunded successfully");
 
             }
+
+
             JToken extra = obj["payment_key_claims"]?["extra"];
 
             var bookingDTO = new BookingDTO
@@ -82,8 +95,8 @@ namespace Tazkartk.Controllers
                 SeatsNumbers = extra["seats"]?.ToObject<List<int>>() 
             };
 
-            var success = await _BookingService.ConfirmBooking(bookingDTO, transactionId,paymentMethod);
-            if (!success)
+            var done = await _BookingService.ConfirmBooking(bookingDTO, transactionId,paymentMethod);
+            if (!done)
             {
                 return BadRequest();
             }

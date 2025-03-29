@@ -13,6 +13,8 @@ namespace Tazkartk.Mappers
         {
             var arabicCulture = new CultureInfo("ar-SA");
             arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
+            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
             return new TripDtos
             {
                 TripId = TripModel.TripId,
@@ -21,6 +23,7 @@ namespace Tazkartk.Mappers
                
                 Class = TripModel.Class,
                 DepartureDate= TripModel.Date.ToString("yyyy-MM-dd", arabicCulture),
+
                 DepartureTime= RightToLeftCharacter + TripModel.Time.ToString("hh:mm tt", arabicCulture),
                 DepartureDay=TripModel.Date.ToString("dddd", arabicCulture),
                 ArrivalDate= TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),

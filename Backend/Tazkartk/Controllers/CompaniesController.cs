@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tazkartk.DTO;
 using Tazkartk.Models.Enums;
 using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.DTO.Response;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Tazkartk.Controllers
 {
@@ -20,6 +21,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "List All Companies")]
+
         public async Task<IActionResult>GetAll()
         {
             var companies= await _companyService.GetAllCompanies();
@@ -27,12 +30,18 @@ namespace Tazkartk.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [SwaggerOperation(Summary = "Get Company By Id")]
+
         public async Task<IActionResult> GetCompanyById(int id)
         {
             var Company =await _companyService.GetCompanyById(id);
             return Company == null ? NotFound("Company not found") : Ok(Company);  
         }
+
+        [Authorize(Roles = "Admin , Company")]
         [HttpPost]
+        [SwaggerOperation(Summary = "Add Company")]
+
         public async Task<IActionResult>CreateCompany(CompanyRegisterDTO DTO)
         {
             if (!ModelState.IsValid)
@@ -56,6 +65,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpPut("{Id:int}")]
+        [SwaggerOperation(Summary = "Edit Company")]
+
         public async Task<IActionResult>EditCompany(int Id,[FromForm]CompanyEditDTO DTO)
         {
             if (!ModelState.IsValid)
@@ -80,6 +91,8 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [SwaggerOperation(Summary = "Delete Company")]
+
         public async Task<IActionResult>DeleteCompany(int id)
         {
             var result=await _companyService.DeleteCompany(id);

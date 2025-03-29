@@ -4,5 +4,6 @@
     {
         Booked,
         Available,
+
     }
 }

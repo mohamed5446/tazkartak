@@ -1,0 +1,293 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\services\\photoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\photoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\interfaces\\icompanyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\interfaces\\icompanyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\helpers\\cloudinarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\helpers\\cloudinarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\interfaces\\iphotoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\interfaces\\iphotoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|c:\\users\\ali hassan\\onedrive\\pictures\\new folder (2)\\tazkartak\\backend\\tazkartk\\models\\seat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.csproj|solutionrelative:tazkartk\\models\\seat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CompanyService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\CompanyService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\CompanyService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\CompanyService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\CompanyService.cs",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAowBAAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:41:53.378Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ICompanyService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\ICompanyService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\ICompanyService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\ICompanyService.cs",
+              "RelativeToolTip": "Tazkartk\\Interfaces\\ICompanyService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:40:18.081Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IAuthService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IAuthService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IAuthService.cs",
+              "RelativeToolTip": "Tazkartk\\Interfaces\\IAuthService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:39:54.156Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CompanyController.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompanyController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\CompanyController.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompanyController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\CompanyController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBoAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:35:48.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\AccountController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:35:47.371Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\UserController.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAqwBYAAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:28:28.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CloudinarySettings.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Helpers\\CloudinarySettings.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Helpers\\CloudinarySettings.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Helpers\\CloudinarySettings.cs",
+              "RelativeToolTip": "Tazkartk\\Helpers\\CloudinarySettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:19:02.221Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "IPhotoService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IPhotoService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IPhotoService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IPhotoService.cs",
+              "RelativeToolTip": "Tazkartk\\Interfaces\\IPhotoService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:17:08.086Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\UserService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\UserService.cs",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAowAsAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:15:06.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PhotoService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\PhotoService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\PhotoService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\PhotoService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\PhotoService.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAYwBEAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:13:13.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Services\\AuthService.cs",
+              "RelativeToolTip": "Tazkartk\\Services\\AuthService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:13:04.431Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IUserService.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Interfaces\\IUserService.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Interfaces\\IUserService.cs",
+              "RelativeToolTip": "Tazkartk\\Interfaces\\IUserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:12:41.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\appsettings.json",
+              "RelativeDocumentMoniker": "Tazkartk\\appsettings.json",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\appsettings.json",
+              "RelativeToolTip": "Tazkartk\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-08T20:10:13.864Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Company.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Company.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Models\\Company.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Company.cs",
+              "RelativeToolTip": "Tazkartk\\Models\\Company.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:08:37.471Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Payment.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Models\\Payment.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Payment.cs",
+              "RelativeToolTip": "Tazkartk\\Models\\Payment.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:08:36.342Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Seat.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Seat.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Models\\Seat.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Models\\Seat.cs",
+              "RelativeToolTip": "Tazkartk\\Models\\Seat.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:08:33.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Program.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Program.cs",
+              "ToolTip": "C:\\Users\\Ali Hassan\\OneDrive\\Pictures\\New folder (2)\\tazkartak\\Backend\\Tazkartk\\Program.cs",
+              "RelativeToolTip": "Tazkartk\\Program.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAcwBYAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-26T15:28:46.129Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
@@ -202,7 +201,8 @@ namespace Tazkartk.Controllers
             var result = await _authService.ResetPassword(DTO);
                 return StatusCode((int)result.StatusCode, result);
             }
-            [HttpPut("Change-Password")]
+        [Authorize(Roles = "User")]
+        [HttpPut("Change-Password")]
             public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)
             {
             if (!ModelState.IsValid)
