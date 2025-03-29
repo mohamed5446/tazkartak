@@ -6,17 +6,9 @@ using Tazkartk.DTO.TripDTOs;
 using Tazkartk.Interfaces;
 using Tazkartk.Mappers;
 using Tazkartk.Models.Enums;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using Tazkartk.Data;
-using Tazkartk.DTO;
-using Tazkartk.DTO.Response;
-using Tazkartk.DTO.TripDTOs;
-using Tazkartk.Mappers;
-using Tazkartk.Models;
-using Tazkartk.Models.Enums;
 using Tazkartk.DTO.UserDTOs;
+using Tazkartk.Email;
+using Hangfire;
 
 namespace Tazkartk.Services
 {
@@ -24,9 +16,11 @@ namespace Tazkartk.Services
     {
         private readonly ApplicationDbContext _context;
         private const char RightToLeftCharacter = (char)0x200F;
-        public TripService(ApplicationDbContext context)
+        private readonly IEmailService _EmailService;
+        public TripService(ApplicationDbContext context, IEmailService emailService)
         {
             _context = context;
+            _EmailService = emailService;
         }
         public async Task<IEnumerable<TripDtos>> GetTrips()
         {
@@ -83,6 +77,16 @@ namespace Tazkartk.Services
             Tripmodel.CompanyId = company.Id;
             await _context.Trips.AddAsync(Tripmodel);
             await _context.SaveChangesAsync();
+
+
+            var DepartureDateTime=Tripmodel.Date.ToDateTime(Tripmodel.Time);
+            var reminderTime = DepartureDateTime.AddHours(-3);
+           var jobId= BackgroundJob.Schedule<TripService>(service=>service.SendReminderEmail(Tripmodel.TripId),reminderTime);
+
+
+            //_backgroundJobClient.Schedule<EmailService>(
+            //    service => service.SendTripReminderEmails(trip.TripId),
+            //    reminderTime);
             return new ApiResponse<TripDtos?>
             {
                 StatusCode = StatusCode.Created,
@@ -204,9 +208,21 @@ namespace Tazkartk.Services
                 .ToListAsync();
                  }
 
-
-
-    
+        public async Task<bool> SendReminderEmail(int TripId)
+        {
+            var passengers = await GetPassengers(TripId);
+            foreach (var passenger in passengers)
+            {
+                var emailrequest = new EmailRequest
+                {
+                    Email = passenger.Email,
+                    Subject = "تذكير بالرحلة",
+                    Body = $",{passenger.FirstName}  باقي علي رحلتك س ساعات"
+                };
+                await _EmailService.SendEmail(emailrequest);
+            }
+            return true;
+        }
     }
 }
 

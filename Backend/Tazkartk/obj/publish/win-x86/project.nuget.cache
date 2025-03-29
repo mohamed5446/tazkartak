@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yN5+ljurTsio3fpZUAWCCMwWaXAPe8Rn4l+i63u8aEeMOKP1Kro9OO7OQEA8TZJ4AcxFWdE/Wp7xAWcjBP6TdQ==",
+  "dgSpecHash": "0mlSCg3WE8bJa5xvq0bFatpDHZWw/ijBBL2x1q6cUJp3eLR1LYNk6wtcoSyR22qus/FeqWAMFXTjb5gd0N9itQ==",
   "success": true,
   "projectFilePath": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Tazkartk.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,11 @@
     "C:\\Users\\moha1\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\bouncycastle.cryptography\\2.5.0\\bouncycastle.cryptography.2.5.0.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\cloudinarydotnet\\1.27.3\\cloudinarydotnet.1.27.3.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\hangfire\\1.8.18\\hangfire.1.8.18.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\hangfire.aspnetcore\\1.8.18\\hangfire.aspnetcore.1.8.18.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\hangfire.core\\1.8.18\\hangfire.core.1.8.18.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\hangfire.netcore\\1.8.18\\hangfire.netcore.1.8.18.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\hangfire.sqlserver\\1.8.18\\hangfire.sqlserver.1.8.18.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\mailkit\\4.10.0\\mailkit.4.10.0.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.aspnet.cors\\5.3.0\\microsoft.aspnet.cors.5.3.0.nupkg.sha512",
@@ -46,6 +51,7 @@
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.dependencymodel\\8.0.0\\microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\3.0.0\\microsoft.extensions.hosting.abstractions.3.0.0.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.identity.core\\8.0.2\\microsoft.extensions.identity.core.8.0.2.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.identity.stores\\8.0.2\\microsoft.extensions.identity.stores.8.0.2.nupkg.sha512",
     "C:\\Users\\moha1\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",

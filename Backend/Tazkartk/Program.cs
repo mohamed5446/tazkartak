@@ -10,6 +10,9 @@ using Tazkartk.Services;
 using Tazkartk.Email;
 using Tazkartk.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Hangfire;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +23,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors();
-builder.Services.AddSwaggerGen(c=>c.EnableAnnotations());
+builder.Services.AddSwaggerGen(options => 
+{
+    options.EnableAnnotations();
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
@@ -72,7 +100,12 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
         };
     });
-
+builder.Services.AddHangfire(config =>
+    config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+          .UseSimpleAssemblyNameTypeSerializer()
+          .UseRecommendedSerializerSettings()
+          .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
@@ -102,4 +135,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseHangfireDashboard();
+app.MapHangfireDashboard("/hangfire");
 app.Run();

@@ -17,6 +17,7 @@ namespace Tazkartk.Interfaces
         Task<IEnumerable<TripDtos>> GetCompanyTrips(int companyId);
         Task<IEnumerable<TripDtos>> Search(string? from, string? to, DateOnly? date);
         Task<IEnumerable<UserDetails>> GetPassengers(int TripId);
+        Task<bool>SendReminderEmail(int TripId);
 
     }
 }

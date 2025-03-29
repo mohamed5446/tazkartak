@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tazkartk")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83ef05a4e935a578829a878d9c8e3384eb698430")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b75a964835f45aaba37959745ad6f9dcd5ac000a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tazkartk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tazkartk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
