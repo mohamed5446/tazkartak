@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
 
 const customStyles = {
   content: {
@@ -34,6 +35,7 @@ export default function Companies() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modal2IsOpen, set2IsOpen] = useState(false);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const navigate = useNavigate();
 
   const fetchCompanies = async () => {
     try {
@@ -207,12 +209,21 @@ export default function Companies() {
           key={company.id}
           className="flex bg-white p-4 rounded-lg shadow-lg  w-sm  md:w-2xl lg:w-1/2 justify-between items-center"
         >
-          <button
-            onClick={() => openModal(company)}
-            className="bg-cyan-dark text-white p-4 px-6 rounded hover:cursor-pointer"
-          >
-            تعديل
-          </button>
+          <div>
+            <button
+              onClick={() => openModal(company)}
+              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
+            >
+              تعديل
+            </button>
+            <button
+              onClick={() => navigate(`/admin/${company.id}`)}
+              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
+            >
+              عرض الرحلات
+            </button>
+          </div>
+
           <div className="flex gap-4 items-center">
             <h3 className="text-lg font-bold mt-2 text-center">
               {" "}

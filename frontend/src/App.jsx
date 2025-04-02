@@ -19,6 +19,7 @@ import TripDetails from "./pages/TripDetails";
 import Tickets from "./pages/user/Tickets";
 import InfoForm from "./components/InfoForm";
 import ChangePassword from "./pages/user/ChangePassword";
+import CompanyTrips from "./pages/admin/CompanyTrips";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -127,6 +128,7 @@ function App() {
                 </AdminPages>
               }
             />
+            <Route path=":id" element={<CompanyTrips />} />
             <Route
               path="users"
               element={

@@ -14,7 +14,7 @@ export default function EmailVerification() {
 
   const navigate = useNavigate();
 
-  const { user, isLoading, verifyEmail, setdefaulte, role } = useAuthStore();
+  const { user, isLoading, verifyEmail, setdefaulte } = useAuthStore();
 
   const onSubmit = async (data) => {
     try {
@@ -22,10 +22,11 @@ export default function EmailVerification() {
       data.email = user;
       console.log(data);
       const response = await verifyEmail(data);
+      console.log(response);
       const token = response.token;
       Cookies.set("token", token, { expires: 7, secure: true });
-      if (role == "Admin") navigate("admin/profile");
-      else if (role == "Company") navigate("company/profile");
+      if (response.roles[0] == "Admin") navigate("/admin/profile");
+      else if (response.roles[0] == "Company") navigate("/company/profile");
       else navigate("/");
     } catch (error) {
       console.log(error);
