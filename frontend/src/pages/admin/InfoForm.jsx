@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { Bounce, toast, ToastContainer } from "react-toastify";

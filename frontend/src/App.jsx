@@ -20,6 +20,8 @@ import Tickets from "./pages/user/Tickets";
 import InfoForm from "./components/InfoForm";
 import ChangePassword from "./pages/user/ChangePassword";
 import CompanyTrips from "./pages/admin/CompanyTrips";
+import AdminInfoForm from "./pages/admin/InfoForm";
+import AdminChangePassword from "./pages/admin/ChangePassword";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -38,15 +40,15 @@ const AdminPages = ({ children }) => {
 //     return <Navigate to={"/"} />;
 //   }
 // };
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
+// const ProtectedRoute = ({ children }) => {
+//   const { isAuthenticated } = useAuthStore();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
+//   if (!isAuthenticated) {
+//     return <Navigate to="/login" replace />;
+//   }
 
-  return children;
-};
+//   return children;
+// };
 
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
@@ -119,24 +121,14 @@ function App() {
                   <AdminProfile />
                 </AdminPages>
               }
-            />
-            <Route
-              path="Companies"
-              element={
-                <AdminPages>
-                  <Companies />
-                </AdminPages>
-              }
-            />
+            >
+              <Route path="" element={<AdminInfoForm />} />
+              <Route path="change-password" element={<AdminChangePassword />} />
+              <Route path="Companies" element={<Companies />} />
+              <Route path="Users" element={<Users />} />
+            </Route>
+
             <Route path=":id" element={<CompanyTrips />} />
-            <Route
-              path="users"
-              element={
-                <AdminPages>
-                  <Users />
-                </AdminPages>
-              }
-            />
           </Route>
           <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>

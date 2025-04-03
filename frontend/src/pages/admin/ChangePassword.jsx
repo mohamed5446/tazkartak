@@ -8,7 +8,6 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function ChangePassword() {
   const [isLoading, setisLoading] = useState(false);
-
   const passwordChangedSuccessfully = () =>
     toast.success("password changed successfully", {
       position: "top-right",

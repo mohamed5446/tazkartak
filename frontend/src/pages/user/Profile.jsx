@@ -1,36 +1,22 @@
 import { useAuthStore } from "../../store/authStore";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 
 export default function Profile() {
-  const { logout, id } = useAuthStore();
-  const [user, setUser] = useState({});
-  const navigate = useNavigate();
+  const { logout, id, fetchUser, User: user } = useAuthStore();
   const location = useLocation(); // Get the current path
 
-  // Function to check if link is active
   const isActive = (path) => location.pathname === path;
 
+  const navigate = useNavigate();
   const signOut = async () => {
     await logout();
     navigate("/");
   };
-  const getUser = async () => {
-    try {
-      const res = await axios.get(
-        `https://tazkartk-api.runasp.net/api/Users/${id}`
-      );
-      setUser(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    getUser();
-  }, []);
+    fetchUser(id);
+  }, [id]);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -40,7 +26,7 @@ export default function Profile() {
     >
       <Outlet />
 
-      <div className="bg-gray-100  shadow-lg  h-fit justify-self-start text-end">
+      <div className="bg-gray-00  shadow-lg  h-fit justify-self-start text-end">
         <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
           <div className=" h-fit w-full rounded-full">
             <img className="size-18" src={user.photoUrl} alt="" />

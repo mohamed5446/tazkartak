@@ -189,8 +189,8 @@ export default function Users() {
     }
   };
   return (
-    <div className="flex flex-col m-4 items-end  gap-4 p-2">
-      <div className="flex items-center  justify-between w-sm  md:w-2xl lg:w-1/2 ">
+    <div className="flex flex-col m-4 items-end  gap-4 p-2 w-full xl:w-2/4">
+      <div className="flex items-center  justify-between w-full  ">
         <button
           type="button"
           onClick={openModal2}
@@ -198,12 +198,12 @@ export default function Users() {
         >
           اضافة مستخدم
         </button>
-        <p className="text-3xl text-cyan-dark font-bold ">الشركات</p>
+        <p className="text-3xl text-cyan-dark font-bold ">المستخدمين</p>
       </div>
       {users.map((user) => (
         <div
           key={user.id}
-          className="flex bg-white p-4 rounded-lg shadow-lg  w-sm  md:w-2xl lg:w-1/2 justify-between items-center"
+          className="flex bg-white p-4 rounded-lg shadow-lg w-full justify-between  items-center"
         >
           <button
             onClick={() => openModal(user)}

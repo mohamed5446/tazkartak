@@ -194,8 +194,8 @@ export default function Companies() {
     }
   };
   return (
-    <div className="flex flex-col m-4 items-end  gap-4 p-2">
-      <div className="flex items-center  justify-between w-sm  md:w-2xl lg:w-1/2 ">
+    <div className="flex flex-col m-4 items-end w-full xl:w-1/2 gap-4 p-2">
+      <div className="flex items-center  justify-between w-full ">
         <button
           onClick={openModal2}
           className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer"
@@ -207,7 +207,7 @@ export default function Companies() {
       {companies.map((company) => (
         <div
           key={company.id}
-          className="flex bg-white p-4 rounded-lg shadow-lg  w-sm  md:w-2xl lg:w-1/2 justify-between items-center"
+          className="flex bg-white p-4 rounded-lg shadow-lg w-full justify-between items-center"
         >
           <div>
             <button

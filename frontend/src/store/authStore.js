@@ -6,6 +6,7 @@ export const useAuthStore = create(
   devtools(
     persist((set) => ({
       user: null,
+      User: {},
       isAuthenticated: false,
       error: null,
       isLoading: false,
@@ -13,7 +14,18 @@ export const useAuthStore = create(
       role: null,
       isEmailConfirmed: false,
       id: null,
-
+      setUser: (userData) => set({ User: userData }), // Function to update user state
+      fetchUser: async (id) => {
+        try {
+          const res = await axios.get(
+            `https://tazkartk-api.runasp.net/api/Users/${id}`
+          );
+          console.log("hellooooooo");
+          set({ User: res.data });
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      },
       userSignup: async (data) => {
         set({ isLoading: true, error: null });
         try {
