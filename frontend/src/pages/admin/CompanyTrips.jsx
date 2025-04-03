@@ -4,14 +4,36 @@ import { Loader } from "lucide-react";
 import { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
+import TripForm from "../../components/TripForm";
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    padding: "0px",
+    width: "60%",
+    maxWidth: "45rem",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "25px",
+  },
+  overlay: {
+    backgroundColor: "rgba(189, 189, 189, 0.1)",
+  },
+};
+Modal.setAppElement("#root");
 
 export default function CompanyTrips() {
   const [trips, setTrips] = useState({});
   const { id } = useParams();
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isDeleting, setisDeleting] = useState({});
-
+  const [modalIsOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
   const getTrips = async () => {
     try {
       const res = await axios.get(
@@ -60,17 +82,38 @@ export default function CompanyTrips() {
       console.log(error);
     }
   };
+  const addTrip = async (tripData) => {
+    console.log(tripData);
+    try {
+      const res = await axios.post(
+        `https://tazkartk-api.runasp.net/api/Trips/${id}`,
+        tripData
+      );
+      console.log(res);
+      forceUpdate();
+      setIsOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getTrips();
   }, [ignored]);
   return (
-    <div className="flex flex-col gap-6 w-full p-4  ">
+    <div className="flex flex-col gap-6 w-full p-4  items-end ">
       <ToastContainer position="top-right" autoClose={3000} />
+      <button
+        className="bg-cyan-dark  text-white p-2 rounded"
+        type="button"
+        onClick={() => setIsOpen(true)}
+      >
+        اضافة رحلة
+      </button>
       {trips.length >= 1 ? (
         trips.map((trip, index) => (
           <div
             key={index}
-            className="bg-white p-4 rounded shadow flex justify-between items-center flex-row-reverse"
+            className="bg-white p-4 rounded shadow flex justify-between items-center w-full flex-row-reverse"
           >
             <div className=" flex w-full justify-around flex-row-reverse">
               <div>
@@ -124,8 +167,15 @@ export default function CompanyTrips() {
           </div>
         ))
       ) : (
-        <p className="text-lg text-center">لا توجد رحلات للمعايير المجددة</p>
+        <p className="text-lg text-center">لا توجد رحلات</p>
       )}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+      >
+        <TripForm onSubmit={addTrip} />
+      </Modal>
     </div>
   );
 }
