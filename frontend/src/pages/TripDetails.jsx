@@ -1,13 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAuthStore } from "../store/authStore";
+import { motion } from "framer-motion";
+import { Loader } from "lucide-react";
 
 export default function TripDetails() {
   const { id: tripId } = useParams();
   const [trip, setTrip] = useState({});
   const [selectedSeats, setSelectedSeats] = useState([]);
   const { id } = useAuthStore();
+  const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
   const [seatsData, setSeatData] = useState([
     { id: 1, booked: false },
     { id: 2, booked: false },
@@ -63,11 +67,16 @@ export default function TripDetails() {
   };
   const bookTicket = async () => {
     try {
+      setisLoading(true);
       const data = {
         userId: id,
         tripId: parseInt(tripId),
         seatsNumbers: selectedSeats,
       };
+      if (id === null) {
+        navigate("/login");
+      }
+
       console.log(data);
       const res = await axios.post(
         "https://tazkartk-api.runasp.net/api/Tickets",
@@ -75,7 +84,9 @@ export default function TripDetails() {
       );
       window.location.href = res.data.data;
       console.log(res);
+      setisLoading(false);
     } catch (error) {
+      setisLoading(false);
       console.log(error);
     }
   };
@@ -231,13 +242,19 @@ export default function TripDetails() {
               ))}
             </div>
           </div>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className="mt-4 w-full bg-cyan-dark text-white py-2 rounded hover:bg-cyan-800 disabled:bg-gray-400"
             disabled={!selectedSeats}
             onClick={bookTicket}
           >
-            إتمام الحجز
-          </button>
+            {isLoading ? (
+              <Loader className="animate-spin mx-auto" size={24} />
+            ) : (
+              " إتمام الحجز"
+            )}
+          </motion.button>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { devtools, persist } from "zustand/middleware";
-
+import Cookies from "js-cookie";
 export const useAuthStore = create(
   devtools(
     persist((set) => ({
@@ -17,8 +17,13 @@ export const useAuthStore = create(
       setUser: (userData) => set({ User: userData }), // Function to update user state
       fetchUser: async (id) => {
         try {
+          const JWTToken = Cookies.get("token");
+          console.log(JWTToken);
           const res = await axios.get(
-            `https://tazkartk-api.runasp.net/api/Users/${id}`
+            `https://tazkartk-api.runasp.net/api/Users/${id}`,
+            {
+              headers: { Authorization: `Bearer ${JWTToken}` },
+            }
           );
           console.log("hellooooooo");
           set({ User: res.data });
@@ -143,17 +148,21 @@ export const useAuthStore = create(
           throw error;
         }
       },
-      logout: () => {
+      logout: async () => {
         set({
           user: null,
           isAuthenticated: false,
           error: null,
           isLoading: false,
           role: null,
+          id: null,
+          User: null,
+          isEmailConfirmed: false,
         });
       },
       setdefaulte: async () => {
         set({
+          id: null,
           user: null,
           isAuthenticated: false,
           error: null,

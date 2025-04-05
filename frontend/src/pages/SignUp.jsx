@@ -15,7 +15,7 @@ export default function SignUpPage() {
   const { userSignup, error, isLoading, setdefaulte } = useAuthStore();
 
   const navigate = useNavigate();
-  const newPassword = watch("newPassword");
+  const newPassword = watch("password");
 
   const onSubmit = async (data) => {
     try {
