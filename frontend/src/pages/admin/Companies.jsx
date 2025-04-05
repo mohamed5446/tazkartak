@@ -7,6 +7,7 @@ import { Loader } from "lucide-react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
 
 const customStyles = {
   content: {
@@ -164,9 +165,12 @@ export default function Companies() {
     // }
     try {
       setisLoading(true);
+      const JWTToken = Cookies.get("token");
+      console.log(JWTToken);
       const response = await axios.post(
         "https://tazkartk-api.runasp.net/api/Companies",
-        data
+        data,
+        { headers: { Authorization: `Bearer ${JWTToken}` } }
       );
       addedSuccessfully();
       closeModal2();

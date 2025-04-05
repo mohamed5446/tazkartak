@@ -11,14 +11,14 @@ export default function About() {
             التذاكر
           </p>
         </div>
-        <div className="flex items-center justify-between px-4 py-4">
+        <h2 className="text-2xl font-bold text-end">اهم الأهداف</h2>
+
+        <div className="flex  justify-between px-4 py-4">
           <div className="flex  ">
             <img className="w-96 rounded-lg mt-4 ml-4" src={logo} alt="Logo" />
           </div>
 
           <div className="flex gap-4 items-start text-right direction-rtl">
-            <h2 className="text-2xl font-bold ">اهم الأهداف</h2>
-
             <ul className="space-y-2 ">
               <li>الرئيسية</li>
               <li>الشركات</li>

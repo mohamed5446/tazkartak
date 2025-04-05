@@ -49,13 +49,13 @@ export default function Header() {
         >
           الرئيسية
         </Link>
-        <a
+        {/* <a
           href="#"
           className="hover:text-gray-200 md:flex items-center py-2 md:py-0"
           onClick={() => setIsOpen(false)}
         >
           الشركات
-        </a>
+        </a> */}
         <Link
           to={"/about"}
           className={`p-2  md:flex items-center md:py-0 ${

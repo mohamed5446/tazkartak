@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
 
 const customStyles = {
   content: {
@@ -28,11 +29,14 @@ export default function Users() {
   const [user, setuser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modal2IsOpen, set2IsOpen] = useState(false);
+  const [type, setType] = useState("");
 
   const [isLoading, setisLoading] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const navigate = useNavigate();
+
   const {
     register: register2,
     handleSubmit: handleSubmit2,
@@ -102,7 +106,8 @@ export default function Users() {
   function closeModal() {
     setIsOpen(false);
   }
-  function openModal2() {
+  function openModal2(type) {
+    setType(type);
     setValue2("firstName", "");
     setValue2("email", "");
     setValue2("phoneNumber", "");
@@ -163,24 +168,26 @@ export default function Users() {
   };
   const onSubmit2 = async (data) => {
     console.log(data);
-    // const formData = new FormData();
-    // formData.append("Name", data.name);
-    // formData.append("City", data.city);
-    // formData.append("Street", data.street);
-    // formData.append("Logo", data.logo[0]);
-    // formData.append("PhoneNumber", data.phone);
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
+
     try {
       setisLoading(true);
-      const response = await axios.post(
-        "https://tazkartk-api.runasp.net/api/Users",
-        data
-      );
+      if (type == "user") {
+        const response = await axios.post(
+          "https://tazkartk-api.runasp.net/api/Users",
+          data
+        );
+        console.log(response);
+      } else {
+        const response = await axios.post(
+          "https://tazkartk-api.runasp.net/api/Users/Add-Admin",
+          data
+        );
+        console.log(response);
+      }
+
       addedSuccessfully();
       closeModal2();
-      console.log(response);
+
       forceUpdate();
       setisLoading(false);
     } catch (error) {
@@ -191,13 +198,23 @@ export default function Users() {
   return (
     <div className="flex flex-col m-4 items-end  gap-4 p-2 w-full xl:w-2/4">
       <div className="flex items-center  justify-between w-full  ">
-        <button
-          type="button"
-          onClick={openModal2}
-          className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer"
-        >
-          اضافة مستخدم
-        </button>
+        <div>
+          <button
+            type="button"
+            onClick={() => openModal2("user")}
+            className="bg-cyan-dark mr-2 text-white p-4 rounded shadow-lg hover:cursor-pointer"
+          >
+            اضافة مستخدم
+          </button>
+          <button
+            type="button"
+            onClick={() => openModal2("admin")}
+            className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer"
+          >
+            اضافة ادمن
+          </button>
+        </div>
+
         <p className="text-3xl text-cyan-dark font-bold ">المستخدمين</p>
       </div>
       {users.map((user) => (
@@ -205,12 +222,21 @@ export default function Users() {
           key={user.id}
           className="flex bg-white p-4 rounded-lg shadow-lg w-full justify-between  items-center"
         >
-          <button
-            onClick={() => openModal(user)}
-            className="bg-cyan-dark text-white p-4 px-6 rounded hover:cursor-pointer"
-          >
-            تعديل
-          </button>
+          <div>
+            <button
+              onClick={() => openModal(user)}
+              className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
+            >
+              تعديل
+            </button>
+            <button
+              onClick={() => navigate(`/admin/user/${user.id}`)}
+              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
+            >
+              عرض التذاكر
+            </button>
+          </div>
+
           <div className="flex gap-4 items-center">
             <h3 className="text-lg font-bold mt-2 text-center">
               {user.firstName} {user.lastName}
@@ -229,7 +255,9 @@ export default function Users() {
         style={customStyles}
       >
         <div className="bg-white opacity-100 p-6 rounded-lg shadow-lg w-full  text-black   space-y-4">
-          <h2 className="text-3xl font-bold text-center">اضافة مستخدم</h2>
+          <h2 className="text-3xl font-bold text-center">
+            اضافة {type == "user" ? "مستخدم" : "ادمن"}
+          </h2>
 
           {/* <img
             src={

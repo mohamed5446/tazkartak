@@ -8,25 +8,18 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
-  const { userSignup, adminSignup, error, isLoading, setdefaulte } =
-    useAuthStore();
+  const { userSignup, error, isLoading, setdefaulte } = useAuthStore();
 
   const navigate = useNavigate();
+  const newPassword = watch("newPassword");
 
   const onSubmit = async (data) => {
-    const { accountType, ...formData } = data;
-
-    console.log(accountType);
     try {
-      if (accountType === "user") {
-        await userSignup(formData);
-      } else if (accountType == "admin") {
-        await adminSignup(formData);
-      }
-
+      await userSignup(data);
       navigate("/verify-email");
     } catch (error) {
       console.log(error.response);
@@ -136,38 +129,27 @@ export default function SignUpPage() {
                   </p>
                 )}
               </div>
-            </div>
-
-            <div className="mt-4">
-              <div className="flex flex-row-reverse   ">
-                <label className="flex items-center ml-6">
-                  <input
-                    type="radio"
-                    value="admin"
-                    {...register("accountType", {
-                      required: "يرجى تحديد نوع الحساب",
-                    })}
-                    className="mr-2"
-                  />
-                  Admin
+              <div className="md:col-span-2">
+                <label className=" w-full block text-gray-600 mb-1">
+                  تأكيد كلمة السر
                 </label>
-
-                <label className="flex items-center mr-6">
-                  <input
-                    type="radio"
-                    value="user"
-                    {...register("accountType")}
-                    className="mr-2"
-                  />
-                  User
-                </label>
+                <input
+                  type="password"
+                  {...register("confirmPassword", {
+                    required: "هذه الخانة مطلوبة",
+                    validate: (value) =>
+                      value === newPassword || "كلمة السر غير متطابقة",
+                  })}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
-              {errors.accountType && (
-                <p className="text-red-600 text-sm">
-                  {errors.accountType.message}
-                </p>
-              )}
             </div>
+
             <div>
               {console.log(error)}
               {error && (
@@ -197,12 +179,6 @@ export default function SignUpPage() {
           </form>
         </div>
       </motion.div>
-      <p className="text-center m-4">
-        انشاء حساب كشركة؟{" "}
-        <Link to={"/company-signup"} className="text-blue-600 ">
-          انشاء حساب
-        </Link>
-      </p>
     </div>
   );
 }

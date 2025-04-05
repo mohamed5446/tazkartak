@@ -22,6 +22,7 @@ import ChangePassword from "./pages/user/ChangePassword";
 import CompanyTrips from "./pages/admin/CompanyTrips";
 import AdminInfoForm from "./pages/admin/InfoForm";
 import AdminChangePassword from "./pages/admin/ChangePassword";
+import UserTickets from "./pages/admin/UserTickets";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -127,6 +128,7 @@ function App() {
               <Route path="Companies" element={<Companies />} />
               <Route path="Users" element={<Users />} />
             </Route>
+            <Route path="user/:id" element={<UserTickets />} />
 
             <Route path=":id" element={<CompanyTrips />} />
           </Route>

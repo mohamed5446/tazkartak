@@ -52,28 +52,56 @@ export default function SearchResult() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 mb-2">إلى</label>
-              <select
-                {...register("to")}
+              <label className="block text-gray-700 mb-2">من</label>
+              <input
+                {...register("from", {
+                  required: "حدد وجهة السفر",
+                })}
                 className="w-full border border-gray-300 p-2 rounded-lg"
-              >
-                <option value="الإسكندرية">الإسكندرية</option>
-                <option value="Cairo">Cairo</option>
-                <option value="القاهرة">القاهرة</option>
-              </select>
+                type="text"
+                list="cities"
+                minLength={2}
+              />
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">من</label>
-              <select
-                {...register("from")}
+              <label className="block text-gray-700 mb-2">إلى</label>
+              <input
+                {...register("to", {
+                  required: "حدد وجهة السفر",
+                })}
                 className="w-full border border-gray-300 p-2 rounded-lg"
-              >
-                <option value="القاهرة">القاهرة</option>
-                <option value="Qena">Qena</option>
-
-                <option value="الإسكندرية">الإسكندرية</option>
-              </select>
+                list="cities"
+              />
             </div>
+            <datalist id="cities" className="overflow-hidden h-16">
+              <option>القاهرة</option>
+              <option>الجيزة</option>
+              <option>الأسكندرية</option>
+              <option>الدقهلية</option>
+              <option>البحر الأحمر</option>
+              <option>البحيرة</option>
+              <option>الفيوم</option>
+              <option>الغربية</option>
+              <option>الإسماعلية</option>
+              <option>المنوفية</option>
+              <option>المنيا</option>
+              <option>القليوبية</option>
+              <option>الوادي الجديد</option>
+              <option>السويس</option>
+              <option>اسوان</option>
+              <option>اسيوط</option>
+              <option>بني سويف</option>
+              <option>بورسعيد</option>
+              <option>دمياط</option>
+              <option>الشرقية</option>
+              <option>جنوب سيناء</option>
+              <option>كفر الشيخ</option>
+              <option>مطروح</option>
+              <option>الأقصر</option>
+              <option>قنا</option>
+              <option>شمال سيناء</option>
+              <option>سوهاج</option>
+            </datalist>
           </div>
           <div className="grid grid-cols-1  gap-4">
             <div className="mt-4">

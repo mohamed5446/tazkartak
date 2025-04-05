@@ -40,7 +40,7 @@ const Home = () => {
       search: createSearchParams({
         to: data.to,
         from: data.from,
-        date: data.date,
+        date: data.date || null,
       }).toString(),
     });
     console.log(data);
@@ -131,9 +131,7 @@ const Home = () => {
                 <label className="block text-gray-700 mb-2">تاريخ السفر</label>
                 <input
                   type="date"
-                  {...register("date", {
-                    required: "ادخل تاريخ السفر",
-                  })}
+                  {...register("date")}
                   className="w-full border border-gray-300 p-2 rounded-lg "
                 />
               </div>
