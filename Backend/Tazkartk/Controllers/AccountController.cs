@@ -201,7 +201,7 @@ namespace Tazkartk.Controllers
             var result = await _authService.ResetPassword(DTO);
                 return StatusCode((int)result.StatusCode, result);
             }
-        [Authorize(Roles = "User")]
+       // [Authorize(Roles = "User")]
         [HttpPut("Change-Password")]
             public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)
             {

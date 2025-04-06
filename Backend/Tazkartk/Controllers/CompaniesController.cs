@@ -20,6 +20,7 @@ namespace Tazkartk.Controllers
             _companyService = companyService;
         }
 
+       
         [HttpGet]
         [SwaggerOperation(Summary = "List All Companies")]
 
@@ -38,7 +39,7 @@ namespace Tazkartk.Controllers
             return Company == null ? NotFound("Company not found") : Ok(Company);  
         }
 
-        [Authorize(Roles = "Admin , Company")]
+       // [Authorize(Roles = "Admin , Company")]
         [HttpPost]
         [SwaggerOperation(Summary = "Add Company")]
 
@@ -65,6 +66,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpPut("{Id:int}")]
+       // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Edit Company")]
 
         public async Task<IActionResult>EditCompany(int Id,[FromForm]CompanyEditDTO DTO)
@@ -91,6 +93,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{id:int}")]
+       // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Delete Company")]
 
         public async Task<IActionResult>DeleteCompany(int id)

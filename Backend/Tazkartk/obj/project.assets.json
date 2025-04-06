@@ -164,6 +164,19 @@
           }
         }
       },
+      "Hangfire.Dashboard.BasicAuthorization/1.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Hangfire.AspNetCore": "1.7.2",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.1.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/Hangfire.Dashboard.BasicAuthorization.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Hangfire.Dashboard.BasicAuthorization.dll": {}
+        }
+      },
       "Hangfire.NetCore/1.8.18": {
         "type": "package",
         "dependencies": {
@@ -3090,6 +3103,18 @@
         "lib/netstandard2.0/tr-TR/Hangfire.Core.resources.dll",
         "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll",
         "lib/netstandard2.0/zh/Hangfire.Core.resources.dll"
+      ]
+    },
+    "Hangfire.Dashboard.BasicAuthorization/1.0.2": {
+      "sha512": "tlDkF4pGOA7VthYtzpmekqC9Uh5DRhemEFyK1WJhzlkn46LLVmHGtlPjADJn99EFMJH6RHBkZhJBAO9Y3MiWYA==",
+      "type": "package",
+      "path": "hangfire.dashboard.basicauthorization/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "hangfire.dashboard.basicauthorization.1.0.2.nupkg.sha512",
+        "hangfire.dashboard.basicauthorization.nuspec",
+        "lib/netstandard2.0/Hangfire.Dashboard.BasicAuthorization.dll"
       ]
     },
     "Hangfire.NetCore/1.8.18": {
@@ -8388,6 +8413,7 @@
       "CloudinaryDotNet >= 1.27.3",
       "Hangfire >= 1.8.18",
       "Hangfire.Core >= 1.8.18",
+      "Hangfire.Dashboard.BasicAuthorization >= 1.0.2",
       "Hangfire.SqlServer >= 1.8.18",
       "MailKit >= 4.10.0",
       "Microsoft.AspNet.WebApi.Cors >= 5.3.0",
@@ -8458,6 +8484,10 @@
           "Hangfire.Core": {
             "target": "Package",
             "version": "[1.8.18, )"
+          },
+          "Hangfire.Dashboard.BasicAuthorization": {
+            "target": "Package",
+            "version": "[1.0.2, )"
           },
           "Hangfire.SqlServer": {
             "target": "Package",

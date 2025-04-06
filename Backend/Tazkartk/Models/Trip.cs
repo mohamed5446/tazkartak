@@ -20,6 +20,6 @@ namespace Tazkartk.Models
         public Company company { get; set; }
         public List<Seat> seats { get; set; }
         public List<Booking>? bookings { get; set; }
-
+        
     }
 }

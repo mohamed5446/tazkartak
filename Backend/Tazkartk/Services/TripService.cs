@@ -196,15 +196,16 @@ namespace Tazkartk.Services
            return await _context.Trips
                 .Where(t => t.TripId == TripId)
                 .SelectMany(t => t.bookings)
+                .Where(b=>b.IsCanceled)
                 .Select(b => new UserDetails()
-                 {
+                {
                 Id = b.UserId,
                 FirstName = b.user.FirstName,
                 LastName = b.user.LastName,
                 Email = b.user.Email,
                 phoneNumber = b.user.PhoneNumber,
                 PhotoUrl = b.user.photo
-            })
+                })
                 .ToListAsync();
                  }
 

@@ -10,6 +10,7 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\BouncyC
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\CloudinaryDotNet.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Hangfire.AspNetCore.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Hangfire.Core.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Hangfire.Dashboard.BasicAuthorization.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Hangfire.NetCore.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Hangfire.SqlServer.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\MailKit.dll

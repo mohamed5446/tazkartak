@@ -177,3 +177,4 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\sv\Hangfire.Core.resources
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\tr-TR\Hangfire.Core.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\zh-TW\Hangfire.Core.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\zh\Hangfire.Core.resources.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\Hangfire.Dashboard.BasicAuthorization.dll

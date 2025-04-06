@@ -22,10 +22,10 @@ namespace Tazkartk.Controllers
             _userService = userService;
        
         }
-       
+        
         [HttpGet]
+      //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "List All Users")]
-
         public async Task<IActionResult>GetUsers()
         {
             var users = await _userService.GetUsers(); 
@@ -34,14 +34,15 @@ namespace Tazkartk.Controllers
 
 
         [HttpGet("{Id:int}")]
+      //  [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Get User By Id")]
-
         public async Task<IActionResult>GetUser(int Id)
         {
             var user = await _userService.GetUserById(Id);
             return user == null ? NotFound("User Not Found"):Ok(user);
         }
         [HttpPost]
+      //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Add User")]
 
         public async Task<IActionResult>CreateUser(RegisterDTO DTO)
@@ -66,6 +67,7 @@ namespace Tazkartk.Controllers
             return StatusCode((int)result.StatusCode,result);   
         }
         [HttpPost("Add-Admin")]
+       // [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Add Admin")]
 
         public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
@@ -91,6 +93,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpPut("{Id:int}")]
+       // [Authorize(Roles = "Admin , User")]
         [SwaggerOperation(Summary = "Edit User")]
 
         //[Authorize]
@@ -117,6 +120,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{Id:int}")]
+       // [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Delete User")]
 
         public async Task<IActionResult> DeleteUser(int Id)

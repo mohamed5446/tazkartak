@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Hangfire;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Hangfire.Dashboard.BasicAuthorization;
+using Hangfire.Dashboard;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,6 +137,26 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseHangfireDashboard();
-app.MapHangfireDashboard("/hangfire");
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[]
+    {
+        new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+        {
+            RequireSsl = false,
+            SslRedirect = false,
+            LoginCaseSensitive = false,
+            Users = new[]
+            {
+                new BasicAuthAuthorizationUser
+                {
+                    Login = "admin",
+                    PasswordClear = "test",
+                },
+            },
+        }),
+    },
+    IsReadOnlyFunc = (DashboardContext context) => true,
+});
+//app.MapHangfireDashboard("/hangfire");
 app.Run();

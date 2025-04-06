@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tazkartk.DTO;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 using Tazkartk.Services;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Tazkartk.Controllers
 {
     [Route("api/[controller]")]
@@ -30,6 +29,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "List All Tickets")]
 
         public async Task<IActionResult> GetBookings()
