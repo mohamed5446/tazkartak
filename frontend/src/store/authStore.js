@@ -156,7 +156,7 @@ export const useAuthStore = create(
           isLoading: false,
           role: null,
           id: null,
-          User: null,
+          User: {},
           isEmailConfirmed: false,
         });
       },

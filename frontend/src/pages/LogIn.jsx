@@ -2,15 +2,17 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
-import { Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const { isLoading, error, login, setdefaulte } = useAuthStore();
   const onSubmit = async (data) => {
@@ -69,13 +71,23 @@ export default function LoginPage() {
 
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">كلمة المرور</label>
-              <input
-                type="password"
-                {...register("password", {
-                  required: "يرجى إدخال كلمة المرور",
-                })}
-                className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-700"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "يرجى إدخال كلمة المرور",
+                  })}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-600 text-sm mt-1">
                   {errors.password.message}

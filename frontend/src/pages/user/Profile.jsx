@@ -14,8 +14,12 @@ export default function Profile() {
     await logout();
     navigate("/");
   };
+  const getUser = async () => {
+    await fetchUser(id);
+  };
   useEffect(() => {
-    fetchUser(id);
+    getUser();
+    console.log(user);
   }, [id]);
   return (
     <motion.div

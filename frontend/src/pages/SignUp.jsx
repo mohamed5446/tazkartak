@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
-import { Loader } from "lucide-react";
-import { useEffect } from "react";
+import { Eye, EyeOff, Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 export default function SignUpPage() {
   const {
     register,
@@ -11,6 +11,8 @@ export default function SignUpPage() {
     watch,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { userSignup, error, isLoading, setdefaulte } = useAuthStore();
 
@@ -111,18 +113,28 @@ export default function SignUpPage() {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-700 mb-2">كلمة المرور</label>
-                <input
-                  type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                    pattern: {
-                      value: /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/, // Requires at least one digit and one uppercase letter
-                      message:
-                        " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
-                    },
-                  })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      pattern: {
+                        value: /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/,
+                        message:
+                          " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
+                      },
+                    })}
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                  >
+                    {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-red-600 text-sm">
                     {errors.password.message}
@@ -133,15 +145,30 @@ export default function SignUpPage() {
                 <label className=" w-full block text-gray-600 mb-1">
                   تأكيد كلمة السر
                 </label>
-                <input
-                  type="password"
-                  {...register("confirmPassword", {
-                    required: "هذه الخانة مطلوبة",
-                    validate: (value) =>
-                      value === newPassword || "كلمة السر غير متطابقة",
-                  })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark"
-                />
+
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...register("confirmPassword", {
+                      required: "هذه الخانة مطلوبة",
+                      validate: (value) =>
+                        value === newPassword || "كلمة السر غير متطابقة",
+                    })}
+                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                  >
+                    {showConfirmPassword ? (
+                      <Eye size={20} />
+                    ) : (
+                      <EyeOff size={20} />
+                    )}
+                  </button>
+                </div>
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-sm">
                     {errors.confirmPassword.message}

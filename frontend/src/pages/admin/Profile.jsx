@@ -13,8 +13,11 @@ export default function AdminProfile() {
     await logout();
     navigate("/");
   };
+  const getUser = async () => {
+    await fetchUser(id);
+  };
   useEffect(() => {
-    fetchUser(id);
+    getUser(id);
   }, [id]);
   return (
     <motion.div
