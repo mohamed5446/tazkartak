@@ -28,19 +28,22 @@ export default function AdminProfile() {
     >
       <Outlet />
       <div className="bg-gray-100  shadow-lg  h-fit justify-self-start text-end">
-        <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
-          <div className=" h-fit w-full rounded-full">
-            <img className="size-18" src={User.photoUrl} alt="" />
-          </div>
+        {User && User.photoUrl && (
+          <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
+            <div className=" h-fit w-full rounded-full">
+              <img className="size-18" src={User.photoUrl} alt="" />
+            </div>
 
-          <div>
-            <p className="text-lg font-bold m-1">
-              {User.firstName} {User.lastName}
-            </p>
-            <p className="m-1 overflow-clip">{User.email}</p>
-            <p className="m-1">{User.phoneNumber}</p>
+            <div>
+              <p className="text-lg font-bold m-1">
+                {User.firstName} {User.lastName}
+              </p>
+              <p className="m-1 overflow-clip">{User.email}</p>
+              <p className="m-1">{User.phoneNumber}</p>
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="p-10 pt-0">
           <ul>
             <li>

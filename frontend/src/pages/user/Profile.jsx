@@ -31,19 +31,22 @@ export default function Profile() {
       <Outlet />
 
       <div className="bg-gray-00  shadow-lg  h-fit justify-self-start text-end">
-        <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
-          <div className=" h-fit w-full rounded-full">
-            <img className="size-18" src={user.photoUrl} alt="" />
-          </div>
+        {user && user.photoUrl && (
+          <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
+            <div className=" h-fit w-full rounded-full">
+              <img className="size-18" src={user.photoUrl} alt="" />
+            </div>
 
-          <div>
-            <p className="text-lg font-bold m-1">
-              {user.firstName} {user.lastName}
-            </p>
-            <p className="m-1 overflow-clip">{user.email}</p>
-            <p className="m-1">{user.phoneNumber}</p>
+            <div>
+              <p className="text-lg font-bold m-1">
+                {user.firstName} {user.lastName}
+              </p>
+              <p className="m-1 overflow-clip">{user.email}</p>
+              <p className="m-1">{user.phoneNumber}</p>
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="p-10 pt-0">
           <ul>
             <li>
