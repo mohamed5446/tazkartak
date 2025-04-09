@@ -50,59 +50,94 @@ export default function SearchResult() {
           onSubmit={handleSubmit(onSubmit)}
           className=" p-6 rounded-lg shadow-lg mt-4 max-w-2xl mx-auto"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2">
               <label className="block text-gray-700 mb-2">من</label>
-              <input
+              <select
                 {...register("from", {
                   required: "حدد وجهة السفر",
                 })}
-                className="w-full border border-gray-300 p-2 rounded-lg"
-                type="text"
-                list="cities"
-                minLength={2}
-              />
+                className="w-full border border-gray-300 p-2 rounded-lg text-end"
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  اختر وجهة السفر
+                </option>
+
+                <option>القاهرة</option>
+                <option>الجيزة</option>
+                <option>الأسكندرية</option>
+                <option>الدقهلية</option>
+                <option>البحر الأحمر</option>
+                <option>البحيرة</option>
+                <option>الفيوم</option>
+                <option>الغربية</option>
+                <option>الإسماعلية</option>
+                <option>المنوفية</option>
+                <option>المنيا</option>
+                <option>القليوبية</option>
+                <option>الوادي الجديد</option>
+                <option>السويس</option>
+                <option>اسوان</option>
+                <option>اسيوط</option>
+                <option>بني سويف</option>
+                <option>بورسعيد</option>
+                <option>دمياط</option>
+                <option>الشرقية</option>
+                <option>جنوب سيناء</option>
+                <option>كفر الشيخ</option>
+                <option>مطروح</option>
+                <option>الأقصر</option>
+                <option>قنا</option>
+                <option>شمال سيناء</option>
+                <option>سوهاج</option>
+              </select>
             </div>
-            <div>
+
+            <div className="w-full md:w-1/2">
               <label className="block text-gray-700 mb-2">إلى</label>
-              <input
+              <select
                 {...register("to", {
                   required: "حدد وجهة السفر",
                 })}
-                className="w-full border border-gray-300 p-2 rounded-lg"
-                list="cities"
-              />
+                className="w-full border border-gray-300 p-2 rounded-lg text-end"
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  اختر وجهة السفر
+                </option>
+
+                <option>القاهرة</option>
+                <option>الجيزة</option>
+                <option>الأسكندرية</option>
+                <option>الدقهلية</option>
+                <option>البحر الأحمر</option>
+                <option>البحيرة</option>
+                <option>الفيوم</option>
+                <option>الغربية</option>
+                <option>الإسماعلية</option>
+                <option>المنوفية</option>
+                <option>المنيا</option>
+                <option>القليوبية</option>
+                <option>الوادي الجديد</option>
+                <option>السويس</option>
+                <option>اسوان</option>
+                <option>اسيوط</option>
+                <option>بني سويف</option>
+                <option>بورسعيد</option>
+                <option>دمياط</option>
+                <option>الشرقية</option>
+                <option>جنوب سيناء</option>
+                <option>كفر الشيخ</option>
+                <option>مطروح</option>
+                <option>الأقصر</option>
+                <option>قنا</option>
+                <option>شمال سيناء</option>
+                <option>سوهاج</option>
+              </select>
             </div>
-            <datalist id="cities" className="overflow-hidden h-16">
-              <option>القاهرة</option>
-              <option>الجيزة</option>
-              <option>الأسكندرية</option>
-              <option>الدقهلية</option>
-              <option>البحر الأحمر</option>
-              <option>البحيرة</option>
-              <option>الفيوم</option>
-              <option>الغربية</option>
-              <option>الإسماعلية</option>
-              <option>المنوفية</option>
-              <option>المنيا</option>
-              <option>القليوبية</option>
-              <option>الوادي الجديد</option>
-              <option>السويس</option>
-              <option>اسوان</option>
-              <option>اسيوط</option>
-              <option>بني سويف</option>
-              <option>بورسعيد</option>
-              <option>دمياط</option>
-              <option>الشرقية</option>
-              <option>جنوب سيناء</option>
-              <option>كفر الشيخ</option>
-              <option>مطروح</option>
-              <option>الأقصر</option>
-              <option>قنا</option>
-              <option>شمال سيناء</option>
-              <option>سوهاج</option>
-            </datalist>
           </div>
+
           <div className="grid grid-cols-1  gap-4">
             <div className="mt-4">
               <label className="block text-gray-700 mb-2">تاريخ السفر</label>

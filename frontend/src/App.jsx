@@ -7,10 +7,8 @@ import Profile from "./pages/user/Profile";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import SearchResult from "./pages/SearchResult";
-import TripsManage from "./pages/companyPages/tripsManage";
 import { useAuthStore } from "./store/authStore";
 import EmailVerification from "./pages/EmailVerification";
-import CompanySignUpPage from "./pages/companyPages/CompanyRegister";
 import AdminProfile from "./pages/admin/Profile";
 import Companies from "./pages/admin/Companies";
 import Users from "./pages/admin/Users";
@@ -23,6 +21,9 @@ import CompanyTrips from "./pages/admin/CompanyTrips";
 import AdminInfoForm from "./pages/admin/InfoForm";
 import AdminChangePassword from "./pages/admin/ChangePassword";
 import UserTickets from "./pages/admin/UserTickets";
+import Companyprofile from "./pages/company/Profile";
+import CompanyChangePassword from "./pages/company/ChangePassword";
+import CompanyInfo from "./pages/company/InfoForm";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -84,20 +85,11 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
-            <Route
-              path="company-signup"
-              element={
-                <RedirectAuthenticatedUser>
-                  <CompanySignUpPage />
-                </RedirectAuthenticatedUser>
-              }
-            />
 
             <Route path="about" element={<About />} />
             <Route path="contact-us" element={<ContactUs />} />
             <Route path="search-Result" element={<SearchResult />} />
             <Route path="contact-us" element={<ContactUs />} />
-            <Route path="trips-manage" element={<TripsManage />} />
             <Route
               path="verify-email"
               element={
@@ -131,6 +123,15 @@ function App() {
             <Route path="user/:id" element={<UserTickets />} />
 
             <Route path=":id" element={<CompanyTrips />} />
+          </Route>
+          <Route path="/company" element={<AdminLayout />}>
+            <Route path="profile" element={<Companyprofile />}>
+              <Route
+                path="change-password"
+                element={<CompanyChangePassword />}
+              />
+              <Route path="" element={<CompanyInfo />} />
+            </Route>
           </Route>
           <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
