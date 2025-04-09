@@ -16,13 +16,11 @@ import AdminLayout from "./components/AdminLayout";
 import TripDetails from "./pages/TripDetails";
 import Tickets from "./pages/user/Tickets";
 import InfoForm from "./components/InfoForm";
-import ChangePassword from "./pages/user/ChangePassword";
+import ChangePassword from "./components/ChangePassword";
 import CompanyTrips from "./pages/admin/CompanyTrips";
 import AdminInfoForm from "./pages/admin/InfoForm";
-import AdminChangePassword from "./pages/admin/ChangePassword";
 import UserTickets from "./pages/admin/UserTickets";
 import Companyprofile from "./pages/company/Profile";
-import CompanyChangePassword from "./pages/company/ChangePassword";
 import CompanyInfo from "./pages/company/InfoForm";
 import ShowCompanyTrips from "./pages/company/Trips";
 const AdminPages = ({ children }) => {
@@ -117,7 +115,7 @@ function App() {
               }
             >
               <Route path="" element={<AdminInfoForm />} />
-              <Route path="change-password" element={<AdminChangePassword />} />
+              <Route path="change-password" element={<ChangePassword />} />
               <Route path="Companies" element={<Companies />} />
               <Route path="Users" element={<Users />} />
             </Route>
@@ -127,10 +125,7 @@ function App() {
           </Route>
           <Route path="/company" element={<AdminLayout />}>
             <Route path="profile" element={<Companyprofile />}>
-              <Route
-                path="change-password"
-                element={<CompanyChangePassword />}
-              />
+              <Route path="change-password" element={<ChangePassword />} />
               <Route path="" element={<CompanyInfo />} />
               <Route path="trips" element={<ShowCompanyTrips />} />
             </Route>

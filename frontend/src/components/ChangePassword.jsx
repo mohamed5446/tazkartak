@@ -1,13 +1,17 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore } from "../store/authStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function ChangePassword() {
   const [isLoading, setisLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const passwordChangedSuccessfully = () =>
     toast.success("password changed successfully", {
       position: "top-right",
@@ -74,11 +78,23 @@ export default function ChangePassword() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label className="block text-gray-600 mb-1">كلمة السر القديمة</label>
-          <input
-            type="password"
-            {...register("oldPassword", { required: "هذه الخانة مطلوبة" })}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring "
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              {...register("oldPassword", {
+                required: "يرجى إدخال كلمة المرور",
+              })}
+              className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+            >
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+          </div>
           {errors.oldPassword && (
             <p className="text-red-500 text-sm">{errors.oldPassword.message}</p>
           )}
@@ -86,18 +102,29 @@ export default function ChangePassword() {
 
         <div className="mb-4">
           <label className="block text-gray-600 mb-1">كلمة السر الجديدة</label>
-          <input
-            type="password"
-            {...register("newPassword", {
-              required: "هذه الخانة مطلوبة",
-              pattern: {
-                value: /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/, // Requires at least one digit and one uppercase letter
-                message:
-                  " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
-              },
-            })}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring "
-          />
+
+          <div className="relative">
+            <input
+              type={showNewPassword ? "text" : "password"}
+              {...register("newPassword", {
+                required: " يرجى إدخال كلمة المرورالجديدة",
+                pattern: {
+                  value: /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/, // Requires at least one digit and one uppercase letter
+                  message:
+                    " وحرف واحد على الاقل غير ابجدى(A-Z)يجب أن تحتوي كلمة المرور على رقم واحد (0-9) وحرف كبير واحد  على الأقل",
+                },
+              })}
+              className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowNewPassword((prev) => !prev)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+            >
+              {showNewPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+          </div>
           {errors.newPassword && (
             <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
           )}
@@ -107,15 +134,26 @@ export default function ChangePassword() {
           <label className="block text-gray-600 mb-1">
             تأكيد كلمة السر الجديدة
           </label>
-          <input
-            type="password"
-            {...register("confirmPassword", {
-              required: "هذه الخانة مطلوبة",
-              validate: (value) =>
-                value === newPassword || "كلمة السر غير متطابقة",
-            })}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring "
-          />
+
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              {...register("confirmPassword", {
+                required: "يرجى تاكيد كلمة المرور",
+                validate: (value) =>
+                  value === newPassword || "كلمة السر غير متطابقة",
+              })}
+              className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+            >
+              {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+          </div>
           {errors.confirmPassword && (
             <p className="text-red-500 text-sm">
               {errors.confirmPassword.message}

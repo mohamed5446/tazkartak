@@ -3,7 +3,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
@@ -35,6 +35,8 @@ export default function Companies() {
   const [company, setCompany] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modal2IsOpen, set2IsOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
 
@@ -310,13 +312,23 @@ export default function Companies() {
 
             <label className="text-end">
               كلمة المرور
-              <input
-                type="password"
-                {...register2("password", {
-                  required: "يرجى إدخال كلمة المرور",
-                })}
-                className="w-full border p-2 my-2 rounded text-end"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "يرجى إدخال كلمة المرور",
+                  })}
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                </button>
+              </div>
             </label>
 
             {errors2.password && (
