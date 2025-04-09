@@ -24,6 +24,7 @@ import UserTickets from "./pages/admin/UserTickets";
 import Companyprofile from "./pages/company/Profile";
 import CompanyChangePassword from "./pages/company/ChangePassword";
 import CompanyInfo from "./pages/company/InfoForm";
+import ShowCompanyTrips from "./pages/company/Trips";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -131,6 +132,7 @@ function App() {
                 element={<CompanyChangePassword />}
               />
               <Route path="" element={<CompanyInfo />} />
+              <Route path="trips" element={<ShowCompanyTrips />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to={"/"} />} />

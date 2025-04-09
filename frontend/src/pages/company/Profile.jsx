@@ -51,7 +51,7 @@ export default function Profile() {
               <Link
                 to={"/company/profile"}
                 className={`m-b2 hover:text-cyan-dark ${
-                  isActive("/profile") ? "font-bold " : ""
+                  isActive("/company/profile") ? "font-bold " : ""
                 }`}
               >
                 حسابى
@@ -61,14 +61,23 @@ export default function Profile() {
               <Link
                 to={"/company/profile/trips"}
                 className={`m-b2 hover:text-cyan-dark ${
-                  isActive("/profile/trips") ? "font-bold " : ""
+                  isActive("/company/profile/trips") ? "font-bold " : ""
                 }`}
               >
                 الرحلات
               </Link>
             </li>
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
-              <Link to={"change-password"}>تغيير كلمة السر</Link>
+              <Link
+                className={`m-b2 hover:text-cyan-dark ${
+                  isActive("/company/profile/change-password")
+                    ? "font-bold "
+                    : ""
+                }`}
+                to={"/company/profile/change-password"}
+              >
+                تغيير كلمة السر
+              </Link>
             </li>
             <li
               onClick={signOut}

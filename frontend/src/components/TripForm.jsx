@@ -63,13 +63,13 @@ export default function TripForm({ onSubmit }) {
         </div>
 
         {/* Availability */}
-        <div className="flex items-center">
+        <div className="hidden">
           <input
             type="checkbox"
             {...register("avaliblility")}
             className="mr-2"
           />
-          <label className="text-gray-700 font-semibold">متاح</label>
+          <label className=" text-gray-700 font-semibold">متاح</label>
         </div>
 
         {/* Class */}

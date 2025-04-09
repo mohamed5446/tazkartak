@@ -85,6 +85,7 @@ export default function CompanyTrips() {
   const addTrip = async (tripData) => {
     console.log(tripData);
     try {
+      console.log(id);
       const res = await axios.post(
         `https://tazkartk-api.runasp.net/api/Trips/${id}`,
         tripData
