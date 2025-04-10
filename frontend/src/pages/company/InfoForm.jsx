@@ -107,8 +107,8 @@ export default function InfoForm() {
           <input
             {...register("Phone", {
               pattern: {
-                value: /^[0-9]{10,11}$/,
-                message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
+                value: /^[0-9]{11}$/,
+                message: "يجب أن يكون رقم الهاتف 11 رقماً ",
               },
             })}
             className="w-full border p-2 my-2 rounded text-end"
