@@ -39,11 +39,45 @@ export default function TripForm({ onSubmit }) {
         {/* From */}
         <div>
           <label className="block text-gray-700 font-semibold">من</label>
-          <input
-            type="text"
-            {...register("from", { required: "مكان الانطلاق مطلوب" })}
-            className="w-full p-2 border rounded mt-1"
-          />
+          <select
+            {...register("from", {
+              required: "حدد وجهة السفر",
+            })}
+            className="w-full border border-gray-300 p-2 rounded-lg text-end"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              اختر وجهة السفر
+            </option>
+
+            <option>القاهرة</option>
+            <option>الجيزة</option>
+            <option>الأسكندرية</option>
+            <option>الدقهلية</option>
+            <option>البحر الأحمر</option>
+            <option>البحيرة</option>
+            <option>الفيوم</option>
+            <option>الغربية</option>
+            <option>الإسماعلية</option>
+            <option>المنوفية</option>
+            <option>المنيا</option>
+            <option>القليوبية</option>
+            <option>الوادي الجديد</option>
+            <option>السويس</option>
+            <option>اسوان</option>
+            <option>اسيوط</option>
+            <option>بني سويف</option>
+            <option>بورسعيد</option>
+            <option>دمياط</option>
+            <option>الشرقية</option>
+            <option>جنوب سيناء</option>
+            <option>كفر الشيخ</option>
+            <option>مطروح</option>
+            <option>الأقصر</option>
+            <option>قنا</option>
+            <option>شمال سيناء</option>
+            <option>سوهاج</option>
+          </select>
           {errors.from && (
             <p className="text-red-500 text-sm">{errors.from.message}</p>
           )}
@@ -52,11 +86,45 @@ export default function TripForm({ onSubmit }) {
         {/* To */}
         <div>
           <label className="block text-gray-700 font-semibold">إلى</label>
-          <input
-            type="text"
-            {...register("to", { required: "مكان الوصول مطلوب" })}
-            className="w-full p-2 border rounded mt-1"
-          />
+          <select
+            {...register("to", {
+              required: "حدد وجهة السفر",
+            })}
+            className="w-full border border-gray-300 p-2 rounded-lg text-end"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              اختر وجهة السفر
+            </option>
+
+            <option>القاهرة</option>
+            <option>الجيزة</option>
+            <option>الأسكندرية</option>
+            <option>الدقهلية</option>
+            <option>البحر الأحمر</option>
+            <option>البحيرة</option>
+            <option>الفيوم</option>
+            <option>الغربية</option>
+            <option>الإسماعلية</option>
+            <option>المنوفية</option>
+            <option>المنيا</option>
+            <option>القليوبية</option>
+            <option>الوادي الجديد</option>
+            <option>السويس</option>
+            <option>اسوان</option>
+            <option>اسيوط</option>
+            <option>بني سويف</option>
+            <option>بورسعيد</option>
+            <option>دمياط</option>
+            <option>الشرقية</option>
+            <option>جنوب سيناء</option>
+            <option>كفر الشيخ</option>
+            <option>مطروح</option>
+            <option>الأقصر</option>
+            <option>قنا</option>
+            <option>شمال سيناء</option>
+            <option>سوهاج</option>
+          </select>
           {errors.to && (
             <p className="text-red-500 text-sm">{errors.to.message}</p>
           )}

@@ -3,7 +3,7 @@ import logo from "../assets/file 1.png";
 import { useAuthStore } from "../store/authStore";
 
 export default function AdminHeader() {
-  const { user } = useAuthStore();
+  const { user, role } = useAuthStore();
   return (
     <header className="bg-cyan-dark text-white  flex justify-between">
       <nav className="flex flex-row-reverse  items-center grow-3 justify-end text-lg font-semibold ">
@@ -16,7 +16,7 @@ export default function AdminHeader() {
           </Link>
         ) : (
           <Link
-            to={"/admin/profile"}
+            to={role === "Admin" ? "/admin/profile" : "/company/profile"}
             className="bg-white font-normal text-black p-2 m-2 rounded hover:bg-gray-300"
           >
             حسابى

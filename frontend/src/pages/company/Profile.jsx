@@ -26,21 +26,24 @@ export default function Profile() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-10 flex flex-col-reverse md:flex-row md:items-start items-end justify-end gap-10"
+      className="p-2 flex flex-col-reverse xl:flex-row xl:items-start items-end justify-end gap-10"
     >
       <Outlet />
 
-      <div className="bg-gray-00  shadow-lg  h-fit justify-self-start text-end">
+      <div className="bg-gray-100  shadow-lg  h-fit justify-self-start text-end">
         {user && user.logo && (
-          <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
-            <div className=" h-fit w-full rounded-full">
-              <img className="size-18" src={user.logo} alt="" />
+          <div className="bg-cyan-dark p-6 rounded text-white flex flex-row-reverse items-center gap-4">
+            <div className="rounded overflow-hidden w-24 h-24 flex-shrink-0">
+              <img
+                className="object-cover w-full h-full"
+                src={user.logo}
+                alt="logo"
+              />
             </div>
-
-            <div>
-              <p className="text-lg font-bold m-1">{user.name}</p>
-              <p className="m-1 overflow-clip">{user.email}</p>
-              <p className="m-1">{user.phone}</p>
+            <div className="text-sm">
+              <p className="text-lg font-bold mb-1">{user.name}</p>
+              <p className="truncate">{user.email}</p>
+              <p>{user.phone}</p>
             </div>
           </div>
         )}

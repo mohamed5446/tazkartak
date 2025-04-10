@@ -12,27 +12,12 @@ export default function TripDetails() {
   const { id } = useAuthStore();
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
-  const [seatsData, setSeatData] = useState([
-    { id: 1, booked: false },
-    { id: 2, booked: false },
-    { id: 3, booked: false },
-    { id: 4, booked: false },
-    { id: 5, booked: false },
-    { id: 6, booked: false },
-    { id: 7, booked: false },
-    { id: 8, booked: false },
-    { id: 9, booked: false },
-    { id: 10, booked: false },
-    { id: 11, booked: false },
-    { id: 12, booked: false },
-    { id: 13, booked: false },
-    { id: 14, booked: false },
-    { id: 15, booked: false },
-    { id: 16, booked: false },
-    { id: 17, booked: false },
-    { id: 18, booked: false },
-    { id: 19, booked: false },
-  ]);
+  const [seatsData, setSeatData] = useState(
+    Array.from({ length: 48 }, (_, i) => ({
+      id: i + 1,
+      booked: false,
+    }))
+  );
   const handleSeatClick = (seat) => {
     if (!seat.booked) {
       setSelectedSeats((prevSelectedSeats) => {
@@ -152,7 +137,7 @@ export default function TripDetails() {
           <h2 className="text-center font-semibold mb-4">اختر رقم مقعدك</h2>
           <div className="grid grid-cols-5 justify-center items-end">
             <div className="">
-              {seatsData.slice(0, 5).map((seat) => (
+              {seatsData.slice(0, 11).map((seat) => (
                 <button
                   key={seat.id}
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
@@ -170,7 +155,7 @@ export default function TripDetails() {
               ))}
             </div>
             <div className="">
-              {seatsData.slice(5, 10).map((seat) => (
+              {seatsData.slice(11, 22).map((seat) => (
                 <button
                   key={seat.id}
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
@@ -188,7 +173,7 @@ export default function TripDetails() {
               ))}
             </div>
             <div className="">
-              {seatsData.slice(10, 11).map((seat) => (
+              {seatsData.slice(22, 23).map((seat) => (
                 <button
                   key={seat.id}
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
@@ -206,7 +191,7 @@ export default function TripDetails() {
               ))}
             </div>
             <div className="">
-              {seatsData.slice(11, 15).map((seat) => (
+              {seatsData.slice(24, 36).map((seat) => (
                 <button
                   key={seat.id}
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${
@@ -224,7 +209,7 @@ export default function TripDetails() {
               ))}
             </div>
             <div className="">
-              {seatsData.slice(15, 19).map((seat) => (
+              {seatsData.slice(36).map((seat) => (
                 <button
                   key={seat.id}
                   className={`w-10 m-1 h-10 flex items-center justify-center rounded ${

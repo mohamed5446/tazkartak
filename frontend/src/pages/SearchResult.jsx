@@ -43,12 +43,12 @@ export default function SearchResult() {
     setSearchParams({ to: data.to, from: data.from, date: data.date });
   };
   return (
-    <div className="p-6 flex flex-row w-full gap-2">
+    <div className="p-4 flex md:flex-row flex-col-reverse w-full gap-2">
       <ResultsList className="grow" trips={trips} />
-      <div className="bottom-4 left-4 m-2 w-lg  text-center h-fit shadow">
+      <div className="bottom-4 left-4   rounded-lg text-center h-fit shadow">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className=" p-6 rounded-lg shadow-lg mt-4 max-w-2xl mx-auto"
+          className=" p-4  shadow-lg  mx-auto"
         >
           <div className="flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/2">
