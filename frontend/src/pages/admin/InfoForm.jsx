@@ -54,7 +54,7 @@ export default function InfoForm() {
       await fetchUser(id);
     } catch (error) {
       setisLoading(false);
-      toast.error("somthing went wrong! please try again.");
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };
@@ -128,8 +128,8 @@ export default function InfoForm() {
             })}
             className="w-full border p-2 my-2 rounded "
           />
-          {errors.phone && (
-            <p className="text-red-500 text-sm">{errors.phone.message}</p>
+          {errors.Phone && (
+            <p className="text-red-500 text-sm">{errors.Phone.message}</p>
           )}
         </label>
 

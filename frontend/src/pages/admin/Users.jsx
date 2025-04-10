@@ -198,6 +198,7 @@ export default function Users() {
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };
@@ -290,8 +291,10 @@ export default function Users() {
                 })}
                 className="w-full border p-2 my-2 rounded"
               />
-              {errors2.name && (
-                <p className="text-red-500 text-sm">{errors2.name.message}</p>
+              {errors2.firstName && (
+                <p className="text-red-500 text-sm">
+                  {errors2.firstName.message}
+                </p>
               )}
             </label>
             <label className="text-end">
@@ -306,8 +309,10 @@ export default function Users() {
                 })}
                 className="w-full border p-2 my-2 rounded "
               />
-              {errors2.name && (
-                <p className="text-red-500 text-sm">{errors2.name.message}</p>
+              {errors2.lastName && (
+                <p className="text-red-500 text-sm">
+                  {errors2.lastName.message}
+                </p>
               )}
             </label>
 
@@ -340,8 +345,10 @@ export default function Users() {
                 })}
                 className="w-full border p-2 my-2 rounded "
               />
-              {errors2.phone && (
-                <p className="text-red-500 text-sm">{errors2.phone.message}</p>
+              {errors2.phoneNumber && (
+                <p className="text-red-500 text-sm">
+                  {errors2.phoneNumber.message}
+                </p>
               )}
             </label>
 

@@ -186,6 +186,7 @@ export default function Companies() {
       forceUpdate();
       setisLoading(false);
     } catch (error) {
+      toast.error(error.response.data.message);
       setisLoading(false);
       console.log(error);
     }
@@ -512,7 +513,7 @@ export default function Companies() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -528,7 +529,7 @@ export default function Companies() {
                     message: "البريد الإلكتروني غير صالح",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.email && (
                 <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -544,7 +545,7 @@ export default function Companies() {
                     message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.phone && (
                 <p className="text-red-500 text-sm">{errors.phone.message}</p>
