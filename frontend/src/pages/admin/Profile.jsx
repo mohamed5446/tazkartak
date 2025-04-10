@@ -29,17 +29,20 @@ export default function AdminProfile() {
       <Outlet />
       <div className="bg-gray-100  shadow-lg  h-fit justify-self-start text-end">
         {User && User.photoUrl && (
-          <div className="bg-cyan-dark p-10 rounded-lg rounded-b-none  text-white flex flex-row-reverse  gap-2">
-            <div className=" h-fit w-full rounded-full">
-              <img className="size-18" src={User.photoUrl} alt="" />
+          <div className="bg-cyan-dark p-6 rounded text-white flex flex-row-reverse items-center gap-4">
+            <div className="rounded overflow-hidden w-24 h-24 flex-shrink-0">
+              <img
+                className="object-cover w-full h-full"
+                src={User.photoUrl}
+                alt="logo"
+              />
             </div>
-
-            <div>
-              <p className="text-lg font-bold m-1">
+            <div className="text-sm">
+              <p className="text-lg font-bold mb-1">
                 {User.firstName} {User.lastName}
               </p>
-              <p className="m-1 overflow-clip">{User.email}</p>
-              <p className="m-1">{User.phoneNumber}</p>
+              <p className="truncate">{User.email}</p>
+              <p>{User.phoneNumber}</p>
             </div>
           </div>
         )}
@@ -57,10 +60,22 @@ export default function AdminProfile() {
             </li>
 
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
-              <Link to={"/admin/profile/companies"}>الشركات</Link>
+              <Link
+                className={`block mb-2 hover:text-cyan-dark
+                   ${isActive("/admin/profile/companies") ? "font-bold " : ""}`}
+                to={"/admin/profile/companies"}
+              >
+                الشركات
+              </Link>
             </li>
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
-              <Link to={"/admin/profile/users"}>المستخدمين</Link>
+              <Link
+                className={`block mb-2 hover:text-cyan-dark
+                   ${isActive("/admin/profile/users") ? "font-bold " : ""}`}
+                to={"/admin/profile/users"}
+              >
+                المستخدمين
+              </Link>
             </li>
             <li className="mb-2 hover:text-cyan-dark cursor-pointer">
               <Link

@@ -34,6 +34,7 @@ export default function Users() {
   const [isLoading, setisLoading] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -43,7 +44,10 @@ export default function Users() {
     handleSubmit: handleSubmit2,
     formState: { errors: errors2 },
     setValue: setValue2,
+    watch,
   } = useForm();
+  const newPassword = watch("password");
+
   const editeSuccessfull = () =>
     toast.success("edited successfully", {
       position: "top-right",
@@ -114,6 +118,7 @@ export default function Users() {
     setValue2("phoneNumber", "");
     setValue2("lastName", "");
     setValue2("password", "");
+    setValue2("confirmPassword", "");
     set2IsOpen(true);
   }
 
@@ -198,19 +203,19 @@ export default function Users() {
   };
   return (
     <div className="flex flex-col m-4 items-end  gap-4 p-2 w-full xl:w-2/4">
-      <div className="flex items-center  justify-between w-full  ">
-        <div>
+      <div className="flex items-center  justify-between w-full gap-2  ">
+        <div className="flex flex-col md:flex-row">
           <button
             type="button"
             onClick={() => openModal2("user")}
-            className="bg-cyan-dark mr-2 text-white p-4 rounded shadow-lg hover:cursor-pointer"
+            className="bg-cyan-dark mr-2 text-white p-2 rounded shadow-lg hover:cursor-pointer"
           >
             اضافة مستخدم
           </button>
           <button
             type="button"
             onClick={() => openModal2("admin")}
-            className="bg-cyan-dark text-white p-4 rounded shadow-lg hover:cursor-pointer"
+            className="bg-cyan-dark text-white p-2 rounded shadow-lg hover:cursor-pointer"
           >
             اضافة ادمن
           </button>
@@ -221,35 +226,36 @@ export default function Users() {
       {users.map((user) => (
         <div
           key={user.id}
-          className="flex bg-white p-4 rounded-lg shadow-lg w-full justify-between  items-center"
+          className="flex  bg-white p-2 rounded-lg shadow-lg w-full justify-between items-center"
         >
           <div>
             <button
               onClick={() => openModal(user)}
-              className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
+              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
             >
               تعديل
             </button>
             <button
               onClick={() => navigate(`/admin/user/${user.id}`)}
-              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
+              className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
             >
               عرض التذاكر
             </button>
           </div>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-col-reverse md:flex-row gap-2 items-center p-2">
             <h3 className="text-lg font-bold mt-2 text-center">
               {user.firstName} {user.lastName}
             </h3>
             <img
               src={user.photoUrl}
               alt="user image"
-              className="rounded-lg h-28"
+              className="rounded-lg  size-16 xl:size-28"
             />
           </div>
         </div>
       ))}
+
       <Modal
         isOpen={modal2IsOpen}
         onRequestClose={closeModal2}
@@ -282,7 +288,7 @@ export default function Users() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded"
               />
               {errors2.name && (
                 <p className="text-red-500 text-sm">{errors2.name.message}</p>
@@ -298,7 +304,7 @@ export default function Users() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors2.name && (
                 <p className="text-red-500 text-sm">{errors2.name.message}</p>
@@ -315,7 +321,7 @@ export default function Users() {
                     message: "البريد الإلكتروني غير صالح",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors2.email && (
                 <p className="text-red-500 text-sm">{errors2.email.message}</p>
@@ -332,7 +338,7 @@ export default function Users() {
                     message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors2.phone && (
                 <p className="text-red-500 text-sm">{errors2.phone.message}</p>
@@ -341,13 +347,13 @@ export default function Users() {
 
             <label className="text-end">
               كلمة المرور
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", {
+                  {...register2("password", {
                     required: "يرجى إدخال كلمة المرور",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                  className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
                 />
 
                 <button
@@ -359,10 +365,45 @@ export default function Users() {
                 </button>
               </div>
             </label>
-
             {errors2.password && (
-              <p className="text-red-600 text-sm">{errors2.password.message}</p>
+              <p className="text-red-600 text-sm text-end">
+                {errors2.password.message}
+              </p>
             )}
+            <div className="md:col-span-2 mt-2">
+              <label className=" w-full block  mb-1 text-end">
+                تأكيد كلمة السر
+              </label>
+
+              <div className="relative mb-2">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...register2("confirmPassword", {
+                    required: "هذه الخانة مطلوبة",
+                    validate: (value) =>
+                      value === newPassword || "كلمة السر غير متطابقة",
+                  })}
+                  className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showConfirmPassword ? (
+                    <Eye size={20} />
+                  ) : (
+                    <EyeOff size={20} />
+                  )}
+                </button>
+              </div>
+              {errors2.confirmPassword && (
+                <p className="text-red-500 text-sm text-end">
+                  {errors2.confirmPassword.message}
+                </p>
+              )}
+            </div>
 
             {/* <input
               {...register("logo")}
@@ -427,7 +468,7 @@ export default function Users() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.firstName && (
                 <p className="text-red-500 text-sm">
@@ -447,7 +488,7 @@ export default function Users() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.lastName && (
                 <p className="text-red-500 text-sm">
@@ -465,7 +506,7 @@ export default function Users() {
                     message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors.phone && (
                 <p className="text-red-500 text-sm">{errors.phone.message}</p>

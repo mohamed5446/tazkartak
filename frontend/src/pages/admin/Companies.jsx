@@ -36,6 +36,7 @@ export default function Companies() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modal2IsOpen, set2IsOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
@@ -62,7 +63,9 @@ export default function Companies() {
     handleSubmit: handleSubmit2,
     formState: { errors: errors2 },
     setValue: setValue2,
+    watch,
   } = useForm();
+  const newPassword = watch("password");
   useEffect(() => {
     try {
       fetchCompanies();
@@ -116,6 +119,8 @@ export default function Companies() {
     setValue2("phone", "");
     setValue2("city", "");
     setValue2("street", "");
+    setValue2("password", "");
+    setValue2("confirmPassword", "");
     set2IsOpen(true);
   }
 
@@ -166,6 +171,7 @@ export default function Companies() {
     //   console.log(pair[0] + ", " + pair[1]);
     // }
     try {
+      console.log(data);
       setisLoading(true);
       const JWTToken = Cookies.get("token");
       console.log(JWTToken);
@@ -200,7 +206,7 @@ export default function Companies() {
     }
   };
   return (
-    <div className="flex flex-col m-4 items-end w-full xl:w-1/2 gap-4 p-2">
+    <div className="flex flex-col  items-end w-full  xl:w-1/2 gap-4 ">
       <div className="flex items-center  justify-between w-full ">
         <button
           onClick={openModal2}
@@ -213,7 +219,7 @@ export default function Companies() {
       {companies.map((company) => (
         <div
           key={company.id}
-          className="flex bg-white p-4 rounded-lg shadow-lg w-full justify-between items-center"
+          className="flex  bg-white p-2 rounded-lg shadow-lg w-full justify-between items-center"
         >
           <div>
             <button
@@ -224,18 +230,22 @@ export default function Companies() {
             </button>
             <button
               onClick={() => navigate(`/admin/${company.id}`)}
-              className="bg-cyan-dark text-white p-2 px-6 m-2 rounded hover:cursor-pointer"
+              className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
             >
               عرض الرحلات
             </button>
           </div>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-col-reverse md:flex-row gap-2 items-center p-2">
             <h3 className="text-lg font-bold mt-2 text-center">
               {" "}
               {company.name}
             </h3>
-            <img src={company.logo} alt="Go Bus" className="rounded-lg h-28" />
+            <img
+              src={company.logo}
+              alt="Go Bus"
+              className="rounded-lg  size-16 xl:h-28"
+            />
           </div>
         </div>
       ))}
@@ -269,7 +279,7 @@ export default function Companies() {
                     message: "يجب أن يكون الاسم 3 أحرف على الأقل",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors2.name && (
                 <p className="text-red-500 text-sm">{errors2.name.message}</p>
@@ -286,7 +296,7 @@ export default function Companies() {
                     message: "البريد الإلكتروني غير صالح",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded"
               />
               {errors2.email && (
                 <p className="text-red-500 text-sm">{errors2.email.message}</p>
@@ -303,7 +313,7 @@ export default function Companies() {
                     message: "يجب أن يكون رقم الهاتف من 10 إلى 11 رقماً",
                   },
                 })}
-                className="w-full border p-2 my-2 rounded text-end"
+                className="w-full border p-2 my-2 rounded "
               />
               {errors2.phone && (
                 <p className="text-red-500 text-sm">{errors2.phone.message}</p>
@@ -312,13 +322,13 @@ export default function Companies() {
 
             <label className="text-end">
               كلمة المرور
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", {
+                  {...register2("password", {
                     required: "يرجى إدخال كلمة المرور",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                  className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
                 />
 
                 <button
@@ -329,11 +339,47 @@ export default function Companies() {
                   {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
+              {errors2.password && (
+                <p className="text-red-500 text-sm">
+                  {errors2.password.message}
+                </p>
+              )}
             </label>
+            <div className="md:col-span-2">
+              <label className=" w-full block text-end mb-1">
+                تأكيد كلمة السر
+              </label>
 
-            {errors2.password && (
-              <p className="text-red-600 text-sm">{errors2.password.message}</p>
-            )}
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...register2("confirmPassword", {
+                    required: "هذه الخانة مطلوبة",
+                    validate: (value) =>
+                      value === newPassword || "كلمة السر غير متطابقة",
+                  })}
+                  className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showConfirmPassword ? (
+                    <Eye size={20} />
+                  ) : (
+                    <EyeOff size={20} />
+                  )}
+                </button>
+              </div>
+              {errors2.confirmPassword && (
+                <p className="text-red-500 text-end text-sm">
+                  {errors2.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
             <div>
               <h3 className="text-xl text-end mb-2 text-cyan-dark ">العنوان</h3>
               <div className="flex gap-1.5">
@@ -345,10 +391,37 @@ export default function Companies() {
                     })}
                     className="w-full border p-2 my-2 rounded text-end"
                   >
-                    <option value="">اختر المدينة</option>
-                    <option value="المعادي">المعادي</option>
-                    <option value="string">المعادي</option>
-                    <option value="الزمالك">الزمالك</option>
+                    <option value="" disabled>
+                      اختر المدينة
+                    </option>
+
+                    <option>القاهرة</option>
+                    <option>الجيزة</option>
+                    <option>الأسكندرية</option>
+                    <option>الدقهلية</option>
+                    <option>البحر الأحمر</option>
+                    <option>البحيرة</option>
+                    <option>الفيوم</option>
+                    <option>الغربية</option>
+                    <option>الإسماعلية</option>
+                    <option>المنوفية</option>
+                    <option>المنيا</option>
+                    <option>القليوبية</option>
+                    <option>الوادي الجديد</option>
+                    <option>السويس</option>
+                    <option>اسوان</option>
+                    <option>اسيوط</option>
+                    <option>بني سويف</option>
+                    <option>بورسعيد</option>
+                    <option>دمياط</option>
+                    <option>الشرقية</option>
+                    <option>جنوب سيناء</option>
+                    <option>كفر الشيخ</option>
+                    <option>مطروح</option>
+                    <option>الأقصر</option>
+                    <option>قنا</option>
+                    <option>شمال سيناء</option>
+                    <option>سوهاج</option>
                   </select>
                   {errors2.city && (
                     <p className="text-red-500 text-sm">
@@ -489,10 +562,37 @@ export default function Companies() {
                     })}
                     className="w-full border p-2 my-2 rounded text-end"
                   >
-                    <option value="">اختر المدينة</option>
-                    <option value="المعادي">المعادي</option>
-                    <option value="string">المعادي</option>
-                    <option value="الزمالك">الزمالك</option>
+                    <option value="" disabled>
+                      اختر المدينة
+                    </option>
+
+                    <option>القاهرة</option>
+                    <option>الجيزة</option>
+                    <option>الأسكندرية</option>
+                    <option>الدقهلية</option>
+                    <option>البحر الأحمر</option>
+                    <option>البحيرة</option>
+                    <option>الفيوم</option>
+                    <option>الغربية</option>
+                    <option>الإسماعلية</option>
+                    <option>المنوفية</option>
+                    <option>المنيا</option>
+                    <option>القليوبية</option>
+                    <option>الوادي الجديد</option>
+                    <option>السويس</option>
+                    <option>اسوان</option>
+                    <option>اسيوط</option>
+                    <option>بني سويف</option>
+                    <option>بورسعيد</option>
+                    <option>دمياط</option>
+                    <option>الشرقية</option>
+                    <option>جنوب سيناء</option>
+                    <option>كفر الشيخ</option>
+                    <option>مطروح</option>
+                    <option>الأقصر</option>
+                    <option>قنا</option>
+                    <option>شمال سيناء</option>
+                    <option>سوهاج</option>
                   </select>
                   {errors.city && (
                     <p className="text-red-500 text-sm">
