@@ -152,6 +152,7 @@ export default function Users() {
       setisLoading(false);
       editeSuccessfull();
     } catch (error) {
+      toast.error(error.response.data.message);
       setisLoading(false);
       console.log(error);
     }
@@ -164,10 +165,12 @@ export default function Users() {
         `https://tazkartk-api.runasp.net/api/Users/${user.id}`
       );
       closeModal();
+      toast.success(response.data.message);
       console.log(response);
       setisDeleting(false);
       forceUpdate();
     } catch (error) {
+      toast.error(error.response.data.message);
       setisDeleting(false);
       console.log(error);
     }

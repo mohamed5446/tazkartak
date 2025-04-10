@@ -156,6 +156,7 @@ export default function Companies() {
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };
@@ -200,9 +201,11 @@ export default function Companies() {
       closeModal();
       setisDeleting(false);
       console.log(response);
+      toast.success(response.data.message);
       forceUpdate();
     } catch (error) {
       setisDeleting(false);
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };
