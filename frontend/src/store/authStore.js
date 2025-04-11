@@ -148,8 +148,12 @@ export const useAuthStore = create(
           );
           set({
             isAuthenticated: true,
-            isLoading: false,
+            user: response.data.email,
             error: null,
+            isLoading: false,
+            role: response.data.roles[0],
+            id: response.data.id,
+            isEmailConfirmed: response.data.isEmailConfirmed,
           });
           return response.data;
         } catch (error) {
