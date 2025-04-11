@@ -50,7 +50,7 @@ export default function SearchResult() {
           onSubmit={handleSubmit(onSubmit)}
           className=" p-4  shadow-lg  mx-auto"
         >
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row-reverse gap-4">
             <div className="w-full md:w-1/2">
               <label className="block text-gray-700 mb-2">من</label>
               <select

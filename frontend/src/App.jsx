@@ -23,6 +23,8 @@ import UserTickets from "./pages/admin/UserTickets";
 import Companyprofile from "./pages/company/Profile";
 import CompanyInfo from "./pages/company/InfoForm";
 import ShowCompanyTrips from "./pages/company/Trips";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -97,6 +99,9 @@ function App() {
                 </RedirectAuthenticatedUser>
               }
             />
+            <Route path="forget-password" element={<ForgetPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+
             <Route path="profile" element={<Profile />}>
               <Route path="" element={<InfoForm />} />
               <Route path="tickets" element={<Tickets />} />

@@ -111,7 +111,7 @@ export default function LoginPage() {
             </motion.button>
           </form>
           <div className="flex flex-row-reverse pt-4">
-            <Link className="text-blue-600" to={"/signup"}>
+            <Link className="text-blue-600" to={"/forget-password"}>
               {" "}
               نسيت كلمة المرور؟
             </Link>

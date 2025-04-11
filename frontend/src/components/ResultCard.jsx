@@ -23,13 +23,14 @@ export default function ResultsList({ trips }) {
                   <p className="text-lg font-semibold text-center">السعر</p>
                   <p className="text-center">{trip.price} جنية</p>
                 </div>
-                <div className="w-full">
-                  <p className="text-lg font-semibold text-center">من</p>
-                  <p className="text-center">{trip.from} </p>
-                </div>
+
                 <div className="w-full">
                   <p className="text-lg font-semibold text-center">الى</p>
                   <p className="text-center text-lg ">{trip.to} </p>
+                </div>
+                <div className="w-full">
+                  <p className="text-lg font-semibold text-center">من</p>
+                  <p className="text-center">{trip.from} </p>
                 </div>
               </div>
               <div className="flex flex-row w-full gap-2">

@@ -4,10 +4,12 @@ import axios from "axios";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { Loader } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router";
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
   const { id } = useAuthStore();
   const [loadingStates, setisLoading] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
   const getTickets = async () => {
     try {
       const res = await axios.get(
@@ -33,6 +35,10 @@ export default function Tickets() {
     });
   useEffect(() => {
     getTickets();
+    const success = searchParams.get("success");
+    console.log(typeof success);
+    if (success == "true") toast.success("تم حجز التذكرة بنجاح");
+    else if (success === "false") toast.error("حدث خطأ اثناء الحجز");
   }, []);
   const cancelTicket = async (bookingId) => {
     try {

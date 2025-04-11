@@ -47,6 +47,29 @@ export const useAuthStore = create(
           console.error("Error fetching user data:", error);
         }
       },
+      setuser: async (data) => {
+        set({ user: data });
+      },
+      resetPassword: async (data) => {
+        try {
+          const response = await axios.put(
+            "https://tazkartk-api.runasp.net/api/Account/Reset-Password",
+            data
+          );
+          set({
+            isAuthenticated: true,
+            user: response.data.email,
+            error: null,
+            isLoading: false,
+            role: response.data.roles[0],
+            id: response.data.id,
+            isEmailConfirmed: response.data.isEmailConfirmed,
+          });
+          return response.data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
       userSignup: async (data) => {
         set({ isLoading: true, error: null });
         try {

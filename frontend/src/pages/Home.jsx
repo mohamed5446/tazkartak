@@ -65,7 +65,7 @@ const Home = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="bg-white p-6 rounded-lg shadow-lg mt-4 max-w-lg mx-auto"
           >
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row-reverse gap-4">
               <div className="w-full md:w-1/2">
                 <div>
                   <label className="block text-gray-700 mb-2">من</label>
@@ -201,7 +201,7 @@ const Home = () => {
       {/* Bus Companies Section */}
       <div className="mt-8">
         <h2 className="text-xl font-bold text-center">الشركات</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
           <CompanyCard Children={companies} />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAuthStore } from "../store/authStore";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
+import { TbSteeringWheel } from "react-icons/tb";
 
 export default function TripDetails() {
   const { id: tripId } = useParams();
@@ -82,39 +83,43 @@ export default function TripDetails() {
   return (
     <div className="flex flex-col h-full m-4 gap-2 pb-6">
       <p className="text-end m-4 text-2xl  font-semibold">بيانات الرحلة</p>
-      <div className=" flex w-full justify-around flex-row-reverse">
-        <div>
-          <p className="text-lg font-semibold text-center">الشركة</p>
-          <p className="text-center">{trip.companyName}</p>
+
+      <div className=" flex w-full flex-col   xl:flex-row-reverse gap-4">
+        <div className="flex flex-row w-full gap-2">
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">الشركة</p>
+            <p className="text-center">{trip.companyName}</p>
+          </div>
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">السعر</p>
+            <p className="text-center">{trip.price} جنية</p>
+          </div>
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">الى</p>
+            <p className="text-center text-lg ">{trip.to} </p>
+          </div>
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">من</p>
+            <p className="text-center">{trip.from} </p>
+          </div>
         </div>
-        <div>
-          <p className="text-lg font-semibold text-center">السعر</p>
-          <p className="text-center">{trip.price} جنية </p>
-        </div>
-        <div>
-          <p className="text-lg font-semibold text-center">من</p>
-          <p className="text-center">{trip.from} </p>
-        </div>
-        <div>
-          <p className="text-lg font-semibold text-center">الى</p>
-          <p className="text-cente text-lg ">{trip.to} </p>
-        </div>
-        <div>
-          <p className="text-lg font-semibold text-center">ميعاد المغادرة</p>
-          <p className="text-center">{trip.departureDay}</p>
-          <p className="text-center">{trip.departureDate}</p>
-        </div>
-        <div>
-          <p className="text-lg font-semibold text-center">توقيت الوصول</p>
-          <p className="text-center">{trip.arrivalDay}</p>
-          <p className="text-center">{trip.arrivalTime}</p>
-        </div>
-        <div>
-          <p className="text-lg font-semibold text-center">مكان التحرك</p>
-          <p className="text-center">{trip.location}</p>
+        <div className="flex flex-row w-full gap-2">
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">ميعاد المغادرة</p>
+            <p className="text-center">{trip.departureDay}</p>
+            <p className="text-center">{trip.departureDate}</p>
+          </div>
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">توقيت الوصول</p>
+            <p className="text-center">{trip.arrivalDay}</p>
+            <p className="text-center">{trip.arrivalTime}</p>
+          </div>
+          <div className="w-full">
+            <p className="text-lg font-semibold text-center">مكان التحرك</p>
+            <p className="text-center">{trip.location}</p>
+          </div>
         </div>
       </div>
-
       <div className="flex flex-col justify-around items-center md:flex-row gap-2 h-full">
         {/* Seat Legend */}
         <div className="bg-white p-4 rounded shadow-md w-xs h-fit ">
@@ -135,8 +140,11 @@ export default function TripDetails() {
         {/* Seat Selection UI */}
         <div className="bg-white p-6 rounded shadow-md ">
           <h2 className="text-center font-semibold mb-4">اختر رقم مقعدك</h2>
+
           <div className="grid grid-cols-5 justify-center items-end">
             <div className="">
+              <TbSteeringWheel className="size-10 m-1" />
+
               {seatsData.slice(0, 11).map((seat) => (
                 <button
                   key={seat.id}
