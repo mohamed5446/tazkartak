@@ -5,9 +5,9 @@ namespace Tazkartk.DTO
     public class TicketDTO
     {
         public int BookingId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string Name { get; set; }
-        public string userEmail { get; set; }
+        public string? userEmail { get; set; }
         public string CompanyName { get; set; }
         public string DepartureDate { get; set; }
         public string DepartureTime { get; set; }

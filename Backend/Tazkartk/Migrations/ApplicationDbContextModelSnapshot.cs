@@ -259,13 +259,22 @@ namespace Tazkartk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
 
+                    b.Property<string>("GuestFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("bit");
 
                     b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("tripId")
@@ -496,9 +505,7 @@ namespace Tazkartk.Migrations
                 {
                     b.HasOne("Tazkartk.Models.User", "user")
                         .WithMany("books")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.HasOne("Tazkartk.Models.Trip", "trip")
                         .WithMany("bookings")

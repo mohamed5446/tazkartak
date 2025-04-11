@@ -32,7 +32,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Error happened"
+                    message = "حدث خطا"
                 };
             }
             if (trip.seats == null)
@@ -54,7 +54,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "already booked"
+                    message = "بعض المقاعد التي اخترتها محجوزة بالفعل"
                 };
             }
             int count = DTO.SeatsNumbers.Count;
@@ -74,7 +74,7 @@ namespace Tazkartk.Services
             {
                 Success = false,
                 StatusCode = StatusCode.BadRequest,
-                message = "Error happened"
+                message = "حدث  خطا"
             };
         }
 
@@ -160,13 +160,23 @@ namespace Tazkartk.Services
                     message = "Booking not found",
                 };
             }
+            var DepartureTime = booking.trip.Date.ToDateTime(booking.trip.Time);
+            if(DateTime.Now>DepartureTime.AddHours(-2))
+            {
+                return new ApiResponse<bool>
+                {
+                    Success= false,
+                    StatusCode= StatusCode.BadRequest,
+                    message="لا يمكن الغاء الرحلة باقي اقل من ساعتان"
+                };
+            }
             if (booking.IsCanceled==true)
             {
                 return new ApiResponse<bool>
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Already Canceled"
+                    message = "لقد قمت بالغاء الحجز"
                 };
             }
             var count = booking.seats.Count();
@@ -178,7 +188,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "refunding wallet payments is not available right now"
+                    message = "الاسترداد عبر المحفظة غير متاح في الوقت الحالي"
                 };
             }
             if (paymemnt == null || paymemnt.IsRefunded)
@@ -187,7 +197,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Error happened"
+                    message = "حدث خطا"
                 };
             }
             var trxId = paymemnt.PaymentIntentId;
@@ -199,7 +209,7 @@ namespace Tazkartk.Services
                 {
                     Success = true,
                     StatusCode = StatusCode.Ok,
-                    message = "refund requested please wait "
+                    message = "تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. "
                 };
             }
             catch (Exception ex)
@@ -237,17 +247,30 @@ namespace Tazkartk.Services
 
 
 
-        public async Task<bool> DeleteBooking(int Id)
+        public async Task<ApiResponse<string>> DeleteBooking(int Id)
         {
-            var booking = await _context.bookings.FindAsync(Id);
-            if (booking == null)
+            var booking = await _context.bookings.Include(b=>b.seats).FirstOrDefaultAsync(b=>b.BookingId==Id);
+            var payment=await _context.Payments.FindAsync(booking.PaymentId);
+            if (booking == null||payment==null)
             {
-                return false;
+                return new ApiResponse<string>()
+                {
+                Success=false,
+                StatusCode=StatusCode.BadRequest,
+                message="حدث خطا"
+                };
             }
-
+            _context.Seats.RemoveRange(booking.seats);
+            _context.Payments.Remove(payment);
             _context.bookings.Remove(booking);
+            
             await _context.SaveChangesAsync();
-            return true;
+            return new ApiResponse<string>
+            {
+                Success=true,
+                StatusCode=StatusCode.Ok,
+                message="تم حذف الحجز"
+            };
         }
 
 
@@ -273,9 +296,9 @@ namespace Tazkartk.Services
                    //Date = b.trip.Date.ToString("dddd yyyy-MM-dd", arabicCulture),
                    //Time = b.trip.Time.ToString("HH:mm tt",arabicCulture),
                    BookingId = b.BookingId,
-                   Name = b.user.FirstName,
+                   Name = b.user.FirstName!=null?b.user.FirstName+" "+b.user.LastName:b.GuestFirstName+" "+b.GuestLastName,
                    IsCanceled = b.IsCanceled,
-                   SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
+                  SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
                }).ToListAsync();
         }
 
@@ -305,6 +328,61 @@ namespace Tazkartk.Services
                    //ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
                    //ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
                    //ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
+                   BookingId = b.BookingId,
+                   Name = b.user.FirstName,
+                   IsCanceled = b.IsCanceled,
+                  SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
+               }).ToListAsync();
+        }
+        public async Task<List<TicketDTO>?> GetUserCanceledTicekts(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
+            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
+            return await _context.bookings.Where(b => b.UserId == userId && b.IsCanceled).AsNoTracking()
+               .Select(b => new TicketDTO
+               {
+                   UserId = b.user.Id,
+                   userEmail = b.user.Email,
+                   CompanyName = b.trip.company.Name,
+                   From = b.trip.From,
+                   To = b.trip.To,
+                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
+                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
+                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
+                   BookingId = b.BookingId,
+                   Name = b.user.FirstName,
+                   IsCanceled = b.IsCanceled,
+                   SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
+               }).ToListAsync();
+        }
+        public async Task<List<TicketDTO>?> GetUserHistoryTickets(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+            var arabicCulture = new CultureInfo("ar-SA");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
+            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var nowTime = TimeOnly.FromDateTime(DateTime.Now);
+
+            return await _context.bookings.Where(b => b.UserId == userId && (b.trip.Date<today||b.trip.Date==today&&b.trip.Time<nowTime))
+                .AsNoTracking()
+               .Select(b => new TicketDTO
+               {
+                   UserId = b.user.Id,
+                   userEmail = b.user.Email,
+                   CompanyName = b.trip.company.Name,
+                   From = b.trip.From,
+                   To = b.trip.To,
+                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
+                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
+                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
                    BookingId = b.BookingId,
                    Name = b.user.FirstName,
                    IsCanceled = b.IsCanceled,
@@ -350,6 +428,107 @@ namespace Tazkartk.Services
                 IsCanceled = b.IsCanceled,
                 SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
             }).FirstOrDefaultAsync();
+        }
+        public async Task<ApiResponse<string?>> BookForGuest(int TripId,PassengerDTO DTO)
+        {
+            string FirstName = DTO.FirstName;
+            string LastName = DTO.LastName;
+            string PhoneNumber = DTO.PhoneNumber;
+            var seats = DTO.Seats;
+            var Trip=await _context.Trips.Include(t=>t.seats).FirstOrDefaultAsync(t=>t.TripId==TripId);
+            if (Trip == null)
+            {
+                return new ApiResponse<string?>
+                {
+                    Success=false,
+                    StatusCode=StatusCode.BadRequest,
+                    message="الرحلة غير موجودة"
+                };
+            }
+            if (Trip.seats == null)
+            {
+                Trip.seats = new List<Seat>();
+            }
+            var isbooked = DTO.Seats.Any(number => Trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
+            if (isbooked)
+            {
+                return new ApiResponse<string?>
+                {
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "بعض المقاعد التي اخترتها محجوزة بالفعل"
+                };
+            }
+                
+            int count = DTO.Seats.Count;
+            double total = Trip.Price * count;
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var booking = new Booking
+                {
+                    trip = Trip,
+                    tripId = Trip.TripId,
+                    GuestFirstName=DTO.FirstName,
+                    GuestLastName=DTO.LastName,
+                    GuestPhoneNumber=DTO.PhoneNumber,
+                    IsCanceled = false,
+                    seats = new List<Seat>()
+                };
+
+                await _context.bookings.AddAsync(booking);
+                await _context.SaveChangesAsync();
+
+                var Seats = DTO.Seats.Select(seatNumber => new Seat
+                {
+                    Number = seatNumber,
+                    State = SeatState.Booked,
+                    booking = booking,
+                    trip = Trip,
+                    bookingId = booking.BookingId,
+                    TripId = Trip.TripId
+                }).ToList();
+
+                booking.seats.AddRange(Seats);
+                await _context.SaveChangesAsync();
+                var payment = new Payment
+                {
+                    Method = "Cash",
+                    Date = DateTime.UtcNow,
+                    amount = total,
+                    bookingId = booking.BookingId,
+                    IsRefunded = false,
+                    booking = booking,
+                    PaymentIntentId = "Cash_" + new Random().Next(100000, 999999).ToString(),
+                };
+
+
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
+                booking.payment = payment;
+                booking.PaymentId = payment.PaymentId;
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return new ApiResponse<string?>
+                {
+                    Success = true,
+                    StatusCode = StatusCode.Ok,
+                    message = "تم الحجز بنجاح"
+                };
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                 return new ApiResponse<string?>
+            {
+                Success = false,
+                StatusCode = StatusCode.BadRequest,
+                message = "حدث  خطا"
+            };
+            }
+
         }
     }
     }

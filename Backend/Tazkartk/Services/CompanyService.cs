@@ -34,7 +34,7 @@ namespace Tazkartk.Services
                 {
                     Success=false,
                     StatusCode=StatusCode.BadRequest,
-                    message="Invalid Email Address"
+                    message= "البريد الإلكتروني غير صالح"
                 };
             }
 
@@ -44,7 +44,7 @@ namespace Tazkartk.Services
                 {
                     StatusCode=StatusCode.BadRequest,
                     Success = false,
-                    message = "Email is used ",                  
+                    message = "البريد الإلكتروني مستخدم من قبل",                  
                 };
             }
             var Company = new Company
@@ -66,7 +66,7 @@ namespace Tazkartk.Services
                 {
                     StatusCode=StatusCode.BadRequest,
                     Success = false,
-                    message = result.Errors.FirstOrDefault()?.Description ?? "error happened "
+                    message = result.Errors.FirstOrDefault()?.Description ?? "حدث خطا "
                 };
             }
             await _AccountManager.AddToRoleAsync(Company, Roles.Company.ToString());
@@ -74,7 +74,7 @@ namespace Tazkartk.Services
             {
                 StatusCode=StatusCode.Created,
                 Success=true,
-                message="Company Created ",
+                message="تمت اضافة الشركة بنجاح ",
                 Data=new CompanyDTO
                 {
                     Id = Company.Id,
@@ -129,7 +129,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "company not found "
+                    message = "الشركة غير موجودة "
                 };
             }
             if (!string.IsNullOrEmpty(DTO.PhoneNumber))
@@ -182,7 +182,7 @@ namespace Tazkartk.Services
                 {
                     StatusCode=StatusCode.Ok,
                     Success = true,
-                    message = "Edit succeed",
+                    message = "تم التعديل بنجاح",
                     Data = new CompanyDTO
                     {
                         Id = Company.Id,
@@ -204,7 +204,7 @@ namespace Tazkartk.Services
                 return new ApiResponse<CompanyDTO?>
                 {
                     Success = false,
-                    message = "Company Not found",
+                    message = "الشركة غير موجودة",
                     StatusCode = StatusCode.BadRequest
                 };
             }
@@ -228,7 +228,7 @@ namespace Tazkartk.Services
                 return new ApiResponse<CompanyDTO?>
                 {
                     Success = false,
-                    message = "Can't Delete Company with existing Trips Delete trips manually ",
+                    message = "يجب أولاً حذف الرحلات الخاصة بهذه الشركة قبل أن تتمكن من حذفها ",
                     StatusCode = StatusCode.BadRequest
                    
                 };
@@ -238,14 +238,22 @@ namespace Tazkartk.Services
                 return new ApiResponse<CompanyDTO?>
                 {
                     Success = true,
-                    message = "Company Deleted Successfully ",
+                    message = "تم حذف الشركة بنجاح ",
                     StatusCode=StatusCode.Ok
                     
                 };   
         }
 
-
-
+        public async Task changeLogos()
+        {
+            var comps = await _context.Companies.ToListAsync();
+            foreach(var comp in comps)
+            {
+                comp.Logo = _conf["Logo"];
+            }
+            await _context.SaveChangesAsync();  
+        }
+       
 
 
 

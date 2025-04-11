@@ -12,5 +12,6 @@ namespace Tazkartk.Interfaces
         Task<CompanyDTO?> GetCompanyById(int id);
         Task<ApiResponse<CompanyDTO?>> EditCompany(int Id, CompanyEditDTO DTO);
         Task <ApiResponse<CompanyDTO>>DeleteCompany(int CompanyId);
+        Task changeLogos();
     }
 }

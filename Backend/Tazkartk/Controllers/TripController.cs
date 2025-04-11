@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.Design;
 using System.Text.Json;
+using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.Response;
 using Tazkartk.DTO.TripDTOs;
+using Tazkartk.Email;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 using Tazkartk.Models.Enums;
@@ -22,7 +24,32 @@ namespace Tazkartk.Controllers
             _TripService = TripService;
 
         }
+        //[HttpPut("mark_unavailable/{TripId}")]
+        //public async Task<IActionResult> MarkUnavailable(int TripId)
+        //{
+        // var changed=await _TripService.MarkTripUnavailable(TripId);
+        //    if (changed) return Ok();
+        //    else return BadRequest();
+        //}
+        //[HttpPost("Send trip reminder email({TripId}")]
+        //public async Task<IActionResult> SendReminder(int TripId)
+        //{
+        //    var users = await _TripService.SendReminderEmail(TripId);
+        //    return Ok();
+        //}
+        //[HttpDelete("{TripId}/delete jobs")]
+        //public async Task<IActionResult>DeleteScheduled(int TripId)
+        //{
+        //    _TripService.DeleteExistingJobs(TripId);
+        //    return Ok();
+        //}
 
+        [HttpGet("{TripId}/Bookings")]
+        public async Task<IActionResult>GetTripBookings(int TripId)
+        {
+            var trips=await _TripService.GetBookingsByTrip(TripId);
+            return Ok(trips);
+        }
         [HttpGet("{TripId}/Passengers")]
         [SwaggerOperation(Summary = "List Trip Passengers")]
 
@@ -31,7 +58,12 @@ namespace Tazkartk.Controllers
             var users = await _TripService.GetPassengers(TripId);
             return Ok(users);
         }
-
+        [HttpPost("{TripId}/Send_Email")]
+        public async Task<IActionResult> SendEmail(int TripId,EmailDTO DTO)
+        {
+            var result=await _TripService.send_Email_to_passengers(TripId, DTO);
+            return Ok(result);
+        }
         [HttpGet]
        // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "List All Trips")]

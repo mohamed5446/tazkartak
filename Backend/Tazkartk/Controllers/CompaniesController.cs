@@ -21,6 +21,13 @@ namespace Tazkartk.Controllers
         }
 
        
+        //[HttpDelete("del")]
+        //public async Task<IActionResult>ChangeLogos()
+        //{
+        //    await _companyService.changeLogos();
+        //    return Ok();
+        //}
+        
         [HttpGet]
         [SwaggerOperation(Summary = "List All Companies")]
 

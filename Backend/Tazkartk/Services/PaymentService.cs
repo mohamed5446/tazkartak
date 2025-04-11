@@ -25,7 +25,7 @@ namespace Tazkartk.Services
             return await _context.Payments.AsNoTracking().Select( p =>new PaymentDTO
             {
                 UserId=p.booking.UserId,
-                UserName=p.booking.user.FirstName,
+                UserName=p.booking.user.FirstName!=null?p.booking.user.FirstName:p.booking.GuestFirstName,
                 UserEmail=p.booking.user.Email,
                 PaymentId=p.PaymentId,
                 PaymentIntentId=p.PaymentIntentId,

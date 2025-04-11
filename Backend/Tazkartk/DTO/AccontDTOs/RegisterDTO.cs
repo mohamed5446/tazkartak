@@ -10,7 +10,7 @@ namespace Tazkartk.DTO.AccontDTOs
         public string LastName { get; set; }
         [Required, EmailAddress]
         public string Email { get; set; }
-        [Required, RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Invalid Phone Number")]
+        [Required, RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "يرجى إدخال رقم هاتف صحيح")]
         public string PhoneNumber { get; set; }
         [Required]
         public string Password { get; set; }

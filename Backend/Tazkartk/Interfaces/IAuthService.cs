@@ -12,7 +12,7 @@ namespace Tazkartk.Interfaces
         Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO DTO);
        // Task<AuthModel> CompanyLoginAsync(LoginDTO DTO);
         Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp);
-        Task<AuthModel> SendOTP(string Email);
+        Task<AuthModel> SendOTP(string Email,bool IsReset=false);
         Task<AuthModel> ForgetPassword(string Email);
         Task<AuthModel> ResetPassword(ResetPasswordDTO DTO);
         Task<AuthModel> ChangePassword(ChangePasswordDTO DTO);

@@ -6,9 +6,9 @@ namespace Tazkartk.DTO.AccontDTOs
     {
         [Required, EmailAddress]
         public string email { get; set; }
-        [Required, RegularExpression(@"^\d{6}$", ErrorMessage = "OTP is 6 digits ")]
+        [Required, RegularExpression(@"^\d{6}$", ErrorMessage = "رمز التحقق يجب أن يكون مكونًا من 6 أرقام ")]
 
-        public string token { get; set; }
+        public string OTP { get; set; }
         [Required]
 
         public string newPasswod { get; set; }

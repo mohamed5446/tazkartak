@@ -6,7 +6,7 @@
         public int PaymentId {  get; set; }
         public bool IsRefunded { get; set; }
 
-        public int UserId {  get; set; }
+        public int? UserId {  get; set; }
         public String UserName {  get; set; }
         public string UserEmail {  get; set; }
 

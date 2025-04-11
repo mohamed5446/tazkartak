@@ -18,15 +18,17 @@ namespace Tazkartk.Services
         private readonly IPhotoService _photoService;
         private readonly UserManager<Account> _AccountManager;
         private readonly IConfiguration _conf;
+        private readonly IBookingService _bookingService;
         const string Pattern = "^[^@]+@[^@]+\\.[^@]+$";
 
 
-        public UserService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf)
+        public UserService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IBookingService bookingService)
         {
             _context = context;
             _photoService = photoService;
             _AccountManager = accountManager;
             _conf = conf;
+            _bookingService = bookingService;
         }
         public async Task<List<UserDetails>> GetUsers()
         {
@@ -70,7 +72,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             var response = new ApiResponse<UserDetails?>();
@@ -80,7 +82,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "User already exist "
+                    message = "البريد الإلكتروني مستخدم من قبل "
                 };
             }
             var user = new User
@@ -100,7 +102,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = result.Errors.FirstOrDefault()?.Description ?? "Failed to create user "
+                    message = result.Errors.FirstOrDefault()?.Description ?? "حدث خطا "
                 };
             }
             await _AccountManager.AddToRoleAsync(user, role.ToString());
@@ -108,7 +110,7 @@ namespace Tazkartk.Services
             {
                 Success = true,
                 StatusCode=StatusCode.Created,
-                message = "User Created Successfully",
+                message = "تم اضافة مستخدم بنجاح",
                 Data = new UserDetails
                 {
                     Id = user.Id,
@@ -130,7 +132,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.NotFound,
-                    message = "user not found "
+                    message = "المستخدم غير موجود "
                 };
             }
             if (!string.IsNullOrEmpty(DTO.firstName))
@@ -182,7 +184,7 @@ namespace Tazkartk.Services
             {
                 Success = true,
                 StatusCode = StatusCode.Ok,
-                message = "User Editted Successfully ",
+                message = "تم التعديل بنجاح ",
                 Data = new UserDetails
                 {
                     Id = user.Id,
@@ -197,7 +199,7 @@ namespace Tazkartk.Services
         
         public async Task<ApiResponse<string?>> DeleteUser(int Id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            var user = await _context.Users.Include(u=>u.books).FirstOrDefaultAsync(u => u.Id == Id);
             if(user==null)
             {
                 return new ApiResponse<string?>
@@ -206,6 +208,26 @@ namespace Tazkartk.Services
                     StatusCode = StatusCode.BadRequest,
                     message = "user not found",
                 };
+            }
+            if(user.books!=null && user.books.Any(b=>!b.IsCanceled))
+            {
+                return new ApiResponse<string?>
+                {
+                    Success=false,
+                    StatusCode=StatusCode.BadRequest,
+                    message= "لا يمكن حذف المستخدم لأن لديه حجوزات حالية"
+                };
+            }
+            var tickets = user.books.Where(b => b.IsCanceled);
+            if (tickets!=null)  
+            {
+                foreach (var ticket in tickets)
+                {
+                    if (ticket.IsCanceled)
+                    {
+                        _bookingService.DeleteBooking(ticket.BookingId);
+                    }
+                }
             }
               if (!string.IsNullOrEmpty(user.photo))
                 {
@@ -227,7 +249,7 @@ namespace Tazkartk.Services
                 {
                     StatusCode=StatusCode.Ok,
                     Success = true,
-                    message = "User Deleted Successfully "
+                    message = "تم حذف المستخدم بنجاح "
                 };
 
             }

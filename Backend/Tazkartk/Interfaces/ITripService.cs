@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.Response;
 using Tazkartk.DTO.TripDTOs;
@@ -16,8 +17,11 @@ namespace Tazkartk.Interfaces
         Task<ApiResponse<string?>> DeleteTrip(int Id);
         Task<IEnumerable<TripDtos>> GetCompanyTrips(int companyId);
         Task<IEnumerable<TripDtos>> Search(string? from, string? to, DateOnly? date);
-        Task<IEnumerable<UserDetails>> GetPassengers(int TripId);
+        Task<IEnumerable<PassengerDetailsDTO>> GetPassengers(int TripId);
         Task<bool>SendReminderEmail(int TripId);
-
+        Task<bool> MarkTripUnavailable(int TripId);
+        Task<bool> send_Email_to_passengers(int TripId, EmailDTO DTO);
+        Task<List<TicketDTO>?> GetBookingsByTrip(int TripId);
+        void DeleteExistingJobs(int tripId);
     }
 }

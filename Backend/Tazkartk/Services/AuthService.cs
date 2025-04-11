@@ -46,7 +46,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
@@ -55,7 +55,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Email is already registered",
+                    message = "البريد الإلكتروني مستخدم من قبل",
                 };
             }
 
@@ -110,7 +110,7 @@ namespace Tazkartk.Services
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
                     IsEmailConfirmed = Account.EmailConfirmed,
-                    message = "please confirm your email",
+                    message = "يرجى تأكيد البريد الإلكتروني أولاً",
                 };
             }
 
@@ -151,7 +151,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Email is already Registered"
+                    message = "البريد الإلكتروني مستخدم من قبل"
                 };
             }
             var Company = new Company
@@ -186,7 +186,7 @@ namespace Tazkartk.Services
 
 
         #region OTP
-        public async Task<AuthModel> SendOTP(string email)
+        public async Task<AuthModel> SendOTP(string email,bool IsReset=false)
         {
             bool match = Regex.IsMatch(email, Pattern);
             if (!match)
@@ -195,7 +195,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             var account = await _AccountManager.FindByEmailAsync(email);
@@ -205,7 +205,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "account not found "
+                    message = "لم يتم العثور على حساب "
                 };
             }
             if (account.OTP != null && account.OTPExpiry > DateTime.UtcNow)
@@ -214,7 +214,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "there is already otp sent"
+                    message = "يوجد رمز تحقق تم إرساله بالفعل"
                 };
             }
             string OTP = GenerateOTP();
@@ -225,7 +225,8 @@ namespace Tazkartk.Services
             {
                 Email = account.Email,
                 Subject = "Your OTP",
-                Body = $"Your OTP is {OTP}"
+                Body =  IsReset==false? EmailBodyHelper.GetVerificationEmailBody(OTP)
+                          :EmailBodyHelper.GetResetPasswordEmailBody(OTP)    // $"Your OTP is {OTP}"
             };
             await _EmailService.SendEmail(emailrequest);
             return new AuthModel
@@ -233,7 +234,7 @@ namespace Tazkartk.Services
                 Success = true,
                 StatusCode = StatusCode.Ok,
                 Email = account.Email,
-                message = "OTP has been sent to your email"
+                message = "تم إرسال رمز التحقق إلى بريدك الإلكتروني"
             };
         }
         public async Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp)
@@ -245,7 +246,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             Account? Account = await _AccountManager.FindByEmailAsync(Email);
@@ -254,7 +255,7 @@ namespace Tazkartk.Services
                 return new AuthModel {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "User not found"
+                    message = "المستخدم غير موجود"
                 };
             }
             if (Account.EmailConfirmed)
@@ -273,7 +274,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid OTP",
+                    message = "رمز التحقق غير صالح أو منتهي الصلاحية",
                     IsEmailConfirmed = Account.EmailConfirmed };
             }
 
@@ -317,7 +318,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             var Account = await _AccountManager.FindByEmailAsync(Email);
@@ -327,11 +328,11 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "user not found"
+                    message = "المستخدم غير موجود"
                 };
             }
 
-            return await SendOTP(Email);
+            return await SendOTP(Email,true);
         }
         public async Task<AuthModel> ChangePassword(ChangePasswordDTO DTO)
         {
@@ -342,7 +343,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "user not found"
+                    message = "المستخدم غير موجود"
                 };
             }
             var checkpassword = await _AccountManager.CheckPasswordAsync(Account, DTO.OldPassword);
@@ -352,7 +353,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "wrong password "
+                    message = "كلمة المرور غير صحيحة "
                 };
             }
             var result = await _AccountManager.ChangePasswordAsync(Account, DTO.OldPassword, DTO.newPassword);
@@ -374,7 +375,7 @@ namespace Tazkartk.Services
             {
                 Success = true,
                 StatusCode = StatusCode.Ok,
-                message = "Password changed successfully" 
+                message = "تم تغيير كلمة المرور بنجاح"
             };
         }
     
@@ -387,7 +388,7 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
+                    message = "البريد الإلكتروني غير صالح"
                 };
             }
             var Account = await _AccountManager.FindByEmailAsync(DTO.email);
@@ -397,19 +398,34 @@ namespace Tazkartk.Services
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest, 
-                    message = "user not found"
+                    message = "المستخدم غير موجود"
                 };
             }
-            if (DTO.token == null || DTO.token != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
+            if (DTO.OTP == null || DTO.OTP != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
                 return new AuthModel 
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest, 
-                    message = "Invalid OTP"
+                    message = "رمز التحقق غير صحيح أو منتهي الصلاحية"
                 };
             }
-            string NewHashedPassword = _AccountManager.PasswordHasher.HashPassword(Account, DTO.newPasswod);
+            var passwordValidators = _AccountManager.PasswordValidators;
+            foreach (var validator in passwordValidators)
+            {
+                var validationResult = await validator.ValidateAsync(_AccountManager, Account, DTO.newPasswod);
+                if (!validationResult.Succeeded)
+                {
+                    var errors = string.Join(" , ", validationResult.Errors.Select(e => e.Description));
+                    return new AuthModel
+                    {
+                        Success = false,
+                        StatusCode = StatusCode.BadRequest,
+                        message = errors
+                    };
+                }
+            }
+                string NewHashedPassword = _AccountManager.PasswordHasher.HashPassword(Account, DTO.newPasswod);
             Account.PasswordHash = NewHashedPassword;
             Account.OTP = null;
             Account.OTPExpiry = null;
@@ -428,11 +444,20 @@ namespace Tazkartk.Services
                     message = errors
                 };
             }
+            var JwtSecurityToken = await CreateJwtToken(Account);
             return new AuthModel
             { 
                 Success=true,
                 StatusCode=StatusCode.Ok,
-                message = "Password Changed successfully"
+                message = "تم تغيير كلمة المرور بنجاح",
+                Id=Account.Id,
+                Email=Account.Email,
+                IsEmailConfirmed=Account.EmailConfirmed,
+                ExpiresOn = JwtSecurityToken.ValidTo,
+                isAuthenticated = true,
+                Roles = await _AccountManager.GetRolesAsync(Account),
+                Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
+
             };
             //var result=await _UserManager.ResetPasswordAsync(user, token, NewPassword);
         }
