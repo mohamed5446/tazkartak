@@ -11,6 +11,7 @@ namespace Tazkartk.Interfaces
     public interface ITripService
     {
         Task<IEnumerable<TripDtos>> GetTrips();
+        Task<IEnumerable<TripDtos>> GetAvailableTrips();
         Task<ApiResponse<TripDtos?>> AddTrip(int companyId,CreateTripDtos DTO);
         Task<TripDTO?> GetTripById(int id);
         Task<ApiResponse<TripDtos?>> EditTrip(int Id, UpdateTripDtos DTO);
@@ -23,5 +24,7 @@ namespace Tazkartk.Interfaces
         Task<bool> send_Email_to_passengers(int TripId, EmailDTO DTO);
         Task<List<TicketDTO>?> GetBookingsByTrip(int TripId);
         void DeleteExistingJobs(int tripId);
+        Task<bool> transfer(int TripId);
+
     }
 }

@@ -26,7 +26,7 @@ namespace Tazkartk.Services
         {
             var user = await _context.Users.FindAsync(DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
-            if (trip == null || user == null)
+            if (trip == null || user == null||trip.Avaliblility==false)
             {
                 return new ApiResponse<string?>
                 {
@@ -35,6 +35,7 @@ namespace Tazkartk.Services
                     message = "حدث خطا"
                 };
             }
+           
             if (trip.seats == null)
             {
                 trip.seats = new List<Seat>();
@@ -160,6 +161,7 @@ namespace Tazkartk.Services
                     message = "Booking not found",
                 };
             }
+
             var DepartureTime = booking.trip.Date.ToDateTime(booking.trip.Time);
             if(DateTime.Now>DepartureTime.AddHours(-2))
             {
@@ -249,28 +251,31 @@ namespace Tazkartk.Services
 
         public async Task<ApiResponse<string>> DeleteBooking(int Id)
         {
-            var booking = await _context.bookings.Include(b=>b.seats).FirstOrDefaultAsync(b=>b.BookingId==Id);
-            var payment=await _context.Payments.FindAsync(booking.PaymentId);
-            if (booking == null||payment==null)
+            try
+            {
+                var booking = await _context.bookings.Include(b => b.seats).FirstOrDefaultAsync(b => b.BookingId == Id);
+                var payment = await _context.Payments.FindAsync(booking.PaymentId);
+                _context.Seats.RemoveRange(booking.seats);
+                _context.Payments.Remove(payment);
+                _context.bookings.Remove(booking);
+
+                await _context.SaveChangesAsync();
+                return new ApiResponse<string>
+                {
+                    Success = true,
+                    StatusCode = StatusCode.Ok,
+                    message = "تم حذف الحجز"
+                };
+            }
+            catch (Exception ex)
             {
                 return new ApiResponse<string>()
                 {
-                Success=false,
-                StatusCode=StatusCode.BadRequest,
-                message="حدث خطا"
+                    Success = false,
+                    StatusCode = StatusCode.BadRequest,
+                    message = "حدث خطا"
                 };
             }
-            _context.Seats.RemoveRange(booking.seats);
-            _context.Payments.Remove(payment);
-            _context.bookings.Remove(booking);
-            
-            await _context.SaveChangesAsync();
-            return new ApiResponse<string>
-            {
-                Success=true,
-                StatusCode=StatusCode.Ok,
-                message="تم حذف الحجز"
-            };
         }
 
 
@@ -436,13 +441,13 @@ namespace Tazkartk.Services
             string PhoneNumber = DTO.PhoneNumber;
             var seats = DTO.Seats;
             var Trip=await _context.Trips.Include(t=>t.seats).FirstOrDefaultAsync(t=>t.TripId==TripId);
-            if (Trip == null)
+            if (Trip == null||Trip.Avaliblility==false)
             {
                 return new ApiResponse<string?>
                 {
                     Success=false,
                     StatusCode=StatusCode.BadRequest,
-                    message="الرحلة غير موجودة"
+                    message="حدث خطا"
                 };
             }
             if (Trip.seats == null)
@@ -494,7 +499,7 @@ namespace Tazkartk.Services
                 var payment = new Payment
                 {
                     Method = "Cash",
-                    Date = DateTime.UtcNow,
+                    Date = DateTime.Now,
                     amount = total,
                     bookingId = booking.BookingId,
                     IsRefunded = false,
@@ -530,6 +535,7 @@ namespace Tazkartk.Services
             }
 
         }
+      //  public async Task<ApiResponse<string?>>Cancel
     }
     }
 

@@ -100,5 +100,13 @@ namespace Tazkartk.Services
             }
             return(bool) responseData.success == true;
         }
+        //public async Task<bool>CreateAccessToken()
+        //{
+        //    var clientId = "1026934";// _paymob.ClientId;
+        //    var clientSecret = _paymob.SecretKey;
+        //    var username = "Tazkartk";
+        //    var password = "Tazkartk&&1234";
+        //    var environmentUrl = "stagingpayouts.paymobsolutions.com/api/secure/";
+        //}
     }
 }

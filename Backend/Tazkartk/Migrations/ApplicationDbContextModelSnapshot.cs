@@ -357,9 +357,6 @@ namespace Tazkartk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TripId"));
 
-                    b.Property<DateTime>("ArriveTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("Avaliblility")
                         .HasColumnType("bit");
 
@@ -408,6 +405,9 @@ namespace Tazkartk.Migrations
             modelBuilder.Entity("Tazkartk.Models.Company", b =>
                 {
                     b.HasBaseType("Tazkartk.Models.Account");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
                     b.Property<string>("City")
                         .IsRequired()

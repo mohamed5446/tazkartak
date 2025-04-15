@@ -26,9 +26,9 @@ namespace Tazkartk.Mappers
 
                 DepartureTime= RightToLeftCharacter + TripModel.Time.ToString("hh:mm tt", arabicCulture),
                 DepartureDay=TripModel.Date.ToString("dddd", arabicCulture),
-                ArrivalDate= TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
-                ArrivalTime= RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
-                ArrivalDay=TripModel.ArriveTime.ToString("dddd", arabicCulture),
+                //ArrivalDate= TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
+                //ArrivalTime= RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
+                //ArrivalDay=TripModel.ArriveTime.ToString("dddd", arabicCulture),
 
                 //DepartureTime = new DTO.Date
                 //{
@@ -64,7 +64,7 @@ namespace Tazkartk.Mappers
                 Class = TripDtos.Class,
                 Date = TripDtos.Date,
                 Time = TripDtos.Time,
-                ArriveTime = TripDtos.ArriveTime,
+              //  ArriveTime = TripDtos.ArriveTime,
                 Location = TripDtos.Location,
                 Price = TripDtos.Price
 

@@ -20,22 +20,7 @@ namespace Tazkartk.Controllers
             _BookingService = bookingService;
             _UserService = userService;
         }
-        [HttpPost("{TripId}/guest")]
-        [SwaggerOperation(Summary = "offline booking")]
-
-        public async Task<IActionResult>OfflineBooking(int TripId,PassengerDTO DTO)
-        {
-            var result=await _BookingService.BookForGuest(TripId, DTO);
-            return StatusCode((int)result.StatusCode, result);
-        }
-        [HttpGet("GetTicket{Id}")]
-        [SwaggerOperation(Summary = "Get Ticket By Id")]
-        public async Task<IActionResult> GetTicket(int Id)
-        {
-            var users = await _BookingService.GetTicket(Id);
-            return Ok(users);
-        }
-
+        
         [HttpGet]
         //[Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "List All Tickets")]
@@ -55,15 +40,6 @@ namespace Tazkartk.Controllers
             var bookings = await _BookingService.GetUserBookings(userId);
             return bookings==null ? NotFound() : Ok(bookings);
         }
-        //[HttpGet("/api/{userId}/Canceled")]
-        //[SwaggerOperation(Summary = "List User Canceled Tickets")]
-        //public async Task<IActionResult> GetUserCanceledTickets(int userId)
-        //{
-        //    var user = await _UserService.GetUserById(userId);
-        //    if (user == null) return NotFound();
-        //    var bookings = await _BookingService.GetUserCanceledTicekts(userId);
-        //    return bookings == null ? NotFound() : Ok(bookings);
-        //}
         [HttpGet("/api/{userId}/History")]
         [SwaggerOperation(Summary = " User History")]
         public async Task<IActionResult> GetUserHistory(int userId)
@@ -73,7 +49,31 @@ namespace Tazkartk.Controllers
             var bookings = await _BookingService.GetUserHistoryTickets(userId);
             return bookings == null ? NotFound() : Ok(bookings);
         }
+        [HttpGet("GetTicket{Id}")]
+        [SwaggerOperation(Summary = "Get Ticket By Id")]
+        public async Task<IActionResult> GetTicket(int Id)
+        {
+            var users = await _BookingService.GetTicket(Id);
+            return Ok(users);
+        }
+        //[HttpGet("/api/{userId}/Canceled")]
+        //[SwaggerOperation(Summary = "List User Canceled Tickets")]
+        //public async Task<IActionResult> GetUserCanceledTickets(int userId)
+        //{
+        //    var user = await _UserService.GetUserById(userId);
+        //    if (user == null) return NotFound();
+        //    var bookings = await _BookingService.GetUserCanceledTicekts(userId);
+        //    return bookings == null ? NotFound() : Ok(bookings);
+        //}
 
+        [HttpPost("{TripId}/guest")]
+        [SwaggerOperation(Summary = "offline booking")]
+
+        public async Task<IActionResult> OfflineBooking(int TripId, PassengerDTO DTO)
+        {
+            var result = await _BookingService.BookForGuest(TripId, DTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost]
         [SwaggerOperation(Summary = "Book a Ticket")]
 

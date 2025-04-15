@@ -8,7 +8,7 @@
         public string? Class { get; set; }
         public DateOnly? Date { get; set; }
         public TimeOnly? Time { get; set; }
-        public DateTime? ArriveTime { get; set; }
+      //  public DateTime? ArriveTime { get; set; }
         public string? Location { get; set; }
         public double? Price { get; set; }
     }

@@ -10,9 +10,9 @@
         public string DepartureDate { get; set; }
         public string DepartureTime { get; set; }
         public string DepartureDay { get; set; }
-        public string ArrivalDate { get; set; }
-        public string ArrivalTime { get; set; }
-        public string ArrivalDay { get; set; }
+        //public string ArrivalDate { get; set; }
+        //public string ArrivalTime { get; set; }
+        //public string ArrivalDay { get; set; }
         //public Date DepartureTime { get; set; }
         //public Date ArriveTime { get; set; }
         public string Location { get; set; }

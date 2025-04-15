@@ -31,6 +31,13 @@ namespace Tazkartk.Services
             if (trips == null) return null;
             return trips;
         }
+        public async Task<IEnumerable<TripDtos>> GetAvailableTrips()
+        {
+            var trips = await _context.Trips.Where(t=>t.Avaliblility==true).Include(t => t.company).AsNoTracking().Select(trip => trip.ToTripDto()).ToListAsync();
+            if (trips == null) return null;
+            return trips;
+        }
+
         public async Task<TripDTO?> GetTripById(int id)
         {
             var arabicCulture = new CultureInfo("ar-SA");
@@ -45,9 +52,9 @@ namespace Tazkartk.Services
                 DepartureDate = TripModel.Date.ToString("yyyy-MM-dd", arabicCulture),
                 DepartureTime = RightToLeftCharacter + TripModel.Time.ToString("hh:mm tt", arabicCulture),
                 DepartureDay = TripModel.Date.ToString("dddd", arabicCulture),
-                ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
-                ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
-                ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
+               // ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
+               // ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
+               // ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
                 Avaliblility = TripModel.Avaliblility,
                 Location = TripModel.Location,
                 Price = TripModel.Price,
@@ -76,15 +83,24 @@ namespace Tazkartk.Services
                 //  return BadRequest("company not found");
             }
             var DepartureTime = TripDtos.Date.ToDateTime(TripDtos.Time);
-            if (TripDtos.ArriveTime <= DepartureTime)
+           if(DepartureTime<=DateTime.Now)
             {
                 return new ApiResponse<TripDtos?>
                 {
                     Success = false,
                     StatusCode = StatusCode.BadRequest,
-                    message = "يجب أن يكون وقت الوصول بعد وقت المغادرة"
+                    message = "حدث خطا"
                 };
-            }
+            }    
+            //if (TripDtos.ArriveTime <= DepartureTime)
+            //{
+            //    return new ApiResponse<TripDtos?>
+            //    {
+            //        Success = false,
+            //        StatusCode = StatusCode.BadRequest,
+            //        message = "يجب أن يكون وقت الوصول بعد وقت المغادرة"
+            //    };
+            //}
             if (TripDtos.Price <= 0)
             {
                 return new ApiResponse<TripDtos?>
@@ -105,6 +121,7 @@ namespace Tazkartk.Services
             var reminderTime = DepartureDateTime.AddHours(-2);
             var jobId = BackgroundJob.Schedule<TripService>(service => service.SendReminderEmail(Tripmodel.TripId), reminderTime);
             var job2Id = BackgroundJob.Schedule<TripService>(service => service.MarkTripUnavailable(Tripmodel.TripId), DepartureDateTime);
+            var job3Id = BackgroundJob.Schedule<TripService>(service => service.transfer(Tripmodel.TripId), DepartureDateTime);
 
 
             //_backgroundJobClient.Schedule<EmailService>(
@@ -193,7 +210,7 @@ namespace Tazkartk.Services
             if (UpdateDtos.Price.HasValue) Tripmodel.Price = UpdateDtos.Price.Value;
             if (UpdateDtos.Date.HasValue) Tripmodel.Date = UpdateDtos.Date.Value;
             if (UpdateDtos.Time.HasValue) Tripmodel.Time = UpdateDtos.Time.Value;
-            if (UpdateDtos.ArriveTime.HasValue) Tripmodel.ArriveTime = UpdateDtos.ArriveTime.Value;
+           // if (UpdateDtos.ArriveTime.HasValue) Tripmodel.ArriveTime = UpdateDtos.ArriveTime.Value;
             if (UpdateDtos.Avaliblility.HasValue) Tripmodel.Avaliblility = UpdateDtos.Avaliblility.Value;
             
             // if (UpdateDtos.TripCode.HasValue) Tripmodel.TripCode = UpdateDtos.TripCode.Value;
@@ -212,12 +229,12 @@ namespace Tazkartk.Services
         {
             var company = await _context.Companies.Include(c => c.Trips).AsNoTracking().FirstOrDefaultAsync(c => c.Id == companyId);
             if (company == null) return null;
-            var trips = company.Trips.Select(trip => trip.ToTripDto());
+            var trips = company.Trips.Where(t=>t.Avaliblility==true).Select(trip => trip.ToTripDto());
             return trips;
         }
 
         public async Task<IEnumerable<TripDtos>?> Search(string? from, string? to, DateOnly? date)
-        {
+            {
             var trips = await _context.Trips.Include(t => t.company).Where(s => (from == null || s.From == from) && (to == null || s.To == to) && (date == null || s.Date == date) && s.Avaliblility)
                .AsNoTracking()
                .Select(s => s.ToTripDto()).
@@ -233,6 +250,7 @@ namespace Tazkartk.Services
                  .Where(b => !b.IsCanceled)
                  .Select(b => new PassengerDetailsDTO()
                  {
+                     TicketId=b.BookingId,
                      Id = b.user.Id,
                      FirstName = b.user.FirstName != null ? b.user.FirstName : b.GuestFirstName,
                      LastName = b.user.LastName != null ? b.user.LastName : b.GuestLastName,
@@ -360,7 +378,25 @@ namespace Tazkartk.Services
             }
 
         }
+        // get company balance 
+        // plus to the company balance
+        // after every one of them book a seat 
+        // after each trip i should transfer all of the amount to a company
+        // then all the money should be in my balance 
+        // wait so i need to
 
+        public async Task<bool> transfer(int TripId)
+        {
+            var trip = await _context.Trips.Include(t => t.seats).Include(t => t.company).FirstOrDefaultAsync(t => t.TripId == TripId);
+            if (trip == null) throw new Exception("error happened");
+            var count = trip.seats.Where(s => s.State == SeatState.Booked).Count();
+            var total = count * trip.Price;
+            var company = trip.company;
+            company.Balance+=total;
+            _context.Companies.Update(company);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
 

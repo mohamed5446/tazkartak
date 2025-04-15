@@ -97,7 +97,9 @@ namespace Tazkartk.Services
                 Street = c.Street,
                 Email = c.Email,
                 Logo = c.Logo,
-                Phone = c.PhoneNumber
+                Phone = c.PhoneNumber,
+                Balance=c.Balance
+                
             }).ToListAsync();
         }
 
@@ -117,6 +119,7 @@ namespace Tazkartk.Services
                 City = Company.City,
                 Street = Company.Street,
                 Logo = Company.Logo,
+                Balance=Company.Balance
             };
             
         }

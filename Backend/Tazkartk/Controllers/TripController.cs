@@ -22,8 +22,15 @@ namespace Tazkartk.Controllers
         public TripsController(ITripService TripService)
         {
             _TripService = TripService;
-
         }
+        //[HttpPut("transfer")]
+        //public async Task<IActionResult>Transfer(int TripId)
+        //{
+        //    var result = await _TripService.transfer(TripId);
+        //    if (result == true) return Ok();
+        //    else return BadRequest();
+        //}
+
         //[HttpPut("mark_unavailable/{TripId}")]
         //public async Task<IActionResult> MarkUnavailable(int TripId)
         //{
@@ -37,18 +44,48 @@ namespace Tazkartk.Controllers
         //    var users = await _TripService.SendReminderEmail(TripId);
         //    return Ok();
         //}
-        //[HttpDelete("{TripId}/delete jobs")]
-        //public async Task<IActionResult>DeleteScheduled(int TripId)
-        //{
-        //    _TripService.DeleteExistingJobs(TripId);
-        //    return Ok();
-        //}
-
-        [HttpGet("{TripId}/Bookings")]
-        public async Task<IActionResult>GetTripBookings(int TripId)
+        [HttpDelete("{TripId}/delete jobs")]
+        public async Task<IActionResult> DeleteScheduled(int TripId)
         {
-            var trips=await _TripService.GetBookingsByTrip(TripId);
-            return Ok(trips);
+            _TripService.DeleteExistingJobs(TripId);
+            return Ok();
+        }
+        [HttpGet]
+        [SwaggerOperation(Summary = "List All Trips")]
+        public async Task<IActionResult> GetTrips()
+        {
+            var Trips = await _TripService.GetTrips();
+            return Trips == null ? NotFound() : Ok(Trips);
+        }
+        [HttpGet("Available")]
+        // [Authorize(Roles = "Admin , Company")]
+        [SwaggerOperation(Summary = "List All Available Trips")]
+        public async Task<IActionResult> GetAvailableTrips()
+        {
+            var Trips = await _TripService.GetAvailableTrips();
+            return Trips == null ? NotFound() : Ok(Trips);
+        }
+        //[HttpGet("{TripId}/Bookings")]
+        //public async Task<IActionResult>GetTripBookings(int TripId)
+        //{
+        //    var trips=await _TripService.GetBookingsByTrip(TripId);
+        //    return Ok(trips);
+        //}
+        [HttpGet("/api/{companyId}/Trips")]
+        //  [Authorize(Roles = "Admin , Company")]
+        [SwaggerOperation(Summary = "List Company Trips")]
+        public async Task<IActionResult> GetCompanyTrips(int companyId)
+        {
+            var Trips = await _TripService.GetCompanyTrips(companyId);
+            return Trips == null ? NotFound() : Ok(Trips);
+        }
+
+        [HttpGet("Search")]
+        [SwaggerOperation(Summary = "Search Trips")]
+        public async Task<IActionResult> GetAll(string? from, string? to, DateOnly? date)
+        {
+            var Trips = await _TripService.Search(from, to, date);
+            return Trips == null ? NotFound() : Ok(Trips);
         }
         [HttpGet("{TripId}/Passengers")]
         [SwaggerOperation(Summary = "List Trip Passengers")]
@@ -58,37 +95,8 @@ namespace Tazkartk.Controllers
             var users = await _TripService.GetPassengers(TripId);
             return Ok(users);
         }
-        [HttpPost("{TripId}/Send_Email")]
-        public async Task<IActionResult> SendEmail(int TripId,EmailDTO DTO)
-        {
-            var result=await _TripService.send_Email_to_passengers(TripId, DTO);
-            return Ok(result);
-        }
-        [HttpGet]
-       // [Authorize(Roles = "Admin , Company")]
-        [SwaggerOperation(Summary = "List All Trips")]
-        public async Task<IActionResult> GetTrips()
-        {
-            var Trips = await _TripService.GetTrips();
-            return Trips == null ? NotFound() : Ok(Trips);
-        }
-
-        [HttpGet("/api/{companyId}/Trips")]
-      //  [Authorize(Roles = "Admin , Company")]
-        [SwaggerOperation(Summary = "List Company Trips")]
-        public async Task<IActionResult> GetCompanyTrips(int companyId)
-        {
-            var Trips=await _TripService.GetCompanyTrips(companyId);
-            return Trips == null ? NotFound() : Ok(Trips);
-        }
-
-        [HttpGet("Search")]
-        [SwaggerOperation(Summary = "Search Trips")]
-        public async Task<IActionResult> GetAll(string? from, string? to, DateOnly? date)
-        {
-            var Trips = await _TripService.Search(from,to,date);
-            return Trips == null ? NotFound() : Ok(Trips);
-        }
+       
+       // [Authorize(Roles = "Admin , Company")]       
         [HttpGet("{Id:int}")]
         [SwaggerOperation(Summary = "Get Trip By Id")]
 
@@ -166,6 +174,12 @@ namespace Tazkartk.Controllers
         {
             var result = await _TripService.DeleteTrip(Id);
             return StatusCode((int)result.StatusCode, result);
+        }
+        [HttpPost("{TripId}/Send_Email")]
+        public async Task<IActionResult> SendEmail(int TripId, EmailDTO DTO)
+        {
+            var result = await _TripService.send_Email_to_passengers(TripId, DTO);
+            return Ok(result);
         }
     }
 }
