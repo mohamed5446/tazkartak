@@ -248,7 +248,7 @@ export default function Companies() {
             <img
               src={company.logo}
               alt="Go Bus"
-              className="rounded-lg  size-16 xl:h-28"
+              className="rounded-lg  size-16 xl:size-28 self-end"
             />
           </div>
         </div>

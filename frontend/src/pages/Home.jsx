@@ -161,7 +161,7 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <div className="">
+            {/* <div className="">
               <div className="mt-4">
                 <label className="block text-gray-700 mb-2">تاريخ السفر</label>
                 <input
@@ -170,7 +170,7 @@ const Home = () => {
                   className="w-full border border-gray-300 p-2 rounded-lg "
                 />
               </div>
-            </div>
+            </div> */}
             <button
               type="submit"
               className="mt-6 w-full bg-cyan-dark text-white py-2 rounded-lg hover:bg-cyan-900"

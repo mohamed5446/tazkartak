@@ -191,7 +191,7 @@ export default function TripForm({ onSubmit }) {
         </div>
 
         {/* Arrival Time */}
-        <div>
+        {/* <div>
           <label className="block text-gray-700 font-semibold">
             وقت الوصول
           </label>
@@ -203,7 +203,7 @@ export default function TripForm({ onSubmit }) {
           {errors.arriveTime && (
             <p className="text-red-500 text-sm">{errors.arriveTime.message}</p>
           )}
-        </div>
+        </div> */}
 
         {/* Location */}
         <div>
@@ -221,7 +221,7 @@ export default function TripForm({ onSubmit }) {
         </div>
 
         {/* Price */}
-        <div>
+        <div className="col-span-2">
           <label className="block text-gray-700 font-semibold">السعر</label>
           <input
             type="number"

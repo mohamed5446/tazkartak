@@ -56,7 +56,7 @@ export default function LoginPage() {
                 البريد الإلكتروني
               </label>
               <input
-                type="text"
+                type="email"
                 {...register("email", {
                   required: "يرجى إدخال البريد الالكترونى",
                 })}
@@ -82,6 +82,7 @@ export default function LoginPage() {
 
                 <button
                   type="button"
+                  data-testid="toggle-password"
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
                 >

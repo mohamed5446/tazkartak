@@ -129,6 +129,7 @@ export default function SignUpPage() {
 
                   <button
                     type="button"
+                    data-testid="toggle-password"
                     onClick={() => setShowPassword((prev) => !prev)}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
                   >
@@ -158,6 +159,7 @@ export default function SignUpPage() {
                   />
 
                   <button
+                    data-testid="toggle-password"
                     type="button"
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
