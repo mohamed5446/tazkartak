@@ -143,13 +143,13 @@ export default function CompanyTrips() {
                   <p className="text-center">{trip.departureDay}</p>
                   <p className="text-center">{trip.departureDate}</p>
                 </div>
-                <div className="w-full">
+                {/* <div className="w-full">
                   <p className="text-lg font-semibold text-center">
                     توقيت الوصول
                   </p>
                   <p className="text-center">{trip.arrivalDay}</p>
                   <p className="text-center">{trip.arrivalTime}</p>
-                </div>
+                </div> */}
                 <div className="w-full">
                   <p className="text-lg font-semibold text-center">
                     مكان التحرك

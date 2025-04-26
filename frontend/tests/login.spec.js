@@ -28,7 +28,7 @@ test.describe("Login Page", () => {
     await page.click('button[type="submit"]');
 
     await expect(
-      page.locator("text=email or password is incorrect")
+      page.locator("text=Email or password is incorrect")
     ).toBeVisible(); // لازم تعدل النص حسب اللي بيطلع من API
   });
   test("admin can login successfully", async ({ page }) => {

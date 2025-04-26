@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 import axios from "axios";
 import { Bounce, toast, ToastContainer } from "react-toastify";
@@ -10,6 +10,8 @@ export default function Tickets() {
   const { id } = useAuthStore();
   const [loadingStates, setisLoading] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+
   const getTickets = async () => {
     try {
       const res = await axios.get(
@@ -36,10 +38,9 @@ export default function Tickets() {
   useEffect(() => {
     getTickets();
     const success = searchParams.get("success");
-    console.log(typeof success);
     if (success == "true") toast.success("تم حجز التذكرة بنجاح");
     else if (success === "false") toast.error("حدث خطأ اثناء الحجز");
-  }, []);
+  }, [ignored]);
   const cancelTicket = async (bookingId) => {
     try {
       setisLoading((prev) => ({ ...prev, [bookingId]: true }));
@@ -49,6 +50,10 @@ export default function Tickets() {
       );
       setisLoading((prev) => ({ ...prev, [bookingId]: false }));
       console.log(res);
+      toast.success("تم إلغاء التذكرة بنجاح");
+      setTickets((prev) =>
+        prev.filter((ticket) => ticket.bookingId !== bookingId)
+      );
     } catch (error) {
       console.log(error);
       setisLoading((prev) => ({ ...prev, [bookingId]: false }));

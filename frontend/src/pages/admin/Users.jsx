@@ -383,31 +383,31 @@ export default function Users() {
             <div className="md:col-span-2 mt-2">
               <label className=" w-full block  mb-1 text-end">
                 تأكيد كلمة السر
+                <div className="relative mb-2">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...register2("confirmPassword", {
+                      required: "هذه الخانة مطلوبة",
+                      validate: (value) =>
+                        value === newPassword || "كلمة السر غير متطابقة",
+                    })}
+                    className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                  >
+                    {showConfirmPassword ? (
+                      <Eye size={20} />
+                    ) : (
+                      <EyeOff size={20} />
+                    )}
+                  </button>
+                </div>
               </label>
 
-              <div className="relative mb-2">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  {...register2("confirmPassword", {
-                    required: "هذه الخانة مطلوبة",
-                    validate: (value) =>
-                      value === newPassword || "كلمة السر غير متطابقة",
-                  })}
-                  className="w-full border  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark pr-10"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
-                >
-                  {showConfirmPassword ? (
-                    <Eye size={20} />
-                  ) : (
-                    <EyeOff size={20} />
-                  )}
-                </button>
-              </div>
               {errors2.confirmPassword && (
                 <p className="text-red-500 text-sm text-end">
                   {errors2.confirmPassword.message}
