@@ -5,7 +5,7 @@ namespace Tazkartk.Interfaces
 {
     public interface IPaymentService
     {
-        Task<List<PaymentDTO>> GetAllPayments();
-        Task<PaymentDTO> GetPaymentById(int id);
+        Task<List<PaymentDTO>> GetAllPaymentsAsync();
+        Task<PaymentDTO> GetPaymentByIdAsync(int id);
     }
 }

@@ -19,7 +19,7 @@ namespace Tazkartk.Models
         public int CompanyId { get; set; }
         public Company company { get; set; }
         public List<Seat> seats { get; set; }
-        public List<Booking>? bookings { get; set; }
+        public ICollection<Booking> bookings { get; set; }=new List<Booking>();    
         
     }
 }

@@ -30,10 +30,9 @@ namespace Tazkartk.Controllers
         
         [HttpGet]
         [SwaggerOperation(Summary = "List All Companies")]
-
         public async Task<IActionResult>GetAll()
         {
-            var companies= await _companyService.GetAllCompanies();
+            var companies= await _companyService.GetAllCompaniesAsync();
               return Ok(companies);
         }
 
@@ -42,7 +41,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> GetCompanyById(int id)
         {
-            var Company =await _companyService.GetCompanyById(id);
+            var Company =await _companyService.GetCompanyByIdAsync(id);
             return Company == null ? NotFound("Company not found") : Ok(Company);  
         }
 
@@ -51,24 +50,8 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "Add Company")]
 
         public async Task<IActionResult>CreateCompany(CompanyRegisterDTO DTO)
-        {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-            var result = await _companyService.CreateCompany(DTO);
+        {          
+            var result = await _companyService.CreateCompanyAsync(DTO);
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -78,23 +61,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult>EditCompany(int Id,[FromForm]CompanyEditDTO DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages); 
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage 
-                });
-            }
-            var result = await _companyService.EditCompany(Id, DTO);
+            var result = await _companyService.EditCompanyAsync(Id, DTO);
 
             return StatusCode((int)result.StatusCode, result);
         }
@@ -105,7 +72,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult>DeleteCompany(int id)
         {
-            var result=await _companyService.DeleteCompany(id);
+            var result=await _companyService.DeleteCompanyAsync(id);
             return StatusCode((int)result.StatusCode, result);
         }
     }

@@ -8,7 +8,7 @@ namespace Tazkartk.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? photo { get; set; }
-        public List<Booking>? books { get; set; }
+        public ICollection<Booking> books { get; set; }=new List<Booking>();
        
 
     }

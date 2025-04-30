@@ -22,13 +22,21 @@ namespace Tazkartk.Controllers
             _userService = userService;
        
         }
-        
+        [HttpGet("Get-Admins")]
+        //  [Authorize(Roles = "Admin")]
+        [SwaggerOperation(Summary = "List All Admins")]
+        public async Task<IActionResult> GetAdmins()
+        {
+            var users = await _userService.GetUsersAsync(Roles.Admin);
+            return users == null ? NotFound() : Ok(users);
+        }
+
         [HttpGet]
       //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "List All Users")]
         public async Task<IActionResult>GetUsers()
         {
-            var users = await _userService.GetUsers(); 
+            var users = await _userService.GetUsersAsync(Roles.User); 
             return users==null?NotFound():Ok(users);
         }
 
@@ -38,7 +46,7 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "Get User By Id")]
         public async Task<IActionResult>GetUser(int Id)
         {
-            var user = await _userService.GetUserById(Id);
+            var user = await _userService.GetUserByIdAsync(Id);
             return user == null ? NotFound("User Not Found"):Ok(user);
         }
         [HttpPost]
@@ -47,23 +55,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult>CreateUser(RegisterDTO DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-            var result = await _userService.AddUser(DTO,Roles.User);
+            var result = await _userService.AddUserAsync(DTO,Roles.User);
             return StatusCode((int)result.StatusCode,result);   
         }
         [HttpPost("Add-Admin")]
@@ -72,23 +64,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-            var result = await _userService.AddUser(DTO, Roles.Admin);
+            var result = await _userService.AddUserAsync(DTO, Roles.Admin);
             return StatusCode((int)result.StatusCode,result);
         }
 
@@ -99,23 +75,7 @@ namespace Tazkartk.Controllers
         //[Authorize]
         public async Task<IActionResult>EditUser(int Id ,[FromForm]EditUserDTO DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-            var result = await _userService.EditUser(Id, DTO);
+            var result = await _userService.EditUserAsync(Id, DTO);
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -125,7 +85,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> DeleteUser(int Id)
         {
-           var result=  await _userService.DeleteUser(Id);
+           var result=  await _userService.DeleteUserAsync(Id);
             return StatusCode((int)result.StatusCode,result);
         }
        

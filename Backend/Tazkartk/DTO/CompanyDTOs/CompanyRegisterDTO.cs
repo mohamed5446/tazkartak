@@ -6,7 +6,7 @@ namespace Tazkartk.DTO.CompanyDTOs
     {
         [Required]
         public string Name { get; set; }
-        [Required, EmailAddress]
+        [Required, EmailAddress(ErrorMessage ="البريد الإلكتروني غير صالح")]
         public string Email { get; set; }
         [Required, RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "يرجى إدخال رقم هاتف صحيح")]
         public string Phone { get; set; }

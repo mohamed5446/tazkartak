@@ -3,8 +3,11 @@
     public enum StatusCode
     {
         Ok = 200,
-        NotFound = 404,
         BadRequest = 400,
-        Created=201,
+        NotFound = 404,
+        Created = 201,
+        Unauthorized = 401,
+        UnprocessableEntity = 422,
+        InternalServerError = 500
     }
 }

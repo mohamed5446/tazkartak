@@ -9,6 +9,6 @@ namespace Tazkartk.Models
         public string Street { get; set; }
         public string? Logo { get; set; }
         public double Balance {  get; set; }
-        public List<Trip>? Trips { get; set; }
+        public ICollection<Trip> Trips { get; set; }=new List<Trip>();  
     }
 }

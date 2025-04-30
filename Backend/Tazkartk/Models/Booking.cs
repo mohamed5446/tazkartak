@@ -17,6 +17,6 @@ namespace Tazkartk.Models
         public Trip trip { get; set; }
         public User? user { get; set; }
         public Payment payment { get; set; }
-        public List<Seat> seats { get; set; }
+        public List<Seat> seats { get; set; }= new List<Seat>(); 
     }
 }

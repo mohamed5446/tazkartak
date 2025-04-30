@@ -76,7 +76,7 @@ namespace Tazkartk.Controllers
 
             if (isrefunded == "true")
             {
-                var Done = await _BookingService.Cancel(transactionId);
+                var Done = await _BookingService.CancelAsync(transactionId);
                 if (!Done)
                 {
                     return BadRequest("failed to refund");
@@ -95,7 +95,7 @@ namespace Tazkartk.Controllers
                 SeatsNumbers = extra["seats"]?.ToObject<List<int>>() 
             };
 
-            var done = await _BookingService.ConfirmBooking(bookingDTO, transactionId,paymentMethod);
+            var done = await _BookingService.ConfirmBookingAsync(bookingDTO, transactionId,paymentMethod);
             if (!done)
             {
                 return BadRequest();

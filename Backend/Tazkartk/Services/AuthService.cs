@@ -5,15 +5,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
-using Tazkartk.DTO;
 using Tazkartk.DTO.AccontDTOs;
 using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.DTO.Response;
 using Tazkartk.Email;
+using Tazkartk.Google;
 using Tazkartk.Helpers;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 using Tazkartk.Models.Enums;
+using AutoMapper;
+using Tazkartk.Extensions;
 
 namespace Tazkartk.Services
 {
@@ -23,67 +25,39 @@ namespace Tazkartk.Services
         private readonly JWT _jwt;
         private readonly IEmailService _EmailService;
         private readonly IConfiguration _conf;
-        const string Pattern = "^[^@]+@[^@]+\\.[^@]+$";
+      //  const string Pattern = "^[^@]+@[^@]+\\.[^@]+$";
+        private readonly IGoogleAuthService _googleAuthService;
+        private readonly IMapper _mapper;
 
-        public AuthService(IConfiguration conf, UserManager<Account> AccountManager, IOptions<JWT> jwt, IEmailService emailService)
+        public AuthService(IConfiguration conf, UserManager<Account> AccountManager, IOptions<JWT> jwt, IEmailService emailService, IGoogleAuthService googleAuthService, IMapper mapper)
         {
             _AccountManager = AccountManager;
             _jwt = jwt.Value;
             _EmailService = emailService;
             _conf = conf;
-
+            _googleAuthService = googleAuthService;
+            _mapper = mapper;
         }
-
-
         #region User
         public async Task<AuthModel> RegisterAsync(RegisterDTO DTO, Roles Role = Roles.User)
         {
-           
-            bool match = Regex.IsMatch(DTO.Email, Pattern);
-            if (!match)
+            if (!DTO.Email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني غير صالح"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني مستخدم من قبل",
-                };
+                return AuthModel.Error("البريد الإلكتروني مستخدم من قبل");
             }
+            var user=_mapper.Map<User>(DTO);
+            user.photo = _conf["Avatar"];
+            user.UserName=user.Email.Split('@')[0];
 
-            var user = new User
-            {
-                FirstName = DTO.FirstName.Trim(),
-                LastName = DTO.LastName.Trim(),
-                Email = DTO.Email.Trim(),
-                PhoneNumber = DTO.PhoneNumber.Trim(),
-                UserName = DTO.Email.Trim(),
-                photo = _conf["Avatar"]
-
-            };
             var result = await _AccountManager.CreateAsync(user, DTO.Password);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
-                foreach (var error in result.Errors)
-                {
-                    errors += $"{error.Description} , ";
-                }
-                return
-                    new AuthModel
-                    {
-                        Success = false,
-                        StatusCode = StatusCode.BadRequest,
-                        message = errors
-                    };
+                var errors = string.Join(" , ", result.Errors.Select(e => e.Description));
+                return AuthModel.Error(errors);
             }
 
             await _AccountManager.AddToRoleAsync(user, Role.ToString());
@@ -96,25 +70,15 @@ namespace Tazkartk.Services
 
             if (Account is null || !await _AccountManager.CheckPasswordAsync(Account, DTO.Password))
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "Email or password is incorrect "
-                };
+                return AuthModel.Error("Email or password is incorrect");
             }
             if (!Account.EmailConfirmed)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    IsEmailConfirmed = Account.EmailConfirmed,
-                    message = "يرجى تأكيد البريد الإلكتروني أولاً",
-                };
+                return AuthModel.Error("يرجى تأكيد البريد الإلكتروني أولاً", false);
             }
 
             var jwtSecurityToken = await CreateJwtToken(Account);
+            //    return AuthModel.Succeed("authed", Account.Id, Account.Email, true, new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), await _AccountManager.GetRolesAsync(Account), jwtSecurityToken.ValidTo);
             return new AuthModel
             {
                 Success = true,
@@ -135,49 +99,22 @@ namespace Tazkartk.Services
 
         public async Task<AuthModel> CompanyRegisterAsync(CompanyRegisterDTO DTO)
         {
-            bool match = Regex.IsMatch(DTO.Email, Pattern);
-            if (!match)
+            if (!DTO.Email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "Invalid Email Address"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني مستخدم من قبل"
-                };
+                return AuthModel.Error("البريد الإلكتروني مستخدم من قبل");    
             }
-            var Company = new Company
-            {
-                Name = DTO.Name.Trim(),
-                Email = DTO.Email.Trim(),
-                PhoneNumber = DTO.Phone.Trim(),
-                UserName = DTO.Email.Trim(),
-                City = DTO.city.Trim(),
-                Street = DTO.street.Trim(),
-                Logo = _conf["Logo"]
-            };
+            var Company=_mapper.Map<Company>(DTO);
+            Company.Logo = _conf["Logo"];
+            Company.UserName=Company.Email.Split('@')[0];
             var result = await _AccountManager.CreateAsync(Company, DTO.Password);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
-                foreach (var error in result.Errors)
-                {
-                    errors += $"{error.Description} , ";
-                }
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = errors,
-                };
+                var errors = string.Join(" , ", result.Errors.Select(e => e.Description));
+                return AuthModel.Error(errors);
             }
             await _AccountManager.AddToRoleAsync(Company, Roles.Company.ToString());
             return await SendOTP(Company.Email);
@@ -188,34 +125,18 @@ namespace Tazkartk.Services
         #region OTP
         public async Task<AuthModel> SendOTP(string email,bool IsReset=false)
         {
-            bool match = Regex.IsMatch(email, Pattern);
-            if (!match)
+            if (!email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني غير صالح"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             var account = await _AccountManager.FindByEmailAsync(email);
             if (account == null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "لم يتم العثور على حساب "
-                };
+               return AuthModel.Error("لم يتم العثور على حساب "); 
             }
             if (account.OTP != null && account.OTPExpiry > DateTime.UtcNow)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "يوجد رمز تحقق تم إرساله بالفعل"
-                };
+              return AuthModel.Error("يوجد رمز تحقق تم إرساله بالفعل");
             }
             string OTP = GenerateOTP();
             account.OTP = OTP;
@@ -225,57 +146,31 @@ namespace Tazkartk.Services
             {
                 Email = account.Email,
                 Subject = "Your OTP",
-                Body =  IsReset==false? EmailBodyHelper.GetVerificationEmailBody(OTP)
-                          :EmailBodyHelper.GetResetPasswordEmailBody(OTP)    // $"Your OTP is {OTP}"
+                Body =  IsReset
+                        ?EmailBodyHelper.GetVerificationEmailBody(OTP)
+                        :EmailBodyHelper.GetResetPasswordEmailBody(OTP)    // $"Your OTP is {OTP}"
             };
             await _EmailService.SendEmail(emailrequest);
-            return new AuthModel
-            {
-                Success = true,
-                StatusCode = StatusCode.Ok,
-                Email = account.Email,
-                message = "تم إرسال رمز التحقق إلى بريدك الإلكتروني"
-            };
+            return AuthModel.Succeed("تم إرسال رمز التحقق إلى بريدك الإلكتروني", account.Email);
         }
         public async Task<AuthModel> VerifyOtpAsync(string Email, string enteredOtp)
         {
-            bool match = Regex.IsMatch(Email, Pattern);
-            if (!match)
+            if (!Email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني غير صالح"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             Account? Account = await _AccountManager.FindByEmailAsync(Email);
             if (Account == null)
             {
-                return new AuthModel {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "المستخدم غير موجود"
-                };
+               return AuthModel.Error("المستخدم غير موجود");
             }
             if (Account.EmailConfirmed)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "email is already confirmed",
-                    IsEmailConfirmed = Account.EmailConfirmed
-                };
+                return AuthModel.Error("email is already confirmed", Account.EmailConfirmed);
             }
             if (enteredOtp == null || enteredOtp != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "رمز التحقق غير صالح أو منتهي الصلاحية",
-                    IsEmailConfirmed = Account.EmailConfirmed };
+                return AuthModel.Error("رمز التحقق غير صالح أو منتهي الصلاحية", Account.EmailConfirmed);
             }
 
             Account.OTP = null;
@@ -284,6 +179,7 @@ namespace Tazkartk.Services
             await _AccountManager.UpdateAsync(Account);
 
             var JwtSecurityToken = await CreateJwtToken(Account);
+           // return AuthModel.Succeed("authed", Account.Id, Account.Email, true, new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken), await _AccountManager.GetRolesAsync(Account), JwtSecurityToken.ValidTo);
             return new AuthModel
             {
                 Success = true,
@@ -296,8 +192,6 @@ namespace Tazkartk.Services
                 Roles = await _AccountManager.GetRolesAsync(Account),
                 Token = new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken),
             };
-
-            //return new AuthModel { message = "OTP verified successfully" };
         }
         private string GenerateOTP()
         {
@@ -309,106 +203,56 @@ namespace Tazkartk.Services
 
 
         #region password
-        public async Task<AuthModel> ForgetPassword(string Email)
+        public async Task<AuthModel> ForgotPasswordAsync(string Email)
         {
-            bool match = Regex.IsMatch(Email, Pattern);
-            if (!match)
+            if (!Email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني غير صالح"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             var Account = await _AccountManager.FindByEmailAsync(Email);
             if (Account == null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "المستخدم غير موجود"
-                };
+                return AuthModel.Error("المستخدم غير موجود");
             }
 
             return await SendOTP(Email,true);
         }
-        public async Task<AuthModel> ChangePassword(ChangePasswordDTO DTO)
+        public async Task<AuthModel> ChangePasswordAsync(ChangePasswordDTO DTO)
         {
             var Account = await _AccountManager.FindByEmailAsync(DTO.Email);
             if (Account == null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "المستخدم غير موجود"
-                };
+                return AuthModel.Error("المستخدم غير موجود");
             }
             var checkpassword = await _AccountManager.CheckPasswordAsync(Account, DTO.OldPassword);
             if (!checkpassword)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "كلمة المرور غير صحيحة "
-                };
+                return AuthModel.Error("كلمة المرور غير صحيحة ");
             }
             var result = await _AccountManager.ChangePasswordAsync(Account, DTO.OldPassword, DTO.newPassword);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
-                foreach (var error in result.Errors)
-                {
-                    errors += $"{error.Description} , ";
-                }
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = errors
-                };
+                var errors = string.Join(" , ", result.Errors.Select(e => e.Description));
+                return AuthModel.Error(errors);
             }
-            return new AuthModel
-            {
-                Success = true,
-                StatusCode = StatusCode.Ok,
-                message = "تم تغيير كلمة المرور بنجاح"
-            };
+
+            return AuthModel.Succeed("تم تغيير كلمة المرور بنجاح");
         }
     
-        public async Task<AuthModel> ResetPassword(ResetPasswordDTO DTO)
+        public async Task<AuthModel> ResetPasswordAsync(ResetPasswordDTO DTO)
         {
-            bool match = Regex.IsMatch(DTO.email, Pattern);
-            if (!match)
+            if (!DTO.email.IsValidEmail())
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "البريد الإلكتروني غير صالح"
-                };
+                return AuthModel.Error("البريد الإلكتروني غير صالح");
             }
             var Account = await _AccountManager.FindByEmailAsync(DTO.email);
             if (Account == null)
             {
-                return new AuthModel
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest, 
-                    message = "المستخدم غير موجود"
-                };
+                return AuthModel.Error("المستخدم غير موجود");
             }
             if (DTO.OTP == null || DTO.OTP != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
             {
-                return new AuthModel 
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest, 
-                    message = "رمز التحقق غير صحيح أو منتهي الصلاحية"
-                };
+                return AuthModel.Error("رمز التحقق غير صحيح أو منتهي الصلاحية");
             }
             var passwordValidators = _AccountManager.PasswordValidators;
             foreach (var validator in passwordValidators)
@@ -417,12 +261,7 @@ namespace Tazkartk.Services
                 if (!validationResult.Succeeded)
                 {
                     var errors = string.Join(" , ", validationResult.Errors.Select(e => e.Description));
-                    return new AuthModel
-                    {
-                        Success = false,
-                        StatusCode = StatusCode.BadRequest,
-                        message = errors
-                    };
+                    return AuthModel.Error(errors);
                 }
             }
                 string NewHashedPassword = _AccountManager.PasswordHasher.HashPassword(Account, DTO.newPasswod);
@@ -432,27 +271,19 @@ namespace Tazkartk.Services
             var result = await _AccountManager.UpdateAsync(Account);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
-                foreach (var error in result.Errors)
-                {
-                    errors += $"{error.Description} , ";
-                }
-                return new AuthModel 
-                {
-                    Success = false, 
-                    StatusCode = StatusCode.BadRequest,
-                    message = errors
-                };
+                var errors = string.Join(" , ", result.Errors.Select(e => e.Description));
+                return AuthModel.Error(errors);
             }
             var JwtSecurityToken = await CreateJwtToken(Account);
+            //  return AuthModel.Succeed("authed", Account.Id, Account.Email, true, new JwtSecurityTokenHandler().WriteToken(JwtSecurityToken), await _AccountManager.GetRolesAsync(Account), JwtSecurityToken.ValidTo);
             return new AuthModel
-            { 
-                Success=true,
-                StatusCode=StatusCode.Ok,
+            {
+                Success = true,
+                StatusCode = StatusCode.Ok,
                 message = "تم تغيير كلمة المرور بنجاح",
-                Id=Account.Id,
-                Email=Account.Email,
-                IsEmailConfirmed=Account.EmailConfirmed,
+                Id = Account.Id,
+                Email = Account.Email,
+                IsEmailConfirmed = Account.EmailConfirmed,
                 ExpiresOn = JwtSecurityToken.ValidTo,
                 isAuthenticated = true,
                 Roles = await _AccountManager.GetRolesAsync(Account),
@@ -495,6 +326,43 @@ namespace Tazkartk.Services
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
+        }
+
+        public async Task<AuthModel> SignInWithGoogleAsync(GooglesigninDTO model)
+        {
+            var response = await _googleAuthService.GoogleSignIn(model);
+
+            if (!response.Success)
+            {
+                return AuthModel.Error(response.message);
+            }
+
+            if (response.Data == null)
+            {
+                return AuthModel.Error("Failed to retrieve user data.");
+            }
+            var jwtSecurityToken = await CreateJwtToken(response.Data);
+            var user = response.Data;
+            //   return AuthModel.Succeed("authed", user.Id, user.Email, true, new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), await _AccountManager.GetRolesAsync(user), jwtSecurityToken.ValidTo);
+
+            return new AuthModel
+            {
+                Success=true,
+                StatusCode = StatusCode.Ok,
+                Id = user.Id,
+                IsEmailConfirmed = true,
+                isAuthenticated = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Email = user.Email,
+                ExpiresOn = jwtSecurityToken.ValidTo,
+                Roles = await _AccountManager.GetRolesAsync(user),
+            };
+            //var data = new JwtResponseVM
+            //{
+            //    Token = jwtResponse,
+            //};
+
+            //return new BaseResponse<JwtResponseVM>(data);
         }
         #endregion
 

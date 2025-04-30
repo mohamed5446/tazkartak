@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using Tazkartk.Data;
 using Tazkartk.DTO.CompanyDTOs;
 using Tazkartk.DTO.Response;
+using Tazkartk.Extensions;
 using Tazkartk.Interfaces;
 using Tazkartk.Models;
 using Tazkartk.Models.Enums;
@@ -16,124 +18,57 @@ namespace Tazkartk.Services
         private readonly IPhotoService _photoService;
         private readonly UserManager<Account> _AccountManager;
         private readonly IConfiguration _conf;
-        const string Pattern= "^[^@]+@[^@]+\\.[^@]+$";
-        public CompanyService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf)
+        private readonly IMapper _mapper;
+        public CompanyService(ApplicationDbContext context, IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IMapper mapper)
         {
             _context = context;
             _photoService = photoService;
             _AccountManager = accountManager;
             _conf = conf;
+            _mapper = mapper;
         }
-        public async Task<ApiResponse<CompanyDTO?>> CreateCompany(CompanyRegisterDTO DTO)
+        public async Task<ApiResponse<CompanyDTO>> CreateCompanyAsync(CompanyRegisterDTO DTO)
         {
-            
-            bool match = Regex.IsMatch(DTO.Email, Pattern );
-            if(!match )
+            if(!DTO.Email.IsValidEmail() )
             {
-                return new ApiResponse<CompanyDTO?>
-                {
-                    Success=false,
-                    StatusCode=StatusCode.BadRequest,
-                    message= "البريد الإلكتروني غير صالح"
-                };
+                return ApiResponse<CompanyDTO>.Error("البريد الإلكتروني غير صالح");
             }
 
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
-                return new ApiResponse<CompanyDTO?>()
-                {
-                    StatusCode=StatusCode.BadRequest,
-                    Success = false,
-                    message = "البريد الإلكتروني مستخدم من قبل",                  
-                };
+                return ApiResponse<CompanyDTO>.Error("البريد الإلكتروني مستخدم من قبل");
             }
-            var Company = new Company
-            {
-                Name = DTO.Name,
-                Email = DTO.Email.Trim(),
-                PhoneNumber = DTO.Phone,
-                UserName = DTO.Email.Trim(),
-                City = DTO.city,
-                Street = DTO.street,
-                EmailConfirmed=true,
-                Logo = _conf["Logo"]
-                
-            };
+            var Company = _mapper.Map<Company>(DTO);
+            Company.Logo = _conf["Logo"];
+            Company.UserName = Company.Email.Split('@')[0];
+            Company.EmailConfirmed = true;
             var result = await _AccountManager.CreateAsync(Company, DTO.Password);
             if (!result.Succeeded)
             {
-                return new ApiResponse<CompanyDTO?>()
-                {
-                    StatusCode=StatusCode.BadRequest,
-                    Success = false,
-                    message = result.Errors.FirstOrDefault()?.Description ?? "حدث خطا "
-                };
+                return ApiResponse<CompanyDTO>.Error(result.Errors.FirstOrDefault()?.Description ?? "حدث خطا ");
             }
             await _AccountManager.AddToRoleAsync(Company, Roles.Company.ToString());
-            return new ApiResponse<CompanyDTO?>
-            {
-                StatusCode=StatusCode.Created,
-                Success=true,
-                message="تمت اضافة الشركة بنجاح ",
-                Data=new CompanyDTO
-                {
-                    Id = Company.Id,
-                    Email = Company.Email,
-                    Name = Company.Name,
-                    Phone = Company.PhoneNumber,
-                    City = Company.City,
-                    Street = Company.Street,
-                }
-            };
-           
+            var Data=_mapper.Map<CompanyDTO>(Company);
+
+            return ApiResponse<CompanyDTO>.success("تمت اضافة الشركة بنجاح ", Data, StatusCode.Created);
         }
-            public async Task<List<CompanyDTO>> GetAllCompanies()
+            public async Task<List<CompanyDTO>> GetAllCompaniesAsync()
         {
-            return await _context.Companies.AsNoTracking().Select(c => new CompanyDTO
-            {
-                Id = c.Id,
-                Name = c.Name,
-                City = c.City,
-                Street = c.Street,
-                Email = c.Email,
-                Logo = c.Logo,
-                Phone = c.PhoneNumber,
-                Balance=c.Balance
-                
-            }).ToListAsync();
+            return await _context.Companies.AsNoTracking().ProjectTo<CompanyDTO>(_mapper.ConfigurationProvider).ToListAsync();
+
         }
 
-        public async Task<CompanyDTO?> GetCompanyById(int id)
+        public async Task<CompanyDTO?> GetCompanyByIdAsync(int id)
         {
             var Company = await _context.Companies.FindAsync(id);
-            if (Company == null)
-            {
-                return null;
-            }
-            return new CompanyDTO
-            {
-                Id = Company.Id,
-                Name = Company.Name,
-                Email = Company.Email,
-                Phone = Company.PhoneNumber,
-                City = Company.City,
-                Street = Company.Street,
-                Logo = Company.Logo,
-                Balance=Company.Balance
-            };
-            
+            return _mapper.Map<CompanyDTO?>(Company);                  
         }
-        public async Task<ApiResponse<CompanyDTO?>> EditCompany(int Id, CompanyEditDTO DTO)
+        public async Task<ApiResponse<CompanyDTO>> EditCompanyAsync(int Id, CompanyEditDTO DTO)
         {
             var Company = await _context.Companies.FindAsync(Id);
             if(Company==null)
             {
-                return new ApiResponse<CompanyDTO?>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "الشركة غير موجودة "
-                };
+                return ApiResponse<CompanyDTO>.Error("الشركة غير موجودة ");
             }
             if (!string.IsNullOrEmpty(DTO.PhoneNumber))
             {
@@ -151,102 +86,55 @@ namespace Tazkartk.Services
             {
                 Company.Street = DTO.Street.Trim();
             }
-                if (DTO.Logo != null)
+            if (DTO.Logo != null)
+            {
+                if (!string.IsNullOrEmpty(Company.Logo))
                 {
-                    if (!string.IsNullOrEmpty(Company.Logo))
+                    var result = await _photoService.DeletePhotoAsync(Company.Logo);
+                    if (result.Error != null)
                     {
-                      var result=  await _photoService.DeletePhotoAsync(Company.Logo);
-                      if(result.Error!=null)
-                        {
-                            return new ApiResponse<CompanyDTO?>
-                            {
-                                Success = false,
-                                message = "error while updating the logo ",
-                                StatusCode=StatusCode.BadRequest,
-                                
-                            };
-                        }
+                        return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{result.Error.Message}");
                     }
-
+                }
                     var photoResult = await _photoService.AddPhotoAsync(DTO.Logo);
                        if(photoResult.Error!=null)
-                        {
-                        return new ApiResponse<CompanyDTO?>
-                        {
-                            Success = false,
-                            message = "error while updating the logo ",
-                            StatusCode=StatusCode.BadRequest,
+                       {
+                         return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{photoResult.Error.Message}");
+
                         };
-                    }
-                    Company.Logo = photoResult.Url.ToString();
-                }
+                Company.Logo = photoResult.Url.ToString();
+            }
                 await _context.SaveChangesAsync();
-                return new ApiResponse<CompanyDTO?>
-                {
-                    StatusCode=StatusCode.Ok,
-                    Success = true,
-                    message = "تم التعديل بنجاح",
-                    Data = new CompanyDTO
-                    {
-                        Id = Company.Id,
-                        Name = Company.Name,
-                        Email = Company.Email,
-                        Phone = Company.PhoneNumber,
-                        City = Company.City,
-                        Street = Company.Street,
-                        Logo = Company.Logo,
-                    }
-                };  
+            var Data = _mapper.Map<CompanyDTO>(Company);
+
+            return ApiResponse<CompanyDTO>.success("تم التعديل بنجاح", Data);
         }
 
-        public async Task<ApiResponse<CompanyDTO?>> DeleteCompany(int CompanyId)
+        public async Task<ApiResponse<CompanyDTO>> DeleteCompanyAsync(int CompanyId)
         {
             var company = await _context.Companies.Include(c => c.Trips).FirstOrDefaultAsync(c => c.Id == CompanyId);
             if(company==null)
             {
-                return new ApiResponse<CompanyDTO?>
-                {
-                    Success = false,
-                    message = "الشركة غير موجودة",
-                    StatusCode = StatusCode.BadRequest
-                };
+                return ApiResponse<CompanyDTO>.Error("الشركة غير موجودة ");
             }
             if (!string.IsNullOrEmpty(company.Logo))
             {
                 
                 var result =await _photoService.DeletePhotoAsync(company.Logo);
-                if(result.Error != null)
+                if (result.Error != null)
                 {
-                    return new ApiResponse<CompanyDTO?>
-                    {
-                        Success = false,
-                        message = "Error while deleting Logo",
-                        StatusCode=StatusCode.BadRequest,
-                    };
+                    return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{result.Error.Message}");
                 }
             }
             var has_trips = company.Trips.Any();
             if(has_trips)
             {
-                return new ApiResponse<CompanyDTO?>
-                {
-                    Success = false,
-                    message = "يجب أولاً حذف الرحلات الخاصة بهذه الشركة قبل أن تتمكن من حذفها ",
-                    StatusCode = StatusCode.BadRequest
-                   
-                };
+                return ApiResponse<CompanyDTO>.Error(" يجب أولاً حذف الرحلات الخاصة بهذه الشركة قبل أن تتمكن من حذفها ");
             }          
                 _context.Companies.Remove(company);
                 await _context.SaveChangesAsync();
-                return new ApiResponse<CompanyDTO?>
-                {
-                    Success = true,
-                    message = "تم حذف الشركة بنجاح ",
-                    StatusCode=StatusCode.Ok
-                    
-                };   
+            return ApiResponse<CompanyDTO>.success("تم حذف الشركة بنجاح ");   
         }
-
         public async Task changeLogos()
         {
             var comps = await _context.Companies.ToListAsync();

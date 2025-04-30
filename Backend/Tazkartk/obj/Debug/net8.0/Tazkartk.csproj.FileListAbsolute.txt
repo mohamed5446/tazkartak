@@ -180,7 +180,6 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.IdentityModel.Prot
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Mono.TextTemplating.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -192,13 +191,10 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Composition.Hosting.d
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Composition.Runtime.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Composition.TypedParts.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Memory.Data.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Runtime.Caching.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Security.Permissions.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Windows.Extensions.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -257,12 +253,7 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win-arm\native\Micr
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.csproj.AssemblyReference.cache
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.GeneratedMSBuildEditorConfig.editorconfig
 D:\gits\tazkartak\Backend\Tazkartk\obj\Debug\net8.0\Tazkartk.AssemblyInfoInputs.cache
@@ -472,3 +463,10 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\tr-TR\Hangfire.Core.resource
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\zh-TW\Hangfire.Core.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\zh\Hangfire.Core.resources.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Hangfire.Dashboard.BasicAuthorization.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Google.Apis.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Management.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Stripe.net.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\AutoMapper.dll

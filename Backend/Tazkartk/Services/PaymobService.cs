@@ -19,7 +19,7 @@ namespace Tazkartk.Services
             _paymob = paymob.Value;
             _httpClient = httpClientFactory.CreateClient();
         }
-        public async Task<string> CreatePaymentIntent(BookingDTO DTO, double amount, UserDetailsDTO UserDTO)
+        public async Task<string> CreatePaymentIntentAsync(BookingDTO DTO, double amount, UserDetailsDTO UserDTO)
         {
             string bookingInfoJson = JsonConvert.SerializeObject(DTO);
             var requestData = new
@@ -67,7 +67,7 @@ namespace Tazkartk.Services
             return checkoutUrl;
         }
 
-        public async Task<bool> RefundTransaction(int bookingId, string transactionId, double amountCents)
+        public async Task<bool> RefundTransactionAsync(int bookingId, string transactionId, double amountCents)
         {
             var requestData = new
             {
@@ -100,13 +100,5 @@ namespace Tazkartk.Services
             }
             return(bool) responseData.success == true;
         }
-        //public async Task<bool>CreateAccessToken()
-        //{
-        //    var clientId = "1026934";// _paymob.ClientId;
-        //    var clientSecret = _paymob.SecretKey;
-        //    var username = "Tazkartk";
-        //    var password = "Tazkartk&&1234";
-        //    var environmentUrl = "stagingpayouts.paymobsolutions.com/api/secure/";
-        //}
     }
 }

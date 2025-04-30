@@ -21,7 +21,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult>GetPayments()
         {
-            var payments=await _paymentService.GetAllPayments();
+            var payments=await _paymentService.GetAllPaymentsAsync();
             return Ok(payments);
         }
     }

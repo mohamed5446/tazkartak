@@ -7,6 +7,9 @@ using Tazkartk.Models;
 using Tazkartk.Data;
 using Tazkartk.DTO.Response;
 using System.Globalization;
+using Tazkartk.DTO.CompanyDTOs;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace Tazkartk.Services
 {
@@ -14,72 +17,46 @@ namespace Tazkartk.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IPaymobService _paymobService;
-        private const char RightToLeftCharacter = (char)0x200F;
+        private readonly IMapper _mapper;
 
-        public BookingService(ApplicationDbContext context, IPaymobService paymobService)
+        public BookingService(ApplicationDbContext context, IPaymobService paymobService, IMapper mapper)
         {
             _context = context;
             _paymobService = paymobService;
+            _mapper = mapper;
         }
         #region Booking
-        public async Task<ApiResponse<string?>> BookSeat(BookingDTO DTO)
+        public async Task<ApiResponse<string>> BookSeatAsync(BookingDTO DTO)
         {
             var user = await _context.Users.FindAsync(DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
-            if (trip == null || user == null||trip.Avaliblility==false)
+            if (trip == null || user == null || trip.Avaliblility == false)
             {
-                return new ApiResponse<string?>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "حدث خطا"
-                };
+                return ApiResponse<string>.Error("حدث خطا");
             }
-           
             if (trip.seats == null)
             {
                 trip.seats = new List<Seat>();
             }
-            var UserDetailsDTO = new UserDetailsDTO
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber
-            };
+            var UserDetailsDTO = _mapper.Map<UserDetailsDTO>(user);
+
             var isbooked = DTO.SeatsNumbers.Any(number => trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
 
             if (isbooked)
             {
-                return new ApiResponse<string?>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "بعض المقاعد التي اخترتها محجوزة بالفعل"
-                };
+                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
             }
             int count = DTO.SeatsNumbers.Count;
             double total = trip.Price * count;
-            var Url = await _paymobService.CreatePaymentIntent(DTO, total, UserDetailsDTO);
+            string Url = await _paymobService.CreatePaymentIntentAsync(DTO, total, UserDetailsDTO);
+
             if (!string.IsNullOrEmpty(Url))
             {
-                return new ApiResponse<string?>
-                {
-                    Success = true,
-                    StatusCode = StatusCode.Ok,
-                    message = "payment url",
-                    Data = Url
-                };
+                return ApiResponse<string>.success("payment url", Url);
             }
-            return new ApiResponse<string?>
-            {
-                Success = false,
-                StatusCode = StatusCode.BadRequest,
-                message = "حدث  خطا"
-            };
+            return ApiResponse<string>.Error("حدث خطا");
         }
-
-        public async Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId, string PaymentMethod)
+        public async Task<bool> ConfirmBookingAsync(BookingDTO DTO, string PaymentIntentId, string PaymentMethod)
         {
             var user = await _context.Users.Include(u => u.books).FirstOrDefaultAsync(u => u.Id == DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
@@ -148,83 +125,40 @@ namespace Tazkartk.Services
         #endregion
 
         #region Cancel
-        public async Task<ApiResponse<bool>> Refund(int bookingId)
+        public async Task<ApiResponse<bool>> RefundAsync(int bookingId)
         {
            
             var booking = await _context.bookings.Include(b => b.seats).Include(b => b.trip).Include(b => b.payment).FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null)
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "Booking not found",
-                };
+                return ApiResponse<bool>.Error("حدث خطا");
             }
-
             var DepartureTime = booking.trip.Date.ToDateTime(booking.trip.Time);
             if(DateTime.Now>DepartureTime.AddHours(-2))
             {
-                return new ApiResponse<bool>
-                {
-                    Success= false,
-                    StatusCode= StatusCode.BadRequest,
-                    message="لا يمكن الغاء الرحلة باقي اقل من ساعتان"
-                };
+                return ApiResponse<bool>.Error("لا يمكن الغاء الرحلة باقي اقل من ساعتان");
             }
             if (booking.IsCanceled==true)
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "لقد قمت بالغاء الحجز"
-                };
+                return ApiResponse<bool>.Error("لقد قمت بالغاء الحجز");
             }
             var count = booking.seats.Count();
             var total = (count * booking.trip.Price) * 100;
             var paymemnt = await _context.Payments.FirstOrDefaultAsync(p => p.bookingId == bookingId);
             if(paymemnt.Method=="wallet")
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "الاسترداد عبر المحفظة غير متاح في الوقت الحالي"
-                };
+                ApiResponse<bool>.Error("الاسترداد عبر المحفظة غير متاح في الوقت الحالي");
             }
             if (paymemnt == null || paymemnt.IsRefunded)
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "حدث خطا"
-                };
+                return ApiResponse<bool>.Error("حدث خطا");
             }
             var trxId = paymemnt.PaymentIntentId;
-            try
-            {
-                var success = await _paymobService.RefundTransaction(bookingId, trxId, total);
-
-                return new ApiResponse<bool>
-                {
-                    Success = true,
-                    StatusCode = StatusCode.Ok,
-                    message = "تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. "
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success=false,
-                    StatusCode=StatusCode.BadRequest,
-                    message = ex.Message,
-                };
-            }
+              var result =  await _paymobService.RefundTransactionAsync(bookingId, trxId, total);
+            if (!result) return ApiResponse<bool>.Error("حدث خطا");
+                    return ApiResponse<bool>.success("تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. ");
         }
-        public async Task<bool> Cancel(string trxId)
+        public async Task<bool> CancelAsync(string trxId)
         {
             var payment = await _context.Payments.FirstOrDefaultAsync(p => p.PaymentIntentId == trxId);
             if (payment == null) return false;
@@ -245,14 +179,8 @@ namespace Tazkartk.Services
         }
         #endregion
 
-
-
-
-
-        public async Task<ApiResponse<string>> DeleteBooking(int Id)
+        public async Task<ApiResponse<string>> DeleteBookingAsync(int Id)
         {
-            try
-            {
                 var booking = await _context.bookings.Include(b => b.seats).FirstOrDefaultAsync(b => b.BookingId == Id);
                 var payment = await _context.Payments.FindAsync(booking.PaymentId);
                 _context.Seats.RemoveRange(booking.seats);
@@ -260,181 +188,66 @@ namespace Tazkartk.Services
                 _context.bookings.Remove(booking);
 
                 await _context.SaveChangesAsync();
-                return new ApiResponse<string>
-                {
-                    Success = true,
-                    StatusCode = StatusCode.Ok,
-                    message = "تم حذف الحجز"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<string>()
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "حدث خطا"
-                };
-            }
+                return ApiResponse<string>.success("تم حذف الحجز");
         }
 
 
 
-        public async Task<List<TicketDTO>?> GetBookings()
+        public async Task<List<TicketDTO>> GetBookingsAsync()
         {
-            var arabicCulture = new CultureInfo("ar-SA");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
             return await _context.bookings
-               .AsNoTracking()
-               .Select(b => new TicketDTO
-               {
-                   UserId = b.user.Id,
-                   userEmail = b.user.Email,
-                   CompanyName = b.trip.company.Name,
-                   From = b.trip.From,
-                   To = b.trip.To,
-                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
-                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
-                   //Date = b.trip.Date.ToString("dddd yyyy-MM-dd", arabicCulture),
-                   //Time = b.trip.Time.ToString("HH:mm tt",arabicCulture),
-                   BookingId = b.BookingId,
-                   Name = b.user.FirstName!=null?b.user.FirstName+" "+b.user.LastName:b.GuestFirstName+" "+b.GuestLastName,
-                   IsCanceled = b.IsCanceled,
-                  SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
-               }).ToListAsync();
+                .AsNoTracking()
+                .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
 
 
-        public async Task<List<TicketDTO>?> GetUserBookings(int userId)
+        public async Task<List<TicketDTO>> GetUserBookingsAsync(int userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u=>u.Id==userId);
             if (user == null) return null;
-            var arabicCulture = new CultureInfo("ar-SA");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-            return await _context.bookings.Where(b => b.UserId == userId&&!b.IsCanceled).AsNoTracking()
-               .Select(b => new TicketDTO
-               {
-                   UserId = b.user.Id,
-                   userEmail = b.user.Email,
-                   CompanyName = b.trip.company.Name,
-                   From = b.trip.From,
-                   To = b.trip.To,
-                   //Date = b.trip.Date.ToString("dddd yyyy-MM-dd", arabicCulture),
-                   //Time = b.trip.Time.ToString("HH:mm tt",arabicCulture),
-                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
-                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
-                   //ArrivalDate = TripModel.ArriveTime.ToString("yyyy-MM-dd", arabicCulture),
-                   //ArrivalTime = RightToLeftCharacter + TripModel.ArriveTime.ToString("hh:mm tt", arabicCulture),
-                   //ArrivalDay = TripModel.ArriveTime.ToString("dddd", arabicCulture),
-                   BookingId = b.BookingId,
-                   Name = b.user.FirstName,
-                   IsCanceled = b.IsCanceled,
-                  SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
-               }).ToListAsync();
+            //var books = user.books.Where(b => !b.IsCanceled);
+            //return _mapper.Map<List<TicketDTO>>(books);
+           return await _context.bookings
+                .Where(b => b.UserId == userId && !b.IsCanceled)
+                .AsNoTracking()
+                .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
-        public async Task<List<TicketDTO>?> GetUserCanceledTicekts(int userId)
+        public async Task<List<TicketDTO>> GetUserCanceledTicektsAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
-            var arabicCulture = new CultureInfo("ar-SA");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-            return await _context.bookings.Where(b => b.UserId == userId && b.IsCanceled).AsNoTracking()
-               .Select(b => new TicketDTO
-               {
-                   UserId = b.user.Id,
-                   userEmail = b.user.Email,
-                   CompanyName = b.trip.company.Name,
-                   From = b.trip.From,
-                   To = b.trip.To,
-                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
-                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
-                   BookingId = b.BookingId,
-                   Name = b.user.FirstName,
-                   IsCanceled = b.IsCanceled,
-                   SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
-               }).ToListAsync();
+           return await _context.bookings
+                .Where(b => b.UserId == userId && b.IsCanceled)
+                .AsNoTracking().
+                ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
-        public async Task<List<TicketDTO>?> GetUserHistoryTickets(int userId)
+        public async Task<List<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
-            var arabicCulture = new CultureInfo("ar-SA");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-
             var today = DateOnly.FromDateTime(DateTime.Now);
             var nowTime = TimeOnly.FromDateTime(DateTime.Now);
-
-            return await _context.bookings.Where(b => b.UserId == userId && (b.trip.Date<today||b.trip.Date==today&&b.trip.Time<nowTime))
+            return await _context.bookings
+                .Where(b => b.UserId == userId && (b.trip.Date < today || b.trip.Date == today && b.trip.Time < nowTime))
                 .AsNoTracking()
-               .Select(b => new TicketDTO
-               {
-                   UserId = b.user.Id,
-                   userEmail = b.user.Email,
-                   CompanyName = b.trip.company.Name,
-                   From = b.trip.From,
-                   To = b.trip.To,
-                   DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-                   DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
-                   DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
-                   BookingId = b.BookingId,
-                   Name = b.user.FirstName,
-                   IsCanceled = b.IsCanceled,
-                   SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
-               }).ToListAsync();
+                .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
-        public async Task<TicketDTO?> GetTicket(int id)
+        public async Task<TicketDTO?> GetTicketAsync(int id)
         {
-            var arabicCulture = new CultureInfo("ar-SA");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-            //var ticket = await _context.bookings.Include(b => b.user).Include(b => b.seats).Include(b => b.trip).ThenInclude(t => t.company).FirstOrDefaultAsync(b => b.BookingId == id);
-            //return new TicketDTO
-            //{
-            //    UserId = ticket.user.Id,
-            //    userEmail = ticket.user.Email,
-            //    CompanyName = ticket.trip.company.Name,
-            //    From = ticket.trip.From,
-            //    To = ticket.trip.To,
-            //    DepartureDate = ticket.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-            //    DepartureTime = RightToLeftCharacter + ticket.trip.Time.ToString("hh:mm tt", arabicCulture),
-            //    DepartureDay = ticket.trip.Date.ToString("dddd", arabicCulture),
-            //    BookingId = ticket.BookingId,
-            //    Name = ticket.user.FirstName,
-            //    IsCanceled = ticket.IsCanceled,
-            //    SeatsNumbers = ticket.seats.Select(s => s.Number).ToList(),
-            //};
-
-            return await _context.bookings.Where(b => b.BookingId == id).Select(b => new TicketDTO
-            {
-                UserId = b.user.Id,
-                userEmail = b.user.Email,
-                CompanyName = b.trip.company.Name,
-                From = b.trip.From,
-                To = b.trip.To,
-                DepartureDate = b.trip.Date.ToString("yyyy-MM-dd", arabicCulture),
-                DepartureTime = RightToLeftCharacter + b.trip.Time.ToString("hh:mm tt", arabicCulture),
-                DepartureDay = b.trip.Date.ToString("dddd", arabicCulture),
-                BookingId = b.BookingId,
-                Name = b.user.FirstName,
-                IsCanceled = b.IsCanceled,
-                SeatsNumbers = b.seats.Select(s => s.Number).ToList(),
-            }).FirstOrDefaultAsync();
+             
+            return await _context.bookings
+                .Where(b => b.BookingId == id)
+                .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+          
         }
-        public async Task<ApiResponse<string?>> BookForGuest(int TripId,PassengerDTO DTO)
+        public async Task<ApiResponse<string>> BookForGuestAsync(int TripId,PassengerDTO DTO)
         {
             string FirstName = DTO.FirstName;
             string LastName = DTO.LastName;
@@ -443,12 +256,7 @@ namespace Tazkartk.Services
             var Trip=await _context.Trips.Include(t=>t.seats).FirstOrDefaultAsync(t=>t.TripId==TripId);
             if (Trip == null||Trip.Avaliblility==false)
             {
-                return new ApiResponse<string?>
-                {
-                    Success=false,
-                    StatusCode=StatusCode.BadRequest,
-                    message="حدث خطا"
-                };
+                return ApiResponse<string>.Error("حدث خطا");
             }
             if (Trip.seats == null)
             {
@@ -457,14 +265,8 @@ namespace Tazkartk.Services
             var isbooked = DTO.Seats.Any(number => Trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
             if (isbooked)
             {
-                return new ApiResponse<string?>
-                {
-                    Success = false,
-                    StatusCode = StatusCode.BadRequest,
-                    message = "بعض المقاعد التي اخترتها محجوزة بالفعل"
-                };
+                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
             }
-                
             int count = DTO.Seats.Count;
             double total = Trip.Price * count;
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -516,22 +318,13 @@ namespace Tazkartk.Services
 
                 await transaction.CommitAsync();
 
-                return new ApiResponse<string?>
-                {
-                    Success = true,
-                    StatusCode = StatusCode.Ok,
-                    message = "تم الحجز بنجاح"
-                };
+                return ApiResponse<string>.success("تم الحجز بنجاح");
             }
             catch (Exception)
             {
                 await transaction.RollbackAsync();
-                 return new ApiResponse<string?>
-            {
-                Success = false,
-                StatusCode = StatusCode.BadRequest,
-                message = "حدث  خطا"
-            };
+                return ApiResponse<string>.Error("حدث خطا");
+
             }
 
         }

@@ -6,18 +6,18 @@ namespace Tazkartk.Interfaces
 {
     public interface IBookingService
     {
-        Task<ApiResponse<string?>> BookSeat(BookingDTO DTO);
-        Task<bool> ConfirmBooking(BookingDTO DTO, string PaymentIntentId,string PaymentMethod);
+        Task<ApiResponse<string>> BookSeatAsync(BookingDTO DTO);
+        Task<bool> ConfirmBookingAsync(BookingDTO DTO, string PaymentIntentId,string PaymentMethod);
 
-        Task<ApiResponse<bool>> Refund(int bookingId);
-        Task<bool> Cancel(string trxId);
-        Task<List<TicketDTO>?> GetUserBookings(int userId);
-        Task<List<TicketDTO>?> GetUserCanceledTicekts(int userId);
-        Task<List<TicketDTO>?> GetUserHistoryTickets(int userId);
-        Task<List<TicketDTO>?> GetBookings();
-        Task<TicketDTO> GetTicket(int id);
-        Task<ApiResponse<string>> DeleteBooking(int Id);
-        Task<ApiResponse<string?>> BookForGuest(int TripId,PassengerDTO DTO);
+        Task<ApiResponse<bool>> RefundAsync(int bookingId);
+        Task<bool> CancelAsync(string trxId);
+        Task<List<TicketDTO>> GetUserBookingsAsync(int userId);
+        Task<List<TicketDTO>> GetUserCanceledTicektsAsync(int userId);
+        Task<List<TicketDTO>> GetUserHistoryTicketsAsync(int userId);
+        Task<List<TicketDTO>> GetBookingsAsync();
+        Task<TicketDTO?> GetTicketAsync(int id);
+        Task<ApiResponse<string>>DeleteBookingAsync(int Id);
+        Task<ApiResponse<string>> BookForGuestAsync(int TripId,PassengerDTO DTO);
         // Task<bool> CancelSeat(int UserId, int BookingId);
 
     }

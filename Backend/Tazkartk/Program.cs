@@ -15,12 +15,22 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.Dashboard;
+using Tazkartk.Google;
+using Tazkartk.MiddleWares;
+using Tazkartk.DTO.Response;
+using System.Text.Json;
+using Tazkartk.Models.Enums;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+}); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -60,19 +70,26 @@ builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymobService, PaymobService>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+builder.Services.AddScoped<IStripeService, StripeService>();
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 
-builder.Services.Configure<ApiBehaviorOptions>(options
-    => options.SuppressModelStateInvalidFilter = true);
+//builder.Services.Configure<ApiBehaviorOptions>(options
+//    => options.SuppressModelStateInvalidFilter = true);
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddIdentityCore<Account>().AddRoles<IdentityRole<int>>()
+builder.Services.AddIdentityCore<Account>(options =>
+{
+    options.User.AllowedUserNameCharacters = null;
+}).AddRoles<IdentityRole<int>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -80,8 +97,26 @@ builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.Configure<PaymobSettings>(builder.Configuration.GetSection("Paymob"));
+builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("Google"));
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+    {
+        options.InvalidModelStateResponseFactory = (actionContext) =>
+        {
+            var errors = actionContext.ModelState
+            .Where(ms => ms.Value.Errors.Count > 0)
+            .SelectMany(e => e.Value.Errors)
+            .Select(em => em.ErrorMessage)
+            .ToList();
 
+            string message= string.Join("; ", errors);
+            var validationErrorResponse = ApiResponse<string>.Error(message);
+
+            return new BadRequestObjectResult(validationErrorResponse);
+        };
+    });
+    builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -101,6 +136,19 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = builder.Configuration["JWT:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
         };
+        o.Events=  new JwtBearerEvents
+        {
+            OnChallenge = context =>
+            {
+                context.HandleResponse(); 
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+
+                var response = ApiResponse<string>.Error("Unauthorized",StatusCode.Unauthorized);
+
+                return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+        };
     });
 builder.Services.AddHangfire(config =>
     config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -110,6 +158,15 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -126,7 +183,8 @@ if (app.Environment.IsProduction())
 app.UseHttpsRedirection();
 
 
-    app.UseCors(c => c
+
+app.UseCors(c => c
         .SetIsOriginAllowed(origin => true) 
         .AllowAnyHeader()
         .AllowAnyMethod()

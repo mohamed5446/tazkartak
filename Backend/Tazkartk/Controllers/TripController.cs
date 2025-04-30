@@ -54,7 +54,7 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "List All Trips")]
         public async Task<IActionResult> GetTrips()
         {
-            var Trips = await _TripService.GetTrips();
+            var Trips = await _TripService.GetTripsAsync();
             return Trips == null ? NotFound() : Ok(Trips);
         }
         [HttpGet("Available")]
@@ -62,7 +62,7 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "List All Available Trips")]
         public async Task<IActionResult> GetAvailableTrips()
         {
-            var Trips = await _TripService.GetAvailableTrips();
+            var Trips = await _TripService.GetAvailableTripsAsync();
             return Trips == null ? NotFound() : Ok(Trips);
         }
         //[HttpGet("{TripId}/Bookings")]
@@ -76,7 +76,7 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "List Company Trips")]
         public async Task<IActionResult> GetCompanyTrips(int companyId)
         {
-            var Trips = await _TripService.GetCompanyTrips(companyId);
+            var Trips = await _TripService.GetCompanyTripsAsync(companyId);
             return Trips == null ? NotFound() : Ok(Trips);
         }
 
@@ -84,7 +84,7 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "Search Trips")]
         public async Task<IActionResult> GetAll(string? from, string? to, DateOnly? date)
         {
-            var Trips = await _TripService.Search(from, to, date);
+            var Trips = await _TripService.SearchAsync(from, to, date);
             return Trips == null ? NotFound() : Ok(Trips);
         }
         [HttpGet("{TripId}/Passengers")]
@@ -92,7 +92,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> GetPassengers(int TripId)
         {
-            var users = await _TripService.GetPassengers(TripId);
+            var users = await _TripService.GetPassengersAsync(TripId);
             return Ok(users);
         }
        
@@ -102,7 +102,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> GetTrip(int Id)
         {
-            var Trip = await _TripService.GetTripById(Id);
+            var Trip = await _TripService.GetTripByIdAsync(Id);
             return Trip == null ? NotFound("Trip Not Found") : Ok(Trip);
         }
         [HttpPost("{CompanyId}")]
@@ -111,27 +111,7 @@ namespace Tazkartk.Controllers
 
         public async Task<IActionResult> CreateTrip(int CompanyId ,CreateTripDtos DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState
-                   .Where(m => m.Value.Errors.Any()).Where(m => !m.Key.Contains("DTO"))
-                   .Select(m =>
-                   {
-                       var fieldName = m.Key.Split('.').Last();
-                       return $" invalid {fieldName} format ";
-                   })
-                   .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-            var result = await _TripService.AddTrip(CompanyId,DTO);
+            var result = await _TripService.AddTripAsync(CompanyId,DTO);
             return StatusCode((int)result.StatusCode, result);
         }
        
@@ -142,28 +122,7 @@ namespace Tazkartk.Controllers
         //[Authorize]
         public async Task<IActionResult> EditTrip(int Id, UpdateTripDtos DTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState
-                    .Where(m => m.Value.Errors.Any()).Where(m => !m.Key.Contains("DTO"))
-                    .Select(m =>
-                    {       
-                        var fieldName = m.Key.Split('.').Last();
-                         return $" invalid {fieldName} format ";
-                    })
-                    .ToList();
-
-                var errorMessage = string.Join("; ", errorMessages);
-
-                return StatusCode(400, new ApiResponse<string>
-                {
-                    Success = false,
-                    StatusCode = Models.Enums.StatusCode.BadRequest,
-                    message = errorMessage
-                });
-            }
-
-            var result = await _TripService.EditTrip(Id, DTO);
+            var result = await _TripService.EditTripAsync(Id, DTO);
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -172,13 +131,13 @@ namespace Tazkartk.Controllers
         [SwaggerOperation(Summary = "Delete Trip")]
         public async Task<IActionResult> DeleteTrip(int Id)
         {
-            var result = await _TripService.DeleteTrip(Id);
+            var result = await _TripService.DeleteTripAsync(Id);
             return StatusCode((int)result.StatusCode, result);
         }
         [HttpPost("{TripId}/Send_Email")]
         public async Task<IActionResult> SendEmail(int TripId, EmailDTO DTO)
         {
-            var result = await _TripService.send_Email_to_passengers(TripId, DTO);
+            var result = await _TripService.send_Email_to_passengersAsync(TripId, DTO);
             return Ok(result);
         }
     }

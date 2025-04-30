@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Tazkartk.Data;
 using Tazkartk.DTO;
@@ -10,36 +12,22 @@ namespace Tazkartk.Services
     public class PaymentService : IPaymentService
     {
         private readonly ApplicationDbContext _context;
-
-        public PaymentService(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public PaymentService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<List<PaymentDTO>> GetAllPayments()
+        public async Task<List<PaymentDTO>> GetAllPaymentsAsync()
         {
-            var arabicCulture = new CultureInfo("ar-EG");
-            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-            return await _context.Payments.AsNoTracking().Select( p =>new PaymentDTO
-            {
-                UserId=p.booking.UserId,
-                UserName=p.booking.user.FirstName!=null?p.booking.user.FirstName:p.booking.GuestFirstName,
-                UserEmail=p.booking.user.Email,
-                PaymentId=p.PaymentId,
-                PaymentIntentId=p.PaymentIntentId,
-                time=p.Date.ToString("dddd yyyy-MM-dd HH:mm tt",arabicCulture),
-                Method=p.Method,
-                Amount=p.amount,
-                SeatNumbers=p.booking.seats.Select(s=>s.Number).ToList(),
-                CompanyName=p.booking.trip.company.Name,
-                IsRefunded=p.IsRefunded
-              
-            }).ToListAsync();
+            return await _context.Payments
+                .AsNoTracking()
+                .ProjectTo<PaymentDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
-        public Task<PaymentDTO> GetPaymentById(int id)
+        public Task<PaymentDTO> GetPaymentByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
