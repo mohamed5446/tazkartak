@@ -4,7 +4,7 @@ namespace Tazkartk.DTO.AccontDTOs
 {
     public class ChangePasswordDTO
     {
-        [Required, EmailAddress]
+        [Required, EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح")/*, RegularExpression(@"^[^@]+@[^@]+\\.[^@]+$", ErrorMessage = "يرجى إدخال رقم هاتف صحيح")*/]
         public string Email { get; set; }
         [Required]
         public string OldPassword { get; set; }

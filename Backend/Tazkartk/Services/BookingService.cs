@@ -119,9 +119,88 @@ namespace Tazkartk.Services
             }
 
         }
+        public async Task<ApiResponse<string>> BookForGuestAsync(int TripId, PassengerDTO DTO)
+        {
+            string FirstName = DTO.FirstName;
+            string LastName = DTO.LastName;
+            string PhoneNumber = DTO.PhoneNumber;
+            var seats = DTO.Seats;
+            var Trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == TripId);
+            if (Trip == null || Trip.Avaliblility == false)
+            {
+                return ApiResponse<string>.Error("حدث خطا");
+            }
+            if (Trip.seats == null)
+            {
+                Trip.seats = new List<Seat>();
+            }
+            var isbooked = DTO.Seats.Any(number => Trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
+            if (isbooked)
+            {
+                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
+            }
+            int count = DTO.Seats.Count;
+            double total = Trip.Price * count;
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var booking = new Booking
+                {
+                    trip = Trip,
+                    tripId = Trip.TripId,
+                    GuestFirstName = DTO.FirstName,
+                    GuestLastName = DTO.LastName,
+                    GuestPhoneNumber = DTO.PhoneNumber,
+                    IsCanceled = false,
+                    seats = new List<Seat>()
+                };
+
+                await _context.bookings.AddAsync(booking);
+                await _context.SaveChangesAsync();
+
+                var Seats = DTO.Seats.Select(seatNumber => new Seat
+                {
+                    Number = seatNumber,
+                    State = SeatState.Booked,
+                    booking = booking,
+                    trip = Trip,
+                    bookingId = booking.BookingId,
+                    TripId = Trip.TripId
+                }).ToList();
+
+                booking.seats.AddRange(Seats);
+                await _context.SaveChangesAsync();
+                var payment = new Payment
+                {
+                    Method = "Cash",
+                    Date = DateTime.Now,
+                    amount = total,
+                    bookingId = booking.BookingId,
+                    IsRefunded = false,
+                    booking = booking,
+                    PaymentIntentId = "Cash_" + new Random().Next(100000, 999999).ToString(),
+                };
 
 
-           
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
+                booking.payment = payment;
+                booking.PaymentId = payment.PaymentId;
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return ApiResponse<string>.success("تم الحجز بنجاح");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return ApiResponse<string>.Error("حدث خطا");
+
+            }
+
+        }
+
         #endregion
 
         #region Cancel
@@ -202,20 +281,17 @@ namespace Tazkartk.Services
         }
 
 
-
-        public async Task<List<TicketDTO>> GetUserBookingsAsync(int userId)
+        public async Task<List<TicketDTO>?> GetUserBookingsAsync(int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u=>u.Id==userId);
             if (user == null) return null;
-            //var books = user.books.Where(b => !b.IsCanceled);
-            //return _mapper.Map<List<TicketDTO>>(books);
            return await _context.bookings
                 .Where(b => b.UserId == userId && !b.IsCanceled)
                 .AsNoTracking()
                 .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
-        public async Task<List<TicketDTO>> GetUserCanceledTicektsAsync(int userId)
+        public async Task<List<TicketDTO>?> GetUserCanceledTicektsAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
@@ -247,88 +323,7 @@ namespace Tazkartk.Services
                 .FirstOrDefaultAsync();
           
         }
-        public async Task<ApiResponse<string>> BookForGuestAsync(int TripId,PassengerDTO DTO)
-        {
-            string FirstName = DTO.FirstName;
-            string LastName = DTO.LastName;
-            string PhoneNumber = DTO.PhoneNumber;
-            var seats = DTO.Seats;
-            var Trip=await _context.Trips.Include(t=>t.seats).FirstOrDefaultAsync(t=>t.TripId==TripId);
-            if (Trip == null||Trip.Avaliblility==false)
-            {
-                return ApiResponse<string>.Error("حدث خطا");
-            }
-            if (Trip.seats == null)
-            {
-                Trip.seats = new List<Seat>();
-            }
-            var isbooked = DTO.Seats.Any(number => Trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
-            if (isbooked)
-            {
-                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
-            }
-            int count = DTO.Seats.Count;
-            double total = Trip.Price * count;
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var booking = new Booking
-                {
-                    trip = Trip,
-                    tripId = Trip.TripId,
-                    GuestFirstName=DTO.FirstName,
-                    GuestLastName=DTO.LastName,
-                    GuestPhoneNumber=DTO.PhoneNumber,
-                    IsCanceled = false,
-                    seats = new List<Seat>()
-                };
-
-                await _context.bookings.AddAsync(booking);
-                await _context.SaveChangesAsync();
-
-                var Seats = DTO.Seats.Select(seatNumber => new Seat
-                {
-                    Number = seatNumber,
-                    State = SeatState.Booked,
-                    booking = booking,
-                    trip = Trip,
-                    bookingId = booking.BookingId,
-                    TripId = Trip.TripId
-                }).ToList();
-
-                booking.seats.AddRange(Seats);
-                await _context.SaveChangesAsync();
-                var payment = new Payment
-                {
-                    Method = "Cash",
-                    Date = DateTime.Now,
-                    amount = total,
-                    bookingId = booking.BookingId,
-                    IsRefunded = false,
-                    booking = booking,
-                    PaymentIntentId = "Cash_" + new Random().Next(100000, 999999).ToString(),
-                };
-
-
-                await _context.Payments.AddAsync(payment);
-                await _context.SaveChangesAsync();
-                booking.payment = payment;
-                booking.PaymentId = payment.PaymentId;
-                await _context.SaveChangesAsync();
-
-                await transaction.CommitAsync();
-
-                return ApiResponse<string>.success("تم الحجز بنجاح");
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                return ApiResponse<string>.Error("حدث خطا");
-
-            }
-
-        }
-      //  public async Task<ApiResponse<string?>>Cancel
+        
     }
     }
 

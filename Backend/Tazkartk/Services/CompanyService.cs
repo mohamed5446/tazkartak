@@ -29,18 +29,14 @@ namespace Tazkartk.Services
         }
         public async Task<ApiResponse<CompanyDTO>> CreateCompanyAsync(CompanyRegisterDTO DTO)
         {
-            if(!DTO.Email.IsValidEmail() )
-            {
-                return ApiResponse<CompanyDTO>.Error("البريد الإلكتروني غير صالح");
-            }
-
+            
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
                 return ApiResponse<CompanyDTO>.Error("البريد الإلكتروني مستخدم من قبل");
             }
             var Company = _mapper.Map<Company>(DTO);
             Company.Logo = _conf["Logo"];
-            Company.UserName = Company.Email.Split('@')[0];
+            Company.UserName = Company.Email;
             Company.EmailConfirmed = true;
             var result = await _AccountManager.CreateAsync(Company, DTO.Password);
             if (!result.Succeeded)
@@ -70,22 +66,10 @@ namespace Tazkartk.Services
             {
                 return ApiResponse<CompanyDTO>.Error("الشركة غير موجودة ");
             }
-            if (!string.IsNullOrEmpty(DTO.PhoneNumber))
-            {
-                Company.PhoneNumber = DTO.PhoneNumber.Trim();
-            }
-            if (!string.IsNullOrEmpty(DTO.Name))
-            {
-                Company.Name = DTO.Name.Trim();
-            }
-            if (!string.IsNullOrEmpty(DTO.City))
-            {
-                Company.City = DTO.City.Trim();
-            }
-            if (!string.IsNullOrEmpty(DTO.Street))
-            {
-                Company.Street = DTO.Street.Trim();
-            }
+             Company.PhoneNumber = DTO.PhoneNumber?.Trim()?? Company.PhoneNumber;
+             Company.Name = DTO.Name?.Trim()?? Company.Name;
+             Company.City = DTO.City?.Trim() ?? Company.City;
+             Company.Street = DTO.Street?.Trim()?? Company.Street;
             if (DTO.Logo != null)
             {
                 if (!string.IsNullOrEmpty(Company.Logo))
@@ -93,13 +77,13 @@ namespace Tazkartk.Services
                     var result = await _photoService.DeletePhotoAsync(Company.Logo);
                     if (result.Error != null)
                     {
-                        return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{result.Error.Message}");
+                        return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{result.Error.Message}",StatusCode.InternalServerError);
                     }
                 }
                     var photoResult = await _photoService.AddPhotoAsync(DTO.Logo);
                        if(photoResult.Error!=null)
                        {
-                         return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{photoResult.Error.Message}");
+                         return ApiResponse<CompanyDTO>.Error($"حدث خطا اثناء تعديل الصورة:{photoResult.Error.Message}",StatusCode.InternalServerError);
 
                         };
                 Company.Logo = photoResult.Url.ToString();

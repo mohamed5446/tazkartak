@@ -24,7 +24,7 @@ namespace Tazkartk.Interfaces
         Task<bool> MarkTripUnavailableAsync(int TripId);
         Task<bool> send_Email_to_passengersAsync(int TripId, EmailDTO DTO);
         void DeleteExistingJobs(int tripId);
-        Task<bool> transfer(int TripId);
+        Task<bool> TransferFunds(int TripId);
 
     }
 }

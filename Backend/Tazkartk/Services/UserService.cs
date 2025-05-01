@@ -45,10 +45,7 @@ namespace Tazkartk.Services
         }
         public async Task<ApiResponse<UserDetails>> AddUserAsync(RegisterDTO DTO, Roles role)
         {
-            if (!DTO.Email.IsValidEmail())
-            {
-                return ApiResponse<UserDetails>.Error("البريد الإلكتروني غير صالح");
-            }  
+            
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
                 return ApiResponse<UserDetails>.Error("البريد الإلكتروني مستخدم من قبل");
@@ -56,7 +53,7 @@ namespace Tazkartk.Services
             var user = _mapper.Map<User>(DTO);
             user.photo = _conf["Avatar"];
             user.EmailConfirmed = true;
-            user.UserName=user.Email.Split('@')[0];
+            user.UserName=user.Email;
             var result = await _AccountManager.CreateAsync(user, DTO.Password);
             if (!result.Succeeded)
             {
@@ -73,21 +70,11 @@ namespace Tazkartk.Services
             {
                 return ApiResponse<UserDetails>.Error("المستخدم غير موجود", StatusCode.NotFound);
             }
-            if (!string.IsNullOrEmpty(DTO.firstName))
-            {
-                user.FirstName = DTO.firstName.Trim();
-            }
 
-            if (!string.IsNullOrEmpty(DTO.lastName))
-            {
-                user.LastName = DTO.lastName.Trim();
-            }
-
-            if (!string.IsNullOrEmpty(DTO.Phone))
-            {
-                user.PhoneNumber = DTO.Phone.Trim();
-            }
-
+            user.FirstName = DTO.firstName?.Trim() ?? user.FirstName;
+            user.LastName = DTO.lastName?.Trim() ?? user.LastName;
+            user.PhoneNumber = DTO.Phone?.Trim() ?? user.PhoneNumber;
+          
             if (DTO.photo != null)
             {
                 if (!string.IsNullOrEmpty(user.photo))
@@ -95,13 +82,13 @@ namespace Tazkartk.Services
                     var res = await _photoService.DeletePhotoAsync(user.photo);
                     if (res.Error != null)
                     {
-                        return ApiResponse<UserDetails>.Error($"حدث خطا اثناء تعديل الصورة:{res.Error.Message}");
+                        return ApiResponse<UserDetails>.Error($"حدث خطا اثناء تعديل الصورة:{res.Error.Message}",StatusCode.InternalServerError);
                     }
                 }
                 var photoResult = await _photoService.AddPhotoAsync(DTO.photo);
                 if (photoResult.Error != null)
                 {
-                    return ApiResponse<UserDetails>.Error($"حدث خطا اثناء تعديل الصورة:{photoResult.Error.Message}");
+                    return ApiResponse<UserDetails>.Error($"حدث خطا اثناء تعديل الصورة:{photoResult.Error.Message}",StatusCode.InternalServerError);
                 }
                 user.photo = photoResult.Url.ToString();
             }
@@ -137,7 +124,7 @@ namespace Tazkartk.Services
                
                     if (res.Error != null)
                     {
-                        return ApiResponse<string>.Error($"حدث خطا اثناء تعديل الصورة:{res.Error.Message}");
+                        return ApiResponse<string>.Error($"حدث خطا اثناء تعديل الصورة:{res.Error.Message}",StatusCode.InternalServerError);
                     }
                 }
                 _context.Users.Remove(user);

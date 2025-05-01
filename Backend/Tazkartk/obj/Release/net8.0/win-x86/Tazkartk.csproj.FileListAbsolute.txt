@@ -168,3 +168,9 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Google.Apis.Core.d
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Management.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Stripe.net.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\AutoMapper.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.Caching.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Microsoft.Extensions.Primitives.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\Pipelines.Sockets.Unofficial.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\StackExchange.Redis.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Release\net8.0\win-x86\System.Diagnostics.DiagnosticSource.dll

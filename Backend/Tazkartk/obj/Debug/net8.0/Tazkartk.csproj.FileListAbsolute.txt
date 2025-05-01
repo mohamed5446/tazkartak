@@ -470,3 +470,9 @@ D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Management.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Stripe.net.dll
 D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\AutoMapper.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\StackExchange.Redis.dll
+D:\gits\tazkartak\Backend\Tazkartk\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

@@ -27,7 +27,7 @@ namespace Tazkartk.Services
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
             {
-                var allowedTypes = new[] { "image/jpeg", "image/png", "image/jpg", "image/webp", "image/gif" };
+                var allowedTypes = new[] { "image/jpeg", "image/png", "image/jpg", "image/webp" };
                 if (!allowedTypes.Contains(file.ContentType.ToLower()))
                     throw new ArgumentException("الملف المرفوع يجب أن يكون صورة فقط.");
                 using Stream stream = file.OpenReadStream();

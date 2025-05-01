@@ -38,9 +38,7 @@ namespace Tazkartk.Google
             }
             catch (Exception ex)
             {
-                // _logger.Error(ex.Message, ex);
                 return ApiResponse<Account>.Error("failed to validate");
-               // return new BaseResponse<User>(null, new List<string> { "Failed to get a response" });
             }
 
             var userToBeCreated = new CreateUserFromSocialLogin
@@ -57,20 +55,12 @@ namespace Tazkartk.Google
 
             if (user is not null)
             {
-                //return new BaseResponse<User>(user);
                 return ApiResponse<Account>.success(null, user);
-                //return new ApiResponse<Account>
-                //{
-                //    Success=true,
-                //    StatusCode=Models.Enums.StatusCode.Ok,
-                //    Data=user,
-                //};
             }
-               
 
             else
             {
-                return ApiResponse<Account>.Error("unable to link user to google");
+                return ApiResponse<Account>.Error("error happened");
             }
                
         }

@@ -11,7 +11,6 @@ using Tazkartk.Email;
 using Tazkartk.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Hangfire;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.Dashboard;
@@ -21,6 +20,7 @@ using Tazkartk.DTO.Response;
 using System.Text.Json;
 using Tazkartk.Models.Enums;
 using System.Text.Json.Serialization;
+using Tazkartk.Caching;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,6 +73,7 @@ builder.Services.AddScoped<IPaymobService, PaymobService>();
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+builder.Services.AddScoped<ICachingService,CachingService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -85,6 +86,19 @@ builder.Services.AddHttpClient();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+});
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("redis");
+    options.InstanceName = "Tazkartk_";
+    //options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+    //{
+    //    EndPoints = { "pleasing-beagle-10882.upstash.io:6379" },
+    //    Password = "ASqCAAIjcDEzY2RkMjZkYmE4MWY0ODIyOGY1ZDFhOTg4M2IxMDk3OHAxMA",
+    //    Ssl = true,
+    //    AbortOnConnectFail = false
+    //};
 });
 builder.Services.AddIdentityCore<Account>(options =>
 {

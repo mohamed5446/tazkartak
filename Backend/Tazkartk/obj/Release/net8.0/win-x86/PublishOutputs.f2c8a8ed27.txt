@@ -33,11 +33,14 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microso
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.EntityFrameworkCore.Relational.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Caching.Abstractions.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Caching.StackExchangeRedis.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Identity.Core.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Identity.Stores.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Logging.Abstractions.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Options.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Identity.Client.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Identity.Client.Extensions.Msal.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.IdentityModel.Abstractions.dll
@@ -51,6 +54,8 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Microso
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\MimeKit.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Newtonsoft.Json.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Newtonsoft.Json.Bson.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Pipelines.Sockets.Unofficial.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\StackExchange.Redis.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Stripe.net.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.Annotations.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
@@ -58,6 +63,7 @@ D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbu
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.CodeDom.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.Configuration.ConfigurationManager.dll
+D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.Diagnostics.DiagnosticSource.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.Formats.Asn1.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
 D:\gits\tazkartak\Backend\Tazkartk\obj\Release\net8.0\win-x86\PubTmp\Out\System.Management.dll

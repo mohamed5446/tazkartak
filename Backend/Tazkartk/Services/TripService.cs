@@ -70,13 +70,48 @@ namespace Tazkartk.Services
         }
         public async Task<IEnumerable<PassengerDetailsDTO>> GetPassengersAsync(int TripId)
         {
-            return await _context.Trips
-                 .Where(t => t.TripId == TripId)
-                 .SelectMany(t => t.bookings)
-                 .Where(b => !b.IsCanceled)
-                 .ProjectTo<PassengerDetailsDTO>(_mapper.ConfigurationProvider)
-                 .AsNoTracking()
-                 .ToListAsync();
+            var userPassengers = await _context.bookings
+        .Where(b => b.tripId == TripId && !b.IsCanceled && b.user != null)
+        .GroupBy(b => b.user)
+        .Select(g => new PassengerDetailsDTO
+        {
+            FirstName= g.Key.FirstName,
+            LastName = g.Key.LastName,
+            Email = g.Key.Email,
+            PhoneNumber = g.Key.PhoneNumber,
+            Seats = g.SelectMany(b => b.seats.Select(s=>s.Number)).Distinct().ToList()
+        })
+        .ToListAsync();
+
+            var guestPassengers = await _context.bookings
+                .Where(b => b.tripId == TripId && !b.IsCanceled && b.user == null)
+                .GroupBy(b => new { b.GuestFirstName, b.GuestLastName,b.GuestPhoneNumber})
+                .Select(g => new PassengerDetailsDTO
+                {
+                   FirstName=g.Key.GuestFirstName,
+                   LastName=g.Key.GuestLastName,
+                    PhoneNumber = g.Key.GuestPhoneNumber,
+                    Email = null,
+                    Seats = g.SelectMany(b => b.seats.Select(s=>s.Number)).Distinct().ToList()
+                })
+                .ToListAsync();
+
+            return userPassengers.Concat(guestPassengers);
+
+
+            //return await _context.bookings
+            //    .Where(b=>!b.IsCanceled&&b.tripId == TripId)
+            //    .GroupBy(b=>b.user)
+            //    .ProjectTo<PassengerDetailsDTO>(_mapper.ConfigurationProvider)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+            //return await _context.Trips
+            //     .Where(t => t.TripId == TripId)
+            //     .SelectMany(t => t.bookings)
+            //     .Where(b => !b.IsCanceled)
+            //     .ProjectTo<PassengerDetailsDTO>(_mapper.ConfigurationProvider)
+            //     .AsNoTracking()
+            //     .ToListAsync();
         }
         public async Task<List<TicketDTO>?> GetBookingsByTripAsync(int TripId)
         {
@@ -119,7 +154,7 @@ namespace Tazkartk.Services
             var reminderTime = DepartureDateTime.AddHours(-2);
             var jobId = BackgroundJob.Schedule<TripService>(service => service.SendReminderEmailAsync(Tripmodel.TripId), reminderTime);
             var job2Id = BackgroundJob.Schedule<TripService>(service => service.MarkTripUnavailableAsync(Tripmodel.TripId), DepartureDateTime);
-            var job3Id = BackgroundJob.Schedule<TripService>(service => service.transfer(Tripmodel.TripId), DepartureDateTime);
+            var job3Id = BackgroundJob.Schedule<TripService>(service => service.TransferFunds(Tripmodel.TripId), DepartureDateTime);
 
             var Data = _mapper.Map<TripDtos>(Tripmodel);
             return ApiResponse<TripDtos>.success("تم اضافة الرحلة بنجاح", Data, StatusCode.Created);
@@ -157,17 +192,19 @@ namespace Tazkartk.Services
                 var jobId = BackgroundJob.Schedule<TripService>(service => service.SendReminderEmailAsync(Tripmodel.TripId), reminderTime);
                 var job2Id = BackgroundJob.Schedule<TripService>(service => service.MarkTripUnavailableAsync(Tripmodel.TripId), DepartureDateTime);
             }
+             Tripmodel.From = UpdateDtos.From ?? Tripmodel.From;
+            Tripmodel.To = UpdateDtos.To?? Tripmodel.To;
+             Tripmodel.Class = UpdateDtos.Class?? Tripmodel.Class;
+            Tripmodel.Location = UpdateDtos.Location ?? Tripmodel.Location;
+            Tripmodel.Price = UpdateDtos.Price ?? Tripmodel.Price;
+           Tripmodel.Date = UpdateDtos.Date ?? Tripmodel.Date;
+            Tripmodel.Time = UpdateDtos.Time ?? Tripmodel.Time;
+            Tripmodel.Avaliblility = UpdateDtos.Avaliblility ?? Tripmodel.Avaliblility;
 
-            if (!string.IsNullOrEmpty(UpdateDtos.From)) Tripmodel.From = UpdateDtos.From;
-            if (!string.IsNullOrEmpty(UpdateDtos.To)) Tripmodel.To = UpdateDtos.To;
-            if (!string.IsNullOrEmpty(UpdateDtos.Class)) Tripmodel.Class = UpdateDtos.Class;
-            if (!string.IsNullOrEmpty(UpdateDtos.Location)) Tripmodel.Location = UpdateDtos.Location;
-            if (UpdateDtos.Price.HasValue) Tripmodel.Price = UpdateDtos.Price.Value;
-            if (UpdateDtos.Date.HasValue) Tripmodel.Date = UpdateDtos.Date.Value;
-            if (UpdateDtos.Time.HasValue) Tripmodel.Time = UpdateDtos.Time.Value;
-           // if (UpdateDtos.ArriveTime.HasValue) Tripmodel.ArriveTime = UpdateDtos.ArriveTime.Value;
-            if (UpdateDtos.Avaliblility.HasValue) Tripmodel.Avaliblility = UpdateDtos.Avaliblility.Value;
+
             // if (UpdateDtos.TripCode.HasValue) Tripmodel.TripCode = UpdateDtos.TripCode.Value;
+            // if (UpdateDtos.ArriveTime.HasValue) Tripmodel.ArriveTime = UpdateDtos.ArriveTime.Value;
+
 
             await _context.SaveChangesAsync();
            var Data=_mapper.Map<TripDtos>(Tripmodel);
@@ -238,7 +275,7 @@ namespace Tazkartk.Services
             }
 
         }
-        public async Task<bool> transfer(int TripId)
+        public async Task<bool> TransferFunds(int TripId)
         {
             var trip = await _context.Trips.Include(t => t.seats).Include(t => t.company).FirstOrDefaultAsync(t => t.TripId == TripId);
             if (trip == null) throw new Exception("error happened");

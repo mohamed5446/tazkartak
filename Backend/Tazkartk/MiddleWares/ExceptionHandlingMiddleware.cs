@@ -37,14 +37,10 @@ namespace Tazkartk.MiddleWares
             {
                 var _ when exceptionType == typeof(UnauthorizedAccessException) => StatusCodes.Status401Unauthorized,
                 var _ when exceptionType == typeof(ValidationException) => StatusCodes.Status422UnprocessableEntity,
-                //AppException e when exceptionType == typeof(AppException) => e.Code,
                 _ => StatusCodes.Status500InternalServerError,
             };
             var response = ApiResponse<string>.Error(exception.Message,(StatusCode) httpContext.Response.StatusCode);
-            //{
-            //    StatusCode =(StatusCode) httpContext.Response.StatusCode,
-            //    message = exception.Message
-            //};
+   
 
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
