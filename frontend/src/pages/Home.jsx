@@ -40,7 +40,6 @@ const Home = () => {
       search: createSearchParams({
         to: data.to,
         from: data.from,
-        date: data.date || null,
       }).toString(),
     });
     console.log(data);
