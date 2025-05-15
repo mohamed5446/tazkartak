@@ -23,6 +23,15 @@ namespace Tazkartk.Controllers
         {
             _TripService = TripService;
         }
+        [HttpPost("{CompanyId}/Import")]
+        [SwaggerOperation(Summary = "Import Trips from Excel")]
+        public async Task<IActionResult> ImportTripsFromExcel(int CompanyId,IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("الملف غير موجود أو فارغ.");
+            var trips=await _TripService.ImportFromExcelAsync(CompanyId,file);
+            return Ok(trips);
+        }
         //[HttpPut("transfer")]
         //public async Task<IActionResult>Transfer(int TripId)
         //{

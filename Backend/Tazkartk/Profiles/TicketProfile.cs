@@ -26,7 +26,9 @@ namespace Tazkartk.Profiles
                 .ForMember(dest => dest.From, opt => opt.MapFrom(src => src.trip.From))
                 .ForMember(dest => dest.To, opt => opt.MapFrom(src =>  src.trip.To))
                 .ForMember(dest => dest.IsCanceled, opt => opt.MapFrom(src => src.IsCanceled))
-                .ForMember(dest => dest.SeatsNumbers, opt => opt.MapFrom(src => src.seats.Select(s => s.Number).ToList()));
+                .ForMember(dest => dest.SeatsNumbers, opt => opt.MapFrom(src => src.seats.Select(s => s.Number).ToList()))
+                .ForMember(dest => dest.CompanyLogoUrl,
+                   opt => opt.MapFrom(src => src.trip.company.Logo));
 
             CreateMap<Booking, PassengerDetailsDTO>()
                  .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.BookingId))

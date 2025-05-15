@@ -16,65 +16,36 @@ namespace Tazkartk.Controllers
     public class PaymobController : ControllerBase
     {
         private readonly IBookingService _BookingService;
-        private readonly PaymobSettings _Paymob;
-        public PaymobController(IOptions<PaymobSettings> paymob, IBookingService bookingService)
+        private readonly IPaymobService _PaymobService;
+        public PaymobController( IBookingService bookingService, IPaymobService paymobService)
         {
             _BookingService = bookingService;
-            _Paymob = paymob.Value;
+            _PaymobService = paymobService;
         }
         [HttpPost("callback")]
         public async Task<IActionResult> CallBack()
         {
             using var reader = new StreamReader(Request.Body);
             string body = await reader.ReadToEndAsync();
-            JObject jsonObject = JObject.Parse(body);
-            JObject obj = jsonObject["obj"] as JObject;
-
             string receivedHmac = Request.Query["hmac"].ToString();
 
-            List<string> values = new List<string>
-            {
-              JsonConvert.SerializeObject(obj["amount_cents"]).Trim('"') ,
-              JsonConvert.SerializeObject(obj["created_at"]).Trim('"') ,
-               JsonConvert.SerializeObject(obj["currency"]).Trim('"') ,
-                 JsonConvert.SerializeObject(obj["error_occured"]).Trim('"'),
-                JsonConvert.SerializeObject(obj["has_parent_transaction"]).Trim('"') ,
-               JsonConvert.SerializeObject(obj["id"]).Trim('"') ,
-                 JsonConvert.SerializeObject(obj["integration_id"]).Trim('"') ,
-               JsonConvert.SerializeObject(obj["is_3d_secure"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["is_auth"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["is_capture"]).Trim('"') ,
-                 JsonConvert.SerializeObject(obj["is_refunded"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["is_standalone_payment"]).Trim('"') ,
-                 JsonConvert.SerializeObject(obj["is_voided"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["order"]?["id"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["owner"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["pending"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["source_data"]?["pan"]).Trim('"') ,
-                 JsonConvert.SerializeObject(obj["source_data"]?["sub_type"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["source_data"]?["type"]).Trim('"') ,
-                JsonConvert.SerializeObject(obj["success"]).Trim('"')
-            };
-            string concatenatedString = string.Join("", values);
-            string computedHmac = ComputeHmac(_Paymob.HMAC, concatenatedString);
-            if (computedHmac != receivedHmac)
-            {
-                return Unauthorized(new { c = concatenatedString, computedhmac = computedHmac, message = "Invalid HMAC" });
-            } 
+            var callback = JsonConvert.DeserializeObject<paymobresponse>(body);
 
-            var success= JsonConvert.SerializeObject(obj["success"]);
-            if (success != "true")
+            var valid=_PaymobService.ValidateHmac(callback, receivedHmac);
+            if(!valid)
+            {
+                return Unauthorized("invalid hmac");
+            }
+            var obj = callback.obj;
+            var success = obj.success;
+            if (!obj.success)
             {
                 return BadRequest();
             }
-
-            string transactionId = obj["id"]?.ToString();
-            var isrefunded = JsonConvert.SerializeObject(obj["is_refunded"]);
-            var paymentMethod = JsonConvert.SerializeObject(obj["source_data"]?["sub_type"]).Trim('"');
-            var transactionTime = obj["created_at"].Value<DateTime>();
-
-
-            if (isrefunded == "true")
+            string transactionId = obj.id.ToString();
+            var paymentMethod = obj.source_data.sub_type;
+       
+            if(obj.is_refunded)
             {
                 var Done = await _BookingService.CancelAsync(transactionId);
                 if (!Done)
@@ -82,37 +53,23 @@ namespace Tazkartk.Controllers
                     return BadRequest("failed to refund");
                 }
                 return Ok("refunded successfully");
-
             }
-
-
-            JToken extra = obj["payment_key_claims"]?["extra"];
 
             var bookingDTO = new BookingDTO
             {
-                UserId = extra["userid"].Value<int>() ,
-                TripId = extra["tripid"].Value<int>(),
-                SeatsNumbers = extra["seats"]?.ToObject<List<int>>() 
+                UserId=obj.payment_key_claims.extra.userid,
+                TripId=obj.payment_key_claims.extra.tripid,
+                SeatsNumbers=obj.payment_key_claims.extra.seats,
             };
-
-            var done = await _BookingService.ConfirmBookingAsync(bookingDTO, transactionId,paymentMethod);
+            var done = await _BookingService.ConfirmBookingAsync(bookingDTO, transactionId, paymentMethod);
             if (!done)
             {
                 return BadRequest();
             }
 
-            return Ok(new { c = concatenatedString });
-        }
-        public static string ComputeHmac(string secret, string data)
-        {
-            byte[] key = Encoding.UTF8.GetBytes(secret);
-            byte[] message = Encoding.UTF8.GetBytes(data);
 
-            using (var hmac = new HMACSHA512(key))
-            {
-                byte[] hash = hmac.ComputeHash(message);
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
-            }
+            return Ok();
         }
+      
     }
 }

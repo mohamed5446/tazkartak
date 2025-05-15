@@ -22,7 +22,7 @@ namespace Tazkartk.Controllers
             _userService = userService;
        
         }
-        [HttpGet("Get-Admins")]
+        [HttpGet("Admins")]
         //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "List All Admins")]
         public async Task<IActionResult> GetAdmins()

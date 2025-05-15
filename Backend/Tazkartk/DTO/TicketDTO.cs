@@ -28,8 +28,8 @@ namespace Tazkartk.DTO
         public string To { get; set; }       
         public bool IsCanceled {  get; set; }
         public List<int> SeatsNumbers { get; set; }
-      
+        public string CompanyLogoUrl { get; set; }
 
-      
+
     }
 }

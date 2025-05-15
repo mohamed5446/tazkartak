@@ -7,5 +7,7 @@ namespace Tazkartk.Interfaces
     {
         Task<string> CreatePaymentIntentAsync(BookingDTO DTO, double amount, UserDetailsDTO UserDTO);
         Task<bool> RefundTransactionAsync(int bookingId, string transactionId, double amountCents);
+        public bool ValidateHmac(paymobresponse callback, string hmac);
+
     }
 }

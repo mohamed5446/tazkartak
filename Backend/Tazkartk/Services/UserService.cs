@@ -34,10 +34,10 @@ namespace Tazkartk.Services
             _bookingService = bookingService;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<UserDetails>> GetUsersAsync(Roles Role)
+        public async Task<IReadOnlyList<UserDetails>> GetUsersAsync(Roles Role)
         {
             var users = await _AccountManager.GetUsersInRoleAsync(Role.ToString());
-            return _mapper.Map<IEnumerable<UserDetails>>(users);
+            return _mapper.Map<IReadOnlyList<UserDetails>>(users);
         }
         public async Task<UserDetails?> GetUserByIdAsync(int id)
         {

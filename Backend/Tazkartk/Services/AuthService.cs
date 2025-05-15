@@ -168,13 +168,7 @@ namespace Tazkartk.Services
             {
                 return AuthModel.Error("رمز التحقق غير صالح أو منتهي الصلاحية", Account.EmailConfirmed);
             }
-            //if (enteredOtp == null || enteredOtp != Account.OTP || DateTime.UtcNow > Account.OTPExpiry)
-            //{
-            //    return AuthModel.Error("رمز التحقق غير صالح أو منتهي الصلاحية", Account.EmailConfirmed);
-            //}
-            //Account.OTP = null;
-            //Account.OTPExpiry = null;
-
+       
             _cache.Remove(key);
             Account.EmailConfirmed = true;
             await _AccountManager.UpdateAsync(Account);

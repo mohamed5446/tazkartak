@@ -25,8 +25,6 @@ namespace Tazkartk.Profiles
                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Street))
                .ForMember(dest => dest.Logo, opt => opt.MapFrom(src => src.Logo))
                .ForMember(dest=>dest.Balance,opt=>opt.MapFrom(src => src.Balance))
-
-
                .ReverseMap();
 
 

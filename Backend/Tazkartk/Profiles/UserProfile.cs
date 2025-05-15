@@ -19,6 +19,7 @@ namespace Tazkartk.Profiles
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber.Trim()))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim()))
                 .ReverseMap();
+
             CreateMap<User, UserDetailsDTO>();
                 //.ForMember(dest => dest.photo, opt => opt.Ignore());
                 //.ForMember(dest => dest.EmailConfirmed, opt => opt.Ignore());

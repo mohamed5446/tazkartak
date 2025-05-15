@@ -13,6 +13,8 @@ using Tazkartk.Models;
 using Tazkartk.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ClosedXML.Excel;
+using System;
 
 namespace Tazkartk.Services
 {
@@ -28,17 +30,17 @@ namespace Tazkartk.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TripDtos>> GetTripsAsync()
+        public async Task<IReadOnlyList<TripDtos>> GetTripsAsync()
         {
             return await _context.Trips.ProjectTo<TripDtos>(_mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
             //return  await _mapper.ProjectTo<TripDtos>(_context.Trips.AsNoTracking()).ToListAsync();
         }
-        public async Task<IEnumerable<TripDtos>> GetAvailableTripsAsync()
+        public async Task<IReadOnlyList<TripDtos>> GetAvailableTripsAsync()
         {
             return await _context.Trips.Where(t => t.Avaliblility).ProjectTo<TripDtos>(_mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
             //return await _mapper.ProjectTo<TripDtos>(_context.Trips.Where(t => t.Avaliblility == true).AsNoTracking()).ToListAsync();
         }
-        public async Task<IEnumerable<TripDtos>?> GetCompanyTripsAsync(int companyId)
+        public async Task<IReadOnlyList<TripDtos>?> GetCompanyTripsAsync(int companyId)
         {
 
             var company = await _context.Companies
@@ -46,9 +48,9 @@ namespace Tazkartk.Services
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == companyId);
             if (company == null) return null;
-           return  _mapper.Map<IEnumerable<TripDtos>>(company.Trips.Where(t=>t.Avaliblility));
+           return  _mapper.Map<IReadOnlyList<TripDtos>>(company.Trips.Where(t=>t.Avaliblility));
         }
-        public async Task<IEnumerable<TripDtos>> SearchAsync(string? from, string? to, DateOnly? date)
+        public async Task<IReadOnlyList<TripDtos>> SearchAsync(string? from, string? to, DateOnly? date)
         {
          return  await _context.Trips
                 .Where(s => 
@@ -113,7 +115,7 @@ namespace Tazkartk.Services
             //     .AsNoTracking()
             //     .ToListAsync();
         }
-        public async Task<List<TicketDTO>?> GetBookingsByTripAsync(int TripId)
+        public async Task<IReadOnlyList<TicketDTO>?> GetBookingsByTripAsync(int TripId)
         {
             var Trip = await _context.Trips.FindAsync(TripId);
             if (Trip == null) return null;
@@ -257,24 +259,35 @@ namespace Tazkartk.Services
                 };
                 await _EmailService.SendEmail(emailrequest);
             }
-            return true;
+            return true; 
         }
         public void DeleteExistingJobs(int tripId)
         {
             var monitor = JobStorage.Current.GetMonitoringApi();
 
             var jobsScheduled = monitor.ScheduledJobs(0, int.MaxValue);
-                //.Where(x => x.Value.Job.Method.Name == "SendReminderEmail"||x.Value.Job.Method.Name== "MarkTripUnavailable");
+            //.Where(x => x.Value.Job.Method.Name == "SendReminderEmail"||x.Value.Job.Method.Name== "MarkTripUnavailable");
             foreach (var j in jobsScheduled)
             {
-                var t = (int)j.Value.Job.Args[0];
-                if (t == tripId)
+                var job = j.Value.Job;
+                if (job != null)
                 {
-                    BackgroundJob.Delete(j.Key);
+                    var args = j.Value.Job.Args;
+                    if (args != null)
+                    {
+                        if (args[0] is int t && t == tripId)
+                        {
+                            BackgroundJob.Delete(j.Key);
+                        }
+                    }
                 }
             }
-
+            //var t = (int)j.Value.Job.Args[0];
+            //if (t == tripId)
+            //{
         }
+                    
+           
         public async Task<bool> TransferFunds(int TripId)
         {
             var trip = await _context.Trips.Include(t => t.seats).Include(t => t.company).FirstOrDefaultAsync(t => t.TripId == TripId);
@@ -285,7 +298,96 @@ namespace Tazkartk.Services
             company.Balance+=total;
             _context.Companies.Update(company);
             await _context.SaveChangesAsync();
-            return true;
+            return  true;
+        }
+        public async Task<IReadOnlyList<TripDtos>>ImportFromExcelAsync(int CompanyId,IFormFile file)
+        
+            {
+                var trips = new List<TripDtos>();
+
+                using var stream = new MemoryStream();
+                await file.CopyToAsync(stream);
+                using var workbook = new XLWorkbook(stream);
+            //  var worksheet = workbook.Worksheets.First();
+            foreach (var worksheet in workbook.Worksheets)
+            {
+                for (int row = 2; row <= worksheet.LastRowUsed().RowNumber(); row++)
+                {
+                    try
+                    {
+                        var from = worksheet.Cell(row, 1).GetString().Trim();
+                        var to = worksheet.Cell(row, 2).GetString().Trim();
+                        var tripClass = worksheet.Cell(row, 3).GetString().Trim();
+                        DateOnly date;
+                        var dateCell = worksheet.Cell(row, 4);
+                        if (dateCell.DataType == XLDataType.DateTime)
+                        {
+                            date = DateOnly.FromDateTime(dateCell.GetDateTime());
+                        }
+                        else if (DateTime.TryParse(dateCell.GetString(), out var dtValue))
+                        {
+                            date = DateOnly.FromDateTime(dtValue);
+                        }
+                        else
+                        {
+                            throw new Exception($"{row}: التاريخ غير صالح.");
+                        }
+
+                        TimeOnly time;
+                        var timeCell = worksheet.Cell(row, 5);
+                        if (timeCell.DataType == XLDataType.DateTime)
+                        {
+                            time = TimeOnly.FromDateTime(timeCell.GetDateTime());
+                        }
+                        else if (DateTime.TryParse(timeCell.GetString(), out var timeValue))
+                        {
+                            time = TimeOnly.FromDateTime(timeValue);
+                        }
+                        else
+                        {
+                            throw new Exception($" {row}: الوقت غير صالح.");
+                        }
+                        var location = worksheet.Cell(row, 6).GetString().Trim();
+                        var priceStr = worksheet.Cell(row, 7).GetString().Trim();
+
+                        if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to) ||
+                            string.IsNullOrWhiteSpace(tripClass) || string.IsNullOrWhiteSpace(location) ||
+                            string.IsNullOrWhiteSpace(priceStr))
+                        {
+                            throw new Exception($" {row}: هناك حقول مطلوبة مفقودة.");
+                        }
+
+                        if (!double.TryParse(priceStr, out double price))
+                        {
+                            throw new Exception($" {row}: السعر غير صالح.");
+                        }
+
+                        var createTrip = new CreateTripDtos
+                        {
+                            From = from,
+                            To = to,
+                            Class = tripClass,
+                            Date = date,
+                            Time = time,
+                            Location = location,
+                            Price = price
+                        };
+
+                        var result = await AddTripAsync(CompanyId, createTrip);
+
+                        if (result.Success)
+                            trips.Add(result.Data);
+                        else
+                            throw new Exception($" {row}: {result.message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($" {row} {ex.Message}");
+                    }
+                }
+            }
+            return trips;
+
         }
     }
 }

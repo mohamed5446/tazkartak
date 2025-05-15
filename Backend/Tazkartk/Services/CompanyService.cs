@@ -48,7 +48,7 @@ namespace Tazkartk.Services
 
             return ApiResponse<CompanyDTO>.success("تمت اضافة الشركة بنجاح ", Data, StatusCode.Created);
         }
-            public async Task<List<CompanyDTO>> GetAllCompaniesAsync()
+            public async Task<IReadOnlyList<CompanyDTO>> GetAllCompaniesAsync()
         {
             return await _context.Companies.AsNoTracking().ProjectTo<CompanyDTO>(_mapper.ConfigurationProvider).ToListAsync();
 

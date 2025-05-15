@@ -5,6 +5,8 @@ using Tazkartk.Interfaces;
 using Tazkartk.Models;
 using Tazkartk.Services;
 using Microsoft.AspNetCore.Authorization;
+using QuestPDF;
+using QuestPDF.Infrastructure;
 namespace Tazkartk.Controllers
 {
     [Route("api/[controller]")]
@@ -20,7 +22,20 @@ namespace Tazkartk.Controllers
             _BookingService = bookingService;
             _UserService = userService;
         }
-        
+        [HttpPost("{BookingId}/CancelTab")]
+        public async Task<IActionResult>CancelTab(int BookingId)
+        {
+            var result = await _BookingService.RefundTapAsync(BookingId);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPost("Tap")]
+        public async Task<IActionResult>BookPay(BookingDTO DTO)
+        {
+            var result = await _BookingService.TapBookSeatAsync(DTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
         [HttpGet]
         //[Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "List All Tickets")]

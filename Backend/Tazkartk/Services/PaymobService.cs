@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using Tazkartk.DTO;
 using Tazkartk.DTO.UserDTOs;
@@ -26,8 +27,8 @@ namespace Tazkartk.Services
             {
                 amount = amount * 100,
                 currency = "EGP",
-                payment_methods = new[] { "wallet", "card" },
-                expiration= 120,
+                payment_methods = new[] { "wallet", "card", "kiosk" },
+                expiration= 300,
                 billing_data = new
                 {
                     first_name = UserDTO.FirstName,
@@ -35,7 +36,7 @@ namespace Tazkartk.Services
                     phone_number = UserDTO.PhoneNumber,
                     email = UserDTO.Email,
                 },
-                notification_url = _paymob.notification_url, // "https://bfeb-156-207-25-225.ngrok-free.app/api/Paymob/callback",
+                notification_url = _paymob.notification_url,//"https://webhook.site/448cf8d8-a51a-43aa-86c8-d1a97f7f8c35", // "https://bfeb-156-207-25-225.ngrok-free.app/api/Paymob/callback",
                 redirection_url = _paymob.redirection_url ,  // "https://bfeb-156-207-25-225.ngrok-free.app/api/Paymob/callback",
                 extras = new
                 {
@@ -45,7 +46,7 @@ namespace Tazkartk.Services
                 }
 
             };
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Post, "https://accept.paymob.com/v1/intention/");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", _paymob.SecretKey);
 
@@ -59,8 +60,8 @@ namespace Tazkartk.Services
                 throw new Exception($"error : {responseString}");
             }
 
-            var responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseString);
-            string clientSecret = responseData.client_secret;
+            var responseData = JsonConvert.DeserializeObject<PaymentIntentResponseDTO>(responseString);
+            string clientSecret = responseData.ClientSecret;
             string publicKey = _paymob.PublicKey;
             string checkoutUrl = $"https://accept.paymob.com/unifiedcheckout/?publicKey={publicKey}&clientSecret={clientSecret}";
 
@@ -73,7 +74,6 @@ namespace Tazkartk.Services
             {
                 transaction_id = transactionId,
                 amount_cents = (int)(amountCents),
-
             };
 
             var request = new HttpRequestMessage(HttpMethod.Post, "https://accept.paymob.com/api/acceptance/void_refund/refund")
@@ -88,17 +88,54 @@ namespace Tazkartk.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorData = JsonConvert.DeserializeObject<dynamic>(responseString);
+                throw new Exception($"Refund error: {responseString}");
 
-                throw new Exception($"Refund Failed: {errorData.message}");
             }
+            return true;
+           // return(bool) responseData.success == true;
+        }
 
-            var responseData = JsonConvert.DeserializeObject<dynamic>(responseString);
-            if (!(bool)responseData.success)
+        public bool ValidateHmac(paymobresponse callback, string recievedhmac)
+        {
+            var obj = callback.obj;
+            var values = new List<string>
             {
-                throw new Exception($"Refund Failed: {responseData.message}");
+                obj.amount_cents.ToString(),
+                obj.created_at.ToString("yyyy-MM-ddTHH:mm:ss.ffffff"),
+                obj.currency,
+                obj.error_occured.ToString().ToLower(),
+                obj.has_parent_transaction.ToString().ToLower(),
+                obj.id.ToString(),
+                obj.integration_id.ToString(),
+                obj.is_3d_secure.ToString().ToLower(),
+                obj.is_auth.ToString().ToLower(),
+                obj.is_capture.ToString().ToLower(),
+                obj.is_refunded.ToString().ToLower(),
+                obj.is_standalone_payment.ToString().ToLower(),
+                obj.is_voided.ToString().ToLower(),
+                obj.order.id.ToString() ?? "",
+                obj.owner.ToString(),
+                obj.pending.ToString().ToLower(),
+                obj.source_data?.pan ?? "",
+                obj.source_data?.sub_type ?? "",
+                obj.source_data?.type ?? "",
+                obj.success.ToString().ToLower()
+            };
+
+            string concatenatedString = string.Join("", values);
+            string computedHmac = ComputeHmac(_paymob.HMAC, concatenatedString);
+            return computedHmac == recievedhmac;
+        }
+        private  string ComputeHmac(string secret, string data)
+        {
+            byte[] key = Encoding.UTF8.GetBytes(secret);
+            byte[] message = Encoding.UTF8.GetBytes(data);
+
+            using (var hmac = new HMACSHA512(key))
+            {
+                byte[] hash = hmac.ComputeHash(message);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
-            return(bool) responseData.success == true;
         }
     }
 }

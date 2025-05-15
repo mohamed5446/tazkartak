@@ -10,6 +10,11 @@ using System.Globalization;
 using Tazkartk.DTO.CompanyDTOs;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using QuestPDF;
+using QuestPDF.Infrastructure;
+using QuestPDF.Fluent;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace Tazkartk.Services
 {
@@ -17,13 +22,15 @@ namespace Tazkartk.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IPaymobService _paymobService;
+        private readonly ITapService _tapService;
         private readonly IMapper _mapper;
 
-        public BookingService(ApplicationDbContext context, IPaymobService paymobService, IMapper mapper)
+        public BookingService(ApplicationDbContext context, IPaymobService paymobService, IMapper mapper, ITapService tapService)
         {
             _context = context;
             _paymobService = paymobService;
             _mapper = mapper;
+            _tapService = tapService;
         }
         #region Booking
         public async Task<ApiResponse<string>> BookSeatAsync(BookingDTO DTO)
@@ -60,7 +67,7 @@ namespace Tazkartk.Services
         {
             var user = await _context.Users.Include(u => u.books).FirstOrDefaultAsync(u => u.Id == DTO.UserId);
             var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
-            
+
             if (user == null || trip == null) return false;
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -206,25 +213,25 @@ namespace Tazkartk.Services
         #region Cancel
         public async Task<ApiResponse<bool>> RefundAsync(int bookingId)
         {
-           
+
             var booking = await _context.bookings.Include(b => b.seats).Include(b => b.trip).Include(b => b.payment).FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null)
             {
                 return ApiResponse<bool>.Error("حدث خطا");
             }
             var DepartureTime = booking.trip.Date.ToDateTime(booking.trip.Time);
-            if(DateTime.Now>DepartureTime.AddHours(-2))
+            if (DateTime.Now > DepartureTime.AddHours(-2))
             {
                 return ApiResponse<bool>.Error("لا يمكن الغاء الرحلة باقي اقل من ساعتان");
             }
-            if (booking.IsCanceled==true)
+            if (booking.IsCanceled == true)
             {
                 return ApiResponse<bool>.Error("لقد قمت بالغاء الحجز");
             }
             var count = booking.seats.Count();
             var total = (count * booking.trip.Price) * 100;
             var paymemnt = await _context.Payments.FirstOrDefaultAsync(p => p.bookingId == bookingId);
-            if(paymemnt.Method=="wallet")
+            if (paymemnt.Method == "wallet")
             {
                 ApiResponse<bool>.Error("الاسترداد عبر المحفظة غير متاح في الوقت الحالي");
             }
@@ -233,9 +240,9 @@ namespace Tazkartk.Services
                 return ApiResponse<bool>.Error("حدث خطا");
             }
             var trxId = paymemnt.PaymentIntentId;
-              var result =  await _paymobService.RefundTransactionAsync(bookingId, trxId, total);
+            var result = await _paymobService.RefundTransactionAsync(bookingId, trxId, total);
             if (!result) return ApiResponse<bool>.Error("حدث خطا");
-                    return ApiResponse<bool>.success("تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. ");
+            return ApiResponse<bool>.success("تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. ");
         }
         public async Task<bool> CancelAsync(string trxId)
         {
@@ -260,19 +267,19 @@ namespace Tazkartk.Services
 
         public async Task<ApiResponse<string>> DeleteBookingAsync(int Id)
         {
-                var booking = await _context.bookings.Include(b => b.seats).FirstOrDefaultAsync(b => b.BookingId == Id);
-                var payment = await _context.Payments.FindAsync(booking.PaymentId);
-                _context.Seats.RemoveRange(booking.seats);
-                _context.Payments.Remove(payment);
-                _context.bookings.Remove(booking);
+            var booking = await _context.bookings.Include(b => b.seats).FirstOrDefaultAsync(b => b.BookingId == Id);
+            var payment = await _context.Payments.FindAsync(booking.PaymentId);
+            _context.Seats.RemoveRange(booking.seats);
+            _context.Payments.Remove(payment);
+            _context.bookings.Remove(booking);
 
-                await _context.SaveChangesAsync();
-                return ApiResponse<string>.success("تم حذف الحجز");
+            await _context.SaveChangesAsync();
+            return ApiResponse<string>.success("تم حذف الحجز");
         }
 
 
 
-        public async Task<List<TicketDTO>> GetBookingsAsync()
+        public async Task<IReadOnlyList<TicketDTO>> GetBookingsAsync()
         {
             return await _context.bookings
                 .AsNoTracking()
@@ -281,27 +288,27 @@ namespace Tazkartk.Services
         }
 
 
-        public async Task<List<TicketDTO>?> GetUserBookingsAsync(int userId)
+        public async Task<IReadOnlyList<TicketDTO>?> GetUserBookingsAsync(int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u=>u.Id==userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return null;
-           return await _context.bookings
-                .Where(b => b.UserId == userId && !b.IsCanceled)
-                .AsNoTracking()
-                .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            return await _context.bookings
+                 .Where(b => b.UserId == userId && !b.IsCanceled)
+                 .AsNoTracking()
+                 .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                 .ToListAsync();
         }
-        public async Task<List<TicketDTO>?> GetUserCanceledTicektsAsync(int userId)
+        public async Task<IReadOnlyList<TicketDTO>?> GetUserCanceledTicektsAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
-           return await _context.bookings
-                .Where(b => b.UserId == userId && b.IsCanceled)
-                .AsNoTracking().
-                ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            return await _context.bookings
+                 .Where(b => b.UserId == userId && b.IsCanceled)
+                 .AsNoTracking().
+                 ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
+                 .ToListAsync();
         }
-        public async Task<List<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
+        public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return null;
@@ -316,14 +323,78 @@ namespace Tazkartk.Services
 
         public async Task<TicketDTO?> GetTicketAsync(int id)
         {
-             
+
             return await _context.bookings
                 .Where(b => b.BookingId == id)
                 .ProjectTo<TicketDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
-          
+
         }
-        
+
+        public async Task<ApiResponse<string>> TapBookSeatAsync(BookingDTO DTO)
+        {
+            var user = await _context.Users.FindAsync(DTO.UserId);
+            var trip = await _context.Trips.Include(t => t.seats).FirstOrDefaultAsync(t => t.TripId == DTO.TripId);
+            if (trip == null || user == null || trip.Avaliblility == false)
+            {
+                return ApiResponse<string>.Error("حدث خطا");
+            }
+            if (trip.seats == null)
+            {
+                trip.seats = new List<Seat>();
+            }
+            var UserDetailsDTO = _mapper.Map<UserDetailsDTO>(user);
+
+            var isbooked = DTO.SeatsNumbers.Any(number => trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
+
+            if (isbooked)
+            {
+                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
+            }
+            int count = DTO.SeatsNumbers.Count;
+            double total = trip.Price * count;
+            string Url = await _tapService.CreateTapChargeAsync(DTO, total, UserDetailsDTO);
+
+            if (!string.IsNullOrEmpty(Url))
+            {
+                return ApiResponse<string>.success("payment url", Url);
+            }
+            return ApiResponse<string>.Error("حدث خطا");
+        }
+
+        public async Task<ApiResponse<bool>> RefundTapAsync(int bookingId)
+        {
+            var booking = await _context.bookings.Include(b => b.seats).Include(b => b.trip).Include(b => b.payment).FirstOrDefaultAsync(b => b.BookingId == bookingId);
+            if (booking == null)
+            {
+                return ApiResponse<bool>.Error("حدث خطا");
+            }
+            var DepartureTime = booking.trip.Date.ToDateTime(booking.trip.Time);
+            if (DateTime.Now > DepartureTime.AddHours(-2))
+            {
+                return ApiResponse<bool>.Error("لا يمكن الغاء الرحلة باقي اقل من ساعتان");
+            }
+            if (booking.IsCanceled == true)
+            {
+                return ApiResponse<bool>.Error("لقد قمت بالغاء الحجز");
+            }
+            var count = booking.seats.Count();
+            var total = (count * booking.trip.Price);
+            var paymemnt = await _context.Payments.FirstOrDefaultAsync(p => p.bookingId == bookingId);
+            if (paymemnt.Method == "wallet")
+            {
+                ApiResponse<bool>.Error("الاسترداد عبر المحفظة غير متاح في الوقت الحالي");
+            }
+            if (paymemnt == null || paymemnt.IsRefunded)
+            {
+                return ApiResponse<bool>.Error("حدث خطا");
+            }
+            var trxId = paymemnt.PaymentIntentId;
+            var result = await _tapService.RefundTapTransactionAsync( trxId, (int)total);
+            if (!result) return ApiResponse<bool>.Error("حدث خطا");
+            return ApiResponse<bool>.success("تم تحويل المبلغ . يرجى التأكد من حسابك، وإذا واجهت أي مشكلة،برجاء التواصل معنا. ");
+        }
     }
-    }
+
+}
 

@@ -21,6 +21,7 @@ using System.Text.Json;
 using Tazkartk.Models.Enums;
 using System.Text.Json.Serialization;
 using Tazkartk.Caching;
+using Tazkartk.SMS;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +75,8 @@ builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<ICachingService,CachingService>();
+builder.Services.AddTransient<ISMSService,SMSService>();
+builder.Services.AddScoped<ITapService, TapService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -113,6 +116,7 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 builder.Services.Configure<PaymobSettings>(builder.Configuration.GetSection("Paymob"));
 builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("Google"));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
     {
