@@ -1,27 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Tazkartk.DTO;
-using Tazkartk.DTO.AccontDTOs;
-using Tazkartk.DTO.CompanyDTOs;
-using Tazkartk.DTO.Response;
-using Tazkartk.Google;
-using Tazkartk.Interfaces;
-using Tazkartk.Models.Enums;
-using Tazkartk.SMS;
+using Tazkartk.Application.DTO.AccontDTOs;
+using Tazkartk.Application.DTO.CompanyDTOs;
+using Tazkartk.Application.DTO.Google;
+using Tazkartk.Application.Interfaces;
 
-namespace Tazkartk.Controllers
+namespace Tazkartk.API.Controllers
 {
-        [Route("api/[controller]")]
-        [ApiController]
-        public class AccountController : ControllerBase
-        {
-        private readonly IAuthService _authService;   
-        private readonly ISMSService _smsService;
-        public AccountController(IAuthService authService, ISMSService smsService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
+    {
+        private readonly IAuthService _authService;
+        //private readonly ISMSService _smsService;
+        public AccountController(IAuthService authService /*ISMSService smsService*/)
         {
             _authService = authService;
-            _smsService = smsService;
+            //_smsService = smsService;
         }
         //[HttpPost("Send_SMS")]
         //public async Task<IActionResult>SendSMS(SmsDTO DTO)
@@ -29,6 +25,14 @@ namespace Tazkartk.Controllers
         //    var result =await  _smsService.Send(DTO.PhoneNumber, DTO.Body);
         //    if (!string.IsNullOrEmpty(result.ErrorMessage)) return BadRequest(result.ErrorMessage);
         //    return Ok(result);
+        //}
+        //[Authorize]
+        //[HttpGet("curr")]
+        //public async Task<IActionResult>Getcurrent()
+        //{
+        //    var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    //var email = User.FindFirst(ClaimTypes.Email);
+        //    return Ok(id);
         //}
         [HttpPost("SignIn-Google")]
         [SwaggerOperation(Summary = "Sign Up/In With Google")]
@@ -38,58 +42,62 @@ namespace Tazkartk.Controllers
             return StatusCode((int)result.StatusCode, result);
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register( RegisterDTO userRegisterDTO)
-        {    
-        var result = await _authService.RegisterAsync(userRegisterDTO);    
-            return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> Register(RegisterDTO userRegisterDTO)
+        {
+            var result = await _authService.RegisterAsync(userRegisterDTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost("Company-Register")]
-        public async Task<IActionResult> RegisterCompany(CompanyRegisterDTO CompanyRegisterDTO)    
-        {               
-        var result = await _authService.CompanyRegisterAsync(CompanyRegisterDTO);    
-           return StatusCode((int)result.StatusCode, result);    
-        }    
-        [HttpPost("Admin-Register")]    
-        public async Task<IActionResult> AdminRegister(RegisterDTO userRegisterDTO)    
-        {    
-        var result = await _authService.RegisterAsync(userRegisterDTO, Roles.Admin);    
-           return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> RegisterCompany(CompanyRegisterDTO CompanyRegisterDTO)
+        {
+            var result = await _authService.CompanyRegisterAsync(CompanyRegisterDTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
+        [HttpPost("Admin-Register")]
+        public async Task<IActionResult> AdminRegister(RegisterDTO userRegisterDTO)
+        {
+            var result = await _authService.RegisterAsync(userRegisterDTO, Application.Roles.Admin);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginDTO loginDTO)    
-        {    
-        var result = await _authService.LoginAsync(loginDTO);    
-           return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        {
+            var result = await _authService.LoginAsync(loginDTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost("Send-OTP")]
-        public async Task<IActionResult> SendOtp(SendOTPDTO DTO)    
-        {    
-        var result = await _authService.SendOTP(DTO.Email);    
-        return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> SendOtp(SendOTPDTO DTO)
+        {
+            var result = await _authService.SendOTP(DTO.Email);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost("Verify-OTP")]
-        public async Task<IActionResult> VerifyOtp(VerifyOTPDTO verifyOtpDTO)    
-        {    
-        var result = await _authService.VerifyOtpAsync(verifyOtpDTO.Email, verifyOtpDTO.EnteredOtp);    
-           return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> VerifyOtp(VerifyOTPDTO verifyOtpDTO)
+        {
+            var result = await _authService.VerifyOtpAsync(verifyOtpDTO.Email, verifyOtpDTO.EnteredOtp);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPost("Forget-Password")]
         public async Task<IActionResult> ForgotPassword(SendOTPDTO DTO)
         {
-        var result = await _authService.ForgotPasswordAsync(DTO.Email);    
-            return StatusCode((int)result.StatusCode, result);    
-        }            
+            var result = await _authService.ForgotPasswordAsync(DTO.Email);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpPut("Reset-Password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDTO DTO)    
-        {            
-        var result = await _authService.ResetPasswordAsync(DTO);    
-            return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> ResetPassword(ResetPasswordDTO DTO)
+        {
+            var result = await _authService.ResetPasswordAsync(DTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
+        [Authorize]
         [HttpPut("Change-Password")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)    
-        {    
-        var result = await _authService.ChangePasswordAsync(DTO);    
-            return StatusCode((int)result.StatusCode, result);    
-        }    
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)
+        {
+            //// var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // var result = await _authService.ChangePasswordAsync(userid,DTO);
+            var result = await _authService.ChangePasswordAsync(DTO);
+            return StatusCode((int)result.StatusCode, result);
         }
     }
+}

@@ -1,28 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Tazkartk.Data;
-using Tazkartk.Helpers;
-using Tazkartk.Models;
-using Tazkartk.Services;
-using Tazkartk.Email;
-using Tazkartk.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Hangfire;
 using Microsoft.OpenApi.Models;
 using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.Dashboard;
-using Tazkartk.Google;
-using Tazkartk.MiddleWares;
-using Tazkartk.DTO.Response;
 using System.Text.Json;
-using Tazkartk.Models.Enums;
 using System.Text.Json.Serialization;
-using Tazkartk.Caching;
-using Tazkartk.SMS;
-
+using Tazkartk.API.MiddleWares;
+using Tazkartk.Application;
+using Tazkartk.Application.DTO.Response;
+using Tazkartk.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,61 +51,16 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddScoped<ITripService, TripService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddTransient<IEmailService, EmailService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IPhotoService, PhotoService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
-builder.Services.AddScoped<IPaymobService, PaymobService>();
-builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
-builder.Services.AddScoped<IStripeService, StripeService>();
+
+
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
-builder.Services.AddScoped<ICachingService,CachingService>();
-builder.Services.AddTransient<ISMSService,SMSService>();
-builder.Services.AddScoped<ITapService, TapService>();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
-
-//builder.Services.Configure<ApiBehaviorOptions>(options
-//    => options.SuppressModelStateInvalidFilter = true);
-
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
-});
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("redis");
-    options.InstanceName = "Tazkartk_";
-    //options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
-    //{
-    //    EndPoints = { "pleasing-beagle-10882.upstash.io:6379" },
-    //    Password = "ASqCAAIjcDEzY2RkMjZkYmE4MWY0ODIyOGY1ZDFhOTg4M2IxMDk3OHAxMA",
-    //    Ssl = true,
-    //    AbortOnConnectFail = false
-    //};
-});
-builder.Services.AddIdentityCore<Account>(options =>
-{
-    options.User.AllowedUserNameCharacters = null;
-}).AddRoles<IdentityRole<int>>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
-builder.Services.Configure<PaymobSettings>(builder.Configuration.GetSection("Paymob"));
-builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("Google"));
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
     {
@@ -134,12 +78,13 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
             return new BadRequestObjectResult(validationErrorResponse);
         };
     });
-    builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
     .AddJwtBearer(o =>
     {
         o.RequireHttpsMetadata = false;
@@ -153,6 +98,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            ClockSkew = TimeSpan.Zero
         };
         o.Events=  new JwtBearerEvents
         {
@@ -168,12 +114,7 @@ builder.Services.AddAuthentication(options =>
             }
         };
     });
-builder.Services.AddHangfire(config =>
-    config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-          .UseSimpleAssemblyNameTypeSerializer()
-          .UseRecommendedSerializerSettings()
-          .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
-builder.Services.AddHangfireServer();
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

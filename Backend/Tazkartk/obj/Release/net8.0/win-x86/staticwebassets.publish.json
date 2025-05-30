@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "ShUzSFN+mcpRqvycXG3GWlAIaAmi+fQemK210snhKjQ=",
-  "Source": "Tazkartk",
-  "BasePath": "_content/Tazkartk",
+  "Hash": "nhMoIcKZB7xCwqn0AS1/1JMPjluj+dMIlQla9/FSLVI=",
+  "Source": "Tazkartk.API",
+  "BasePath": "_content/Tazkartk.API",
   "Mode": "Default",
   "ManifestType": "Publish",
   "ReferencedProjectsConfiguration": [],

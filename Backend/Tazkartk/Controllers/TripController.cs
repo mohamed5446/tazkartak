@@ -3,16 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.Design;
 using System.Text.Json;
-using Tazkartk.DTO;
-using Tazkartk.DTO.AccontDTOs;
-using Tazkartk.DTO.Response;
-using Tazkartk.DTO.TripDTOs;
-using Tazkartk.Email;
-using Tazkartk.Interfaces;
-using Tazkartk.Models;
-using Tazkartk.Models.Enums;
+using Tazkartk.Application.DTO;
+using Tazkartk.Application.DTO.TripDTOs;
+using Tazkartk.Application.Interfaces;
 
-namespace Tazkartk.Controllers
+namespace Tazkartk.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,11 +20,11 @@ namespace Tazkartk.Controllers
         }
         [HttpPost("{CompanyId}/Import")]
         [SwaggerOperation(Summary = "Import Trips from Excel")]
-        public async Task<IActionResult> ImportTripsFromExcel(int CompanyId,IFormFile file)
+        public async Task<IActionResult> ImportTripsFromExcel(int CompanyId, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("الملف غير موجود أو فارغ.");
-            var trips=await _TripService.ImportFromExcelAsync(CompanyId,file);
+            var trips = await _TripService.ImportFromExcelAsync(CompanyId, file);
             return Ok(trips);
         }
         //[HttpPut("transfer")]
@@ -53,12 +48,25 @@ namespace Tazkartk.Controllers
         //    var users = await _TripService.SendReminderEmail(TripId);
         //    return Ok();
         //}
+        [HttpDelete("{jobId}/delete job")]
+        public async Task<IActionResult> DeleteScheduled(string jobId)
+        {
+            _TripService.deletejob(jobId);
+            return Ok();
+        }
         [HttpDelete("{TripId}/delete jobs")]
         public async Task<IActionResult> DeleteScheduled(int TripId)
         {
-            _TripService.DeleteExistingJobs(TripId);
+            _TripService.deletejobs(TripId);
             return Ok();
         }
+        [HttpPost("markunavailable/{TripId}")]
+        public async Task<IActionResult> MarkTripUnavailable(int TripId)
+        {
+            var res=await _TripService.MarkTripUnavailableAsync(TripId);
+            return Ok(res);
+        }
+
         [HttpGet]
         [SwaggerOperation(Summary = "List All Trips")]
         public async Task<IActionResult> GetTrips()
@@ -104,8 +112,8 @@ namespace Tazkartk.Controllers
             var users = await _TripService.GetPassengersAsync(TripId);
             return Ok(users);
         }
-       
-       // [Authorize(Roles = "Admin , Company")]       
+
+        // [Authorize(Roles = "Admin , Company")]       
         [HttpGet("{Id:int}")]
         [SwaggerOperation(Summary = "Get Trip By Id")]
 
@@ -115,18 +123,18 @@ namespace Tazkartk.Controllers
             return Trip == null ? NotFound("Trip Not Found") : Ok(Trip);
         }
         [HttpPost("{CompanyId}")]
-       // [Authorize(Roles = "Admin , Company")]
+        // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Add Trip")]
 
-        public async Task<IActionResult> CreateTrip(int CompanyId ,CreateTripDtos DTO)
+        public async Task<IActionResult> CreateTrip(int CompanyId, CreateTripDtos DTO)
         {
-            var result = await _TripService.AddTripAsync(CompanyId,DTO);
+            var result = await _TripService.AddTripAsync(CompanyId, DTO);
             return StatusCode((int)result.StatusCode, result);
         }
-       
+
 
         [HttpPut("{Id:int}")]
-       // [Authorize(Roles = "Admin , Company")]
+        // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Edit Trip")]
         //[Authorize]
         public async Task<IActionResult> EditTrip(int Id, UpdateTripDtos DTO)
@@ -136,7 +144,7 @@ namespace Tazkartk.Controllers
         }
 
         [HttpDelete("{Id:int}")]
-       // [Authorize(Roles = "Admin , Company")]
+        // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Delete Trip")]
         public async Task<IActionResult> DeleteTrip(int Id)
         {

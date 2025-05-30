@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Tazkartk.Interfaces;
+using Tazkartk.Application.Interfaces;
 
-namespace Tazkartk.Controllers
+namespace Tazkartk.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,9 +19,9 @@ namespace Tazkartk.Controllers
         [HttpGet]
         [SwaggerOperation(Summary = "List All Payments")]
 
-        public async Task<IActionResult>GetPayments()
+        public async Task<IActionResult> GetPayments()
         {
-            var payments=await _paymentService.GetAllPaymentsAsync();
+            var payments = await _paymentService.GetAllPaymentsAsync();
             return Ok(payments);
         }
     }

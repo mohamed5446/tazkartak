@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stripe;
 using System.Text.Json;
-using Tazkartk.DTO;
-using Tazkartk.Interfaces;
+using Tazkartk.Application.DTO;
+using Tazkartk.Application.Interfaces;
 
-namespace Tazkartk.Controllers
+namespace Tazkartk.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -43,7 +43,7 @@ namespace Tazkartk.Controllers
             {
                 UserId = metadata["user_id"].Value<int>(),
                 TripId = metadata["trip_id"].Value<int>(),
-                SeatsNumbers =seats,
+                SeatsNumbers = seats,
             };
             var transactionId = json["id"]?.ToString();
             var paymentMethod = JsonConvert.SerializeObject(json["source"]?["payment_method"]).Trim('"');
@@ -56,6 +56,6 @@ namespace Tazkartk.Controllers
             return Ok(new { success = true, message = "تم تأكيد الدفع بنجاح" });
         }
 
-        
+
     }
 }

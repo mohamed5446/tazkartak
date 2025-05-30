@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tazkartk.DTO.Response;
-using Tazkartk.Models.Enums;
 using System.Text.Json;
-namespace Tazkartk.MiddleWares
+using Tazkartk.Application;
+using Tazkartk.Application.DTO.Response;
+
+namespace Tazkartk.API.MiddleWares
 {
-    public class ExceptionHandlingMiddleware:IMiddleware
+    public class ExceptionHandlingMiddleware : IMiddleware
     {
         private const string JsonContentType = "application/json";
 
@@ -39,8 +40,8 @@ namespace Tazkartk.MiddleWares
                 var _ when exceptionType == typeof(ValidationException) => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError,
             };
-            var response = ApiResponse<string>.Error(exception.Message,(StatusCode) httpContext.Response.StatusCode);
-   
+            var response = ApiResponse<string>.Error(exception.Message, (StatusCode)httpContext.Response.StatusCode);
+
 
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
         }

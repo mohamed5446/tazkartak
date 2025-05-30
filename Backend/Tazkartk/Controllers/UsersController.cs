@@ -1,16 +1,11 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Tazkartk.DTO;
-using Tazkartk.DTO.AccontDTOs;
-using Tazkartk.DTO.Response;
-using Tazkartk.DTO.UserDTOs;
-using Tazkartk.Interfaces;
-using Tazkartk.Models.Enums;
+using Tazkartk.Application;
+using Tazkartk.Application.DTO.AccontDTOs;
+using Tazkartk.Application.DTO.UserDTOs;
+using Tazkartk.Application.Interfaces;
 
-namespace Tazkartk.Controllers
+namespace Tazkartk.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +15,7 @@ namespace Tazkartk.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService;
-       
+
         }
         [HttpGet("Admins")]
         //  [Authorize(Roles = "Admin")]
@@ -32,62 +27,62 @@ namespace Tazkartk.Controllers
         }
 
         [HttpGet]
-      //  [Authorize(Roles = "Admin")]
+        //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "List All Users")]
-        public async Task<IActionResult>GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = await _userService.GetUsersAsync(Roles.User); 
-            return users==null?NotFound():Ok(users);
+            var users = await _userService.GetUsersAsync(Roles.User);
+            return users == null ? NotFound() : Ok(users);
         }
 
 
         [HttpGet("{Id:int}")]
-      //  [Authorize(Roles = "Admin , Company")]
+        //  [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Get User By Id")]
-        public async Task<IActionResult>GetUser(int Id)
+        public async Task<IActionResult> GetUser(int Id)
         {
             var user = await _userService.GetUserByIdAsync(Id);
-            return user == null ? NotFound("User Not Found"):Ok(user);
+            return user == null ? NotFound("User Not Found") : Ok(user);
         }
         [HttpPost]
-      //  [Authorize(Roles = "Admin")]
+        //  [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Add User")]
 
-        public async Task<IActionResult>CreateUser(RegisterDTO DTO)
+        public async Task<IActionResult> CreateUser(RegisterDTO DTO)
         {
-            var result = await _userService.AddUserAsync(DTO,Roles.User);
-            return StatusCode((int)result.StatusCode,result);   
+            var result = await _userService.AddUserAsync(DTO, Roles.User);
+            return StatusCode((int)result.StatusCode, result);
         }
         [HttpPost("Add-Admin")]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Add Admin")]
 
         public async Task<IActionResult> AddAdmin(RegisterDTO DTO)
         {
             var result = await _userService.AddUserAsync(DTO, Roles.Admin);
-            return StatusCode((int)result.StatusCode,result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         [HttpPut("{Id:int}")]
-       // [Authorize(Roles = "Admin , User")]
+        // [Authorize(Roles = "Admin , User")]
         [SwaggerOperation(Summary = "Edit User")]
 
         //[Authorize]
-        public async Task<IActionResult>EditUser(int Id ,[FromForm]EditUserDTO DTO)
+        public async Task<IActionResult> EditUser(int Id, [FromForm] EditUserDTO DTO)
         {
             var result = await _userService.EditUserAsync(Id, DTO);
             return StatusCode((int)result.StatusCode, result);
         }
 
         [HttpDelete("{Id:int}")]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [SwaggerOperation(Summary = "Delete User")]
 
         public async Task<IActionResult> DeleteUser(int Id)
         {
-           var result=  await _userService.DeleteUserAsync(Id);
-            return StatusCode((int)result.StatusCode,result);
+            var result = await _userService.DeleteUserAsync(Id);
+            return StatusCode((int)result.StatusCode, result);
         }
-       
+
     }
 }
