@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tazkartk.Infrastructure.Data;
-using Tazkartk.Infrastructure.Stripe;
 
 #nullable disable
 

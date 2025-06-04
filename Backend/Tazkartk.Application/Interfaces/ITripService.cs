@@ -22,8 +22,6 @@ namespace Tazkartk.Application.Interfaces
         Task<bool> SendReminderEmailAsync(int TripId);
         Task<bool> MarkTripUnavailableAsync(int TripId);
         Task<bool> send_Email_to_passengersAsync(int TripId, EmailDTO DTO);
-      //  void DeleteExistingJobs(int tripId);
-       // Task<bool> TransferFunds(int TripId);
         Task<List<CreateTripDtos>> ImportFromExcelAsync(int CompanyId, IFormFile file);
         Task deletejobs(int tripId);
         void deletejob(string jobId);

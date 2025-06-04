@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tazkartk.Application.DTO;
 
-namespace Tazkartk.Application.Interfaces
+namespace Tazkartk.Application.Interfaces.External
 {
     public interface IEmailBodyService
     {

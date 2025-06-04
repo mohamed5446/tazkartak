@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tazkartk.Application.Interfaces
+namespace Tazkartk.Application.Interfaces.External
 {
     public interface IBackgroundService
     {

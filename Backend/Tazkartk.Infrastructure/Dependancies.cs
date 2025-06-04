@@ -1,21 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tazkartk.Infrastructure.Data;
-using Tazkartk.Infrastructure.Stripe;
-using Tazkartk.Infrastructure.Tap;
 using Microsoft.AspNetCore.Identity;
 using Tazkartk.Infrastructure.Helpers;
 using Tazkartk.Application.Repository;
 using Tazkartk.Infrastructure.Repositories;
 using Hangfire;
 using Tazkartk.Domain.Models;
-using Tazkartk.Application.Interfaces;
 using Tazkartk.Infrastructure.Google;
 using Tazkartk.Infrastructure.Token;
 using Tazkartk.Infrastructure.Caching;
@@ -23,7 +15,8 @@ using Tazkartk.Infrastructure.excel;
 using Tazkartk.Infrastructure.BackgroundJob;
 using Tazkartk.Infrastructure.Email;
 using Tazkartk.Infrastructure.Cloudinary;
-using Tazkartk.Infrastructure.Paymob;
+using Tazkartk.Application.Interfaces.External;
+using Tazkartk.Infrastructure.Services.PaymentGateway.Paymob;
 
 
 namespace Tazkartk.Infrastructure
@@ -42,22 +35,21 @@ namespace Tazkartk.Infrastructure
 
             //Services.AddScoped<IGenericRepository, GenericRepository>();
 
-            //builder.Services.AddTransient<ISMSService,SMSService>();
-            //Services.AddScoped<ITapService, TapService>();
-            Services.AddScoped<ICachingService, CachingService>();
-           // Services.AddScoped<IStripeService, StripeService>();
+           
+            Services.AddScoped<ICachingService, RedisService>();
             Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             Services.AddScoped<IPaymentGateway, PaymobService>();
-          //  Services.AddScoped<IPaymobService, PaymobService>();
             Services.AddTransient<IEmailService, EmailService>();
             Services.AddScoped<IEmailBodyService,EmailBodyService>();
             Services.AddScoped<IPhotoService, CloudinaryService>();
-            Services.AddScoped<ITokenService, TokenService>();
+            Services.AddScoped<ITokenService, JWTService>();
             Services.AddScoped<IBackgroundService, HangfireService>();
             Services.AddScoped<IExcelService, ExcelService>();
 
-
+            // Services.AddScoped<IStripeService, StripeService>();
+            //builder.Services.AddTransient<ISMSService,SMSService>();
+            //Services.AddScoped<ITapService, TapService>();
             // Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             Services.AddDbContext<ApplicationDbContext>(options =>

@@ -3,32 +3,84 @@
   "WorkspaceRootPath": "D:\\gits\\tazkartak\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\tap\\tapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\tap\\tapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\services\\companyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\tap\\itapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\tap\\itapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|solutionrelative:tazkartk\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\stripe\\istripeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\stripe\\istripeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\tapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|solutionrelative:tazkartk\\controllers\\tapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\sms\\smsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\sms\\smsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|solutionrelative:tazkartk\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\dependancies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\dependancies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\token\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\token\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|D:\\gits\\tazkartak\\Backend\\tazkartk.infrastructure\\services\\backgroundjob\\hangfireservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\backgroundjob\\hangfireservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\caching\\cachingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\caching\\cachingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|D:\\gits\\tazkartak\\Backend\\tazkartk.application\\extensions\\datetimeextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\extensions\\datetimeextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\services\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\services\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|d:\\gits\\tazkartak\\backend\\tazkartk\\controllers\\paymobcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9C7039E-EC53-4D10-96B9-2ADBD0E45F92}|Tazkartk\\Tazkartk.API.csproj|solutionrelative:tazkartk\\controllers\\paymobcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\dto\\userdtos\\withdrawdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\dto\\userdtos\\withdrawdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\balanceresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\balanceresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\interfaces\\icompanyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\interfaces\\icompanyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\interfaces\\ipaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\interfaces\\ipaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\interfaces\\external\\ipaymentgateway.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\interfaces\\external\\ipaymentgateway.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\paymobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\paymobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\tokenresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\tokenresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\disbursementresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\disbursementresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\interfaces\\external\\icachingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\interfaces\\external\\icachingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\paymobresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\paymobresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.application\\dto\\dispurseresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{362A6369-D5B8-439A-9802-B9AAAC4B7F93}|Tazkartk.Application\\Tazkartk.Application.csproj|solutionrelative:tazkartk.application\\dto\\dispurseresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|d:\\gits\\tazkartak\\backend\\tazkartk.infrastructure\\services\\paymob\\paymentintentresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8393D8E0-89CD-43E4-AD62-A305B58D4EC7}|Tazkartk.Infrastructure\\Tazkartk.Infrastructure.csproj|solutionrelative:tazkartk.infrastructure\\services\\paymob\\paymentintentresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,96 +90,267 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TapService.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Tap\\TapService.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Tap\\TapService.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Tap\\TapService.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Tap\\TapService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T04:13:02.661Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ITapService.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Tap\\ITapService.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Tap\\ITapService.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Tap\\ITapService.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Tap\\ITapService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "TicketsController.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TicketsController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\TicketsController.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TicketsController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\TicketsController.cs",
+              "ViewState": "AQIAAFwAAAAAAAAAAAAswGwAAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T04:13:01.201Z",
+              "WhenOpened": "2025-06-04T10:30:00.75Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "IStripeService.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Stripe\\IStripeService.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Stripe\\IStripeService.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Stripe\\IStripeService.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Stripe\\IStripeService.cs",
+              "Title": "TapController.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TapController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\TapController.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\TapController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\TapController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T04:12:57.653Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SMSService.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\SMS\\SMSService.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\SMS\\SMSService.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\SMS\\SMSService.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\SMS\\SMSService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T04:12:49.774Z",
+              "WhenOpened": "2025-06-04T10:29:47.759Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Dependancies.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Dependancies.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Dependancies.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Dependancies.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Dependancies.cs",
-              "ViewState": "AQIAADoAAAAAAAAAAAAQwFUAAAAAAAAA",
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Token\\TokenService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Token\\TokenService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Token\\TokenService.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Token\\TokenService.cs",
+              "ViewState": "AQIAABYAAAAAAAAAAAAQwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T13:41:23.472Z",
+              "WhenOpened": "2025-06-04T10:25:12.106Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BalanceResponse.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\BalanceResponse.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\BalanceResponse.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\BalanceResponse.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\BalanceResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:10:56.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WithdrawDTO.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\DTO\\UserDTOs\\WithdrawDTO.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\DTO\\UserDTOs\\WithdrawDTO.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\DTO\\UserDTOs\\WithdrawDTO.cs",
+              "RelativeToolTip": "Tazkartk.Application\\DTO\\UserDTOs\\WithdrawDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T09:53:21.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PaymobController.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\PaymobController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\PaymobController.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\PaymobController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\PaymobController.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAxwA8AAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:38:43.674Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PaymentService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Services\\PaymentService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Services\\PaymentService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Services\\PaymentService.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Services\\PaymentService.cs",
+              "ViewState": "AQIAADwAAAAAAAAAAAAowBAAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:08:42.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CompanyService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Services\\CompanyService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Services\\CompanyService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Services\\CompanyService.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Services\\CompanyService.cs",
+              "ViewState": "AQIAABQAAAAAAAAAAAAAwB8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T13:54:31.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IPaymentService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\IPaymentService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Interfaces\\IPaymentService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\IPaymentService.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Interfaces\\IPaymentService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:30:38.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ICompanyService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\ICompanyService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Interfaces\\ICompanyService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\ICompanyService.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Interfaces\\ICompanyService.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAUwAkAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:37:04.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CompaniesController.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompaniesController.cs",
+              "RelativeDocumentMoniker": "Tazkartk\\Controllers\\CompaniesController.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk\\Controllers\\CompaniesController.cs",
+              "RelativeToolTip": "Tazkartk\\Controllers\\CompaniesController.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAgwBMAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:35:22.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IPaymentGateway.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\External\\IPaymentGateway.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Interfaces\\External\\IPaymentGateway.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\External\\IPaymentGateway.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Interfaces\\External\\IPaymentGateway.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:06:38.95Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "HangfireService.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\BackgroundJob\\HangfireService.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\BackgroundJob\\HangfireService.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\BackgroundJob\\HangfireService.cs",
-              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\BackgroundJob\\HangfireService.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAAAgwB8AAAAXAAAA",
+              "Title": "CachingService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Caching\\CachingService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Caching\\CachingService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Caching\\CachingService.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Caching\\CachingService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T13:40:44.952Z"
+              "WhenOpened": "2025-06-02T15:12:20.536Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "DateTimeExtensions.cs",
-              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Extensions\\DateTimeExtensions.cs",
-              "RelativeDocumentMoniker": "Tazkartk.Application\\Extensions\\DateTimeExtensions.cs",
-              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Extensions\\DateTimeExtensions.cs",
-              "RelativeToolTip": "Tazkartk.Application\\Extensions\\DateTimeExtensions.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAABAAAA",
+              "DocumentIndex": 13,
+              "Title": "PaymobService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\PaymobService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\PaymobService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\PaymobService.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\PaymobService.cs",
+              "ViewState": "AQIAAEkBAAAAAAAAAAAiwAwAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T12:46:56.919Z"
+              "WhenOpened": "2025-06-02T14:06:05.731Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "TokenResponse.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\TokenResponse.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\TokenResponse.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\TokenResponse.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\TokenResponse.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAuwAkAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T15:06:28.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DisbursementResponse.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\DisbursementResponse.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\DisbursementResponse.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\DisbursementResponse.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\DisbursementResponse.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAkwAwAAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:16:14.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ICachingService.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\External\\ICachingService.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\Interfaces\\External\\ICachingService.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\Interfaces\\External\\ICachingService.cs",
+              "RelativeToolTip": "Tazkartk.Application\\Interfaces\\External\\ICachingService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T15:19:28.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "dispurseresponse.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\DTO\\dispurseresponse.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Application\\DTO\\dispurseresponse.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Application\\DTO\\dispurseresponse.cs",
+              "RelativeToolTip": "Tazkartk.Application\\DTO\\dispurseresponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:19:51.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "paymobresponse.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\paymobresponse.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\paymobresponse.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\paymobresponse.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\paymobresponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:06:05.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PaymentIntentResponseDTO.cs",
+              "DocumentMoniker": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\PaymentIntentResponseDTO.cs",
+              "RelativeDocumentMoniker": "Tazkartk.Infrastructure\\Services\\Paymob\\PaymentIntentResponseDTO.cs",
+              "ToolTip": "D:\\gits\\tazkartak\\Backend\\Tazkartk.Infrastructure\\Services\\Paymob\\PaymentIntentResponseDTO.cs",
+              "RelativeToolTip": "Tazkartk.Infrastructure\\Services\\Paymob\\PaymentIntentResponseDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T14:06:04.247Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using System.Globalization;
-using Tazkartk.Application.DTO;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.Extensions;
 using Tazkartk.Domain.Models;
 
@@ -27,17 +27,6 @@ namespace Tazkartk.Application.Profiles
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.booking.trip.company.Name));
         }
     }
-    //private static string ConvertToEgyptTimeString(DateTime utcDate)
-    //{
-    //    var arabicCulture = new CultureInfo("ar-EG");
-    //    arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
-    //    arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
-    //    arabicCulture.DateTimeFormat.PMDesignator = "مساء";
-
-    //    var egyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
-    //    var egyTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, egyTimeZone);
-    //    return egyTime.ToString("dddd yyyy-MM-dd HH:mm tt", arabicCulture);
-    //}
+    
 }
 
-/*src.Date.ToString("dddd yyyy-MM-dd HH:mm tt", arabicCulture)))*/

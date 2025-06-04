@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Tazkartk.Application.DTO.CompanyDTOs;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.Interfaces;
 
 namespace Tazkartk.API.Controllers
@@ -15,14 +16,23 @@ namespace Tazkartk.API.Controllers
         {
             _companyService = companyService;
         }
-
-
-        //[HttpDelete("del")]
-        //public async Task<IActionResult>ChangeLogos()
-        //{
-        //    await _companyService.changeLogos();
-        //    return Ok();
-        //}
+        /// <summary>
+        /// Withdraw Comapny Balance to mobile wallet.
+        /// </summary>
+        /// <remarks>
+        /// Test credentials:
+        /// 
+        /// vodafone: 01023456789  
+        /// etisalat: 01123456789  
+        /// orange: 01223456789  
+        /// bank_wallet: 01123416789  
+        /// </remarks>
+        [HttpPost("{companyId}/withraw")]
+        public async Task<IActionResult> withdrawlbalance(int companyId,WithdrawDTO DTO)
+        {
+            var res = await _companyService.WithdrawlBalance(companyId,DTO);
+            return StatusCode((int)res.StatusCode, res);
+        }
 
         [HttpGet]
         [SwaggerOperation(Summary = "List All Companies")]
@@ -34,7 +44,6 @@ namespace Tazkartk.API.Controllers
 
         [HttpGet("{id:int}")]
         [SwaggerOperation(Summary = "Get Company By Id")]
-
         public async Task<IActionResult> GetCompanyById(int id)
         {
             var Company = await _companyService.GetCompanyByIdAsync(id);
@@ -44,7 +53,6 @@ namespace Tazkartk.API.Controllers
         // [Authorize(Roles = "Admin , Company")]
         [HttpPost]
         [SwaggerOperation(Summary = "Add Company")]
-
         public async Task<IActionResult> CreateCompany(CompanyRegisterDTO DTO)
         {
             var result = await _companyService.CreateCompanyAsync(DTO);
@@ -54,7 +62,6 @@ namespace Tazkartk.API.Controllers
         [HttpPut("{Id:int}")]
         // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Edit Company")]
-
         public async Task<IActionResult> EditCompany(int Id, [FromForm] CompanyEditDTO DTO)
         {
             var result = await _companyService.EditCompanyAsync(Id, DTO);
@@ -65,11 +72,17 @@ namespace Tazkartk.API.Controllers
         [HttpDelete("{id:int}")]
         // [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "Delete Company")]
-
         public async Task<IActionResult> DeleteCompany(int id)
         {
             var result = await _companyService.DeleteCompanyAsync(id);
             return StatusCode((int)result.StatusCode, result);
         }
+
+        //[HttpDelete("del")]
+        //public async Task<IActionResult>ChangeLogos()
+        //{
+        //    await _companyService.changeLogos();
+        //    return Ok();
+        //}
     }
 }

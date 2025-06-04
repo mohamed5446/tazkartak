@@ -5,6 +5,7 @@ using Tazkartk.Application.DTO.AccontDTOs;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.DTO.UserDTOs;
 using Tazkartk.Application.Interfaces;
+using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 

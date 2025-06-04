@@ -6,6 +6,8 @@ using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.DTO.UserDTOs;
 using Tazkartk.Application.Repository;
+using Tazkartk.Application.Interfaces.External;
+using Tazkartk.Application.DTO.Payments;
 
 namespace Tazkartk.Application.Services
 {
@@ -20,6 +22,41 @@ namespace Tazkartk.Application.Services
             _paymentGateway = paymentGateway;
             _unitOfWork = unitOfWork;
         }
+
+        public async Task<IReadOnlyList<TicketDTO>> GetBookingsAsync()
+        {
+            return await _unitOfWork.Bookings.ProjectToList<TicketDTO>();
+        }
+
+
+        public async Task<IReadOnlyList<TicketDTO>?> GetUserBookingsAsync(int userId)
+        {
+            var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
+            if (user == null) return null;
+
+            return _mapper.Map<List<TicketDTO>>(user.books
+                .Where(b => b.trip.Avaliblility));
+
+        }
+
+        public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
+        {
+            var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
+            if (user == null) return null;
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var nowTime = TimeOnly.FromDateTime(DateTime.Now);
+            return _mapper.Map<IReadOnlyList<TicketDTO>>(user.books
+                .Where(b => b.UserId == userId
+                && (b.trip.Date < today
+                || b.trip.Date == today
+                && b.trip.Time < nowTime)));
+
+        }
+        public async Task<TicketDTO?> GetTicketAsync(int id)
+        {
+            return await _unitOfWork.Bookings.GetById<TicketDTO>(t => t.BookingId == id);
+        }
+
         #region Booking
         public async Task<ApiResponse<string>> BookSeatAsync(BookingDTO DTO)
         {
@@ -38,12 +75,22 @@ namespace Tazkartk.Application.Services
 
             if (isbooked)
             {
-                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة بالفعل");
+                return ApiResponse<string>.Error("بعض المقاعد التي اخترتها محجوزة ");
             }
+           
             int count = DTO.SeatsNumbers.Count;
             double total = trip.Price * count;
-            string Url = await _paymentGateway.CreatePaymentIntentAsync(DTO.UserId, DTO.TripId, DTO.SeatsNumbers, total, UserDetailsDTO.FirstName, UserDetailsDTO.LastName
- , UserDetailsDTO.PhoneNumber, UserDetailsDTO.Email);
+            var BookingDetailDTO = new UserBookingDetails
+            {
+                firstName=UserDetailsDTO.FirstName, 
+                lastName=UserDetailsDTO.LastName,
+                email=UserDetailsDTO.Email,
+                phoneNumber=UserDetailsDTO.PhoneNumber,
+                userId=DTO.UserId,
+                tripId=DTO.TripId,
+                seatNumbers=DTO.SeatsNumbers
+            };
+            string Url = await _paymentGateway.CreatePaymentIntentAsync(BookingDetailDTO, total);
             if (!string.IsNullOrEmpty(Url))
             {
                 return ApiResponse<string>.success("payment url", Url);
@@ -251,40 +298,7 @@ namespace Tazkartk.Application.Services
 
 
 
-        public async Task<IReadOnlyList<TicketDTO>> GetBookingsAsync()
-        {
-            return await _unitOfWork.Bookings.ProjectToList<TicketDTO>();
-        }
-
-
-        public async Task<IReadOnlyList<TicketDTO>?> GetUserBookingsAsync(int userId)
-        {
-            var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
-            if (user == null) return null;
-            
-            return _mapper.Map<List<TicketDTO>>(user.books
-                .Where(b=>b.trip.Avaliblility));
-
-        }
- 
-        public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
-        {
-            var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
-            if (user == null) return null;
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var nowTime = TimeOnly.FromDateTime(DateTime.Now);
-            return _mapper.Map<IReadOnlyList<TicketDTO>>(user.books
-                .Where(b => b.UserId == userId
-                && (b.trip.Date < today
-                || b.trip.Date == today
-                && b.trip.Time < nowTime)));
-
-        }
-        public async Task<TicketDTO?> GetTicketAsync(int id)
-        {
-            return await _unitOfWork.Bookings.GetById<TicketDTO>(t=>t.BookingId==id);
-        }
-
+      
        
     }
 

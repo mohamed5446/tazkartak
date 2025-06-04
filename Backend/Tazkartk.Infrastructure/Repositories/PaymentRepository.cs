@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Tazkartk.Application.DTO;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 using Tazkartk.Infrastructure.Data;

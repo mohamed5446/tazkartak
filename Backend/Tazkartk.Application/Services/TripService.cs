@@ -9,6 +9,7 @@ using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.Repository;
 using Tazkartk.Application.DTO.Email;
+using Tazkartk.Application.Interfaces.External;
 namespace Tazkartk.Application.Services
 {
     public class TripService : ITripService
@@ -190,19 +191,6 @@ namespace Tazkartk.Application.Services
             return true;
         }
 
-
-        //public async Task<bool> TransferFunds(int TripId)
-        //{
-        //    var trip = await _unitOfWork.Trips.GetById(t => t.TripId == TripId, t => t.company,t=>t.seats);
-        //    if (trip == null) throw new Exception("error happened");
-        //    var count = trip.seats.Where(s => s.State == SeatState.Booked).Count();
-        //    var total = count * trip.Price;
-        //    var company = trip.company;
-        //    company.Balance += total;
-        //    _unitOfWork.Companies.Update(company);
-        //    _unitOfWork.CompleteAsync();
-        //    return true;
-        //}
         public async Task<List<CreateTripDtos>>ImportFromExcelAsync(int CompanyId,IFormFile file)
         {
             var trips = new List<CreateTripDtos>();

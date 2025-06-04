@@ -1,5 +1,5 @@
 ﻿using Tazkartk.Application.DTO;
-using Tazkartk.Application.Interfaces;
+using Tazkartk.Application.Interfaces.External;
 
 namespace Tazkartk.Infrastructure;
 

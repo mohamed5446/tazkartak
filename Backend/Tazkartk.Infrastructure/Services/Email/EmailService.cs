@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
-using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.DTO.Email;
 using Tazkartk.Infrastructure.Helpers;
+using Tazkartk.Application.Interfaces.External;
 
 namespace Tazkartk.Infrastructure.Email
 {

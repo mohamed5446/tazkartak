@@ -27,46 +27,7 @@ namespace Tazkartk.API.Controllers
             var trips = await _TripService.ImportFromExcelAsync(CompanyId, file);
             return Ok(trips);
         }
-        //[HttpPut("transfer")]
-        //public async Task<IActionResult>Transfer(int TripId)
-        //{
-        //    var result = await _TripService.transfer(TripId);
-        //    if (result == true) return Ok();
-        //    else return BadRequest();
-        //}
-
-        //[HttpPut("mark_unavailable/{TripId}")]
-        //public async Task<IActionResult> MarkUnavailable(int TripId)
-        //{
-        // var changed=await _TripService.MarkTripUnavailable(TripId);
-        //    if (changed) return Ok();
-        //    else return BadRequest();
-        //}
-        //[HttpPost("Send trip reminder email({TripId}")]
-        //public async Task<IActionResult> SendReminder(int TripId)
-        //{
-        //    var users = await _TripService.SendReminderEmail(TripId);
-        //    return Ok();
-        //}
-        [HttpDelete("{jobId}/delete job")]
-        public async Task<IActionResult> DeleteScheduled(string jobId)
-        {
-            _TripService.deletejob(jobId);
-            return Ok();
-        }
-        [HttpDelete("{TripId}/delete jobs")]
-        public async Task<IActionResult> DeleteScheduled(int TripId)
-        {
-            _TripService.deletejobs(TripId);
-            return Ok();
-        }
-        [HttpPost("markunavailable/{TripId}")]
-        public async Task<IActionResult> MarkTripUnavailable(int TripId)
-        {
-            var res=await _TripService.MarkTripUnavailableAsync(TripId);
-            return Ok(res);
-        }
-
+       
         [HttpGet]
         [SwaggerOperation(Summary = "List All Trips")]
         public async Task<IActionResult> GetTrips()
@@ -82,12 +43,7 @@ namespace Tazkartk.API.Controllers
             var Trips = await _TripService.GetAvailableTripsAsync();
             return Trips == null ? NotFound() : Ok(Trips);
         }
-        //[HttpGet("{TripId}/Bookings")]
-        //public async Task<IActionResult>GetTripBookings(int TripId)
-        //{
-        //    var trips=await _TripService.GetBookingsByTrip(TripId);
-        //    return Ok(trips);
-        //}
+       
         [HttpGet("/api/{companyId}/Trips")]
         //  [Authorize(Roles = "Admin , Company")]
         [SwaggerOperation(Summary = "List Company Trips")]
@@ -157,5 +113,52 @@ namespace Tazkartk.API.Controllers
             var result = await _TripService.send_Email_to_passengersAsync(TripId, DTO);
             return Ok(result);
         }
+        #region Extras
+        //[HttpPut("transfer")]
+        //public async Task<IActionResult>Transfer(int TripId)
+        //{
+        //    var result = await _TripService.transfer(TripId);
+        //    if (result == true) return Ok();
+        //    else return BadRequest();
+        //}
+
+        //[HttpPut("mark_unavailable/{TripId}")]
+        //public async Task<IActionResult> MarkUnavailable(int TripId)
+        //{
+        // var changed=await _TripService.MarkTripUnavailable(TripId);
+        //    if (changed) return Ok();
+        //    else return BadRequest();
+        //}
+        //[HttpPost("Send trip reminder email({TripId}")]
+        //public async Task<IActionResult> SendReminder(int TripId)
+        //{
+        //    var users = await _TripService.SendReminderEmail(TripId);
+        //    return Ok();
+        //}
+        //[HttpDelete("{jobId}/delete job")]
+        //public async Task<IActionResult> DeleteScheduled(string jobId)
+        //{
+        //    _TripService.deletejob(jobId);
+        //    return Ok();
+        //}
+        //[HttpDelete("{TripId}/delete jobs")]
+        //public async Task<IActionResult> DeleteScheduled(int TripId)
+        //{
+        //    _TripService.deletejobs(TripId);
+        //    return Ok();
+        //}
+        //[HttpPost("markunavailable/{TripId}")]
+        //public async Task<IActionResult> MarkTripUnavailable(int TripId)
+        //{
+        //    var res=await _TripService.MarkTripUnavailableAsync(TripId);
+        //    return Ok(res);
+        //}
+        //[HttpGet("{TripId}/Bookings")]
+        //public async Task<IActionResult>GetTripBookings(int TripId)
+        //{
+        //    var trips=await _TripService.GetBookingsByTrip(TripId);
+        //    return Ok(trips);
+        //}
+        #endregion
     }
 }

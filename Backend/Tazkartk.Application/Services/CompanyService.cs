@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Tazkartk.Application.DTO.CompanyDTOs;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.Interfaces;
+using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 
@@ -14,16 +16,34 @@ namespace Tazkartk.Application.Services
     {
        private  readonly IPhotoService _photoService;
         private readonly UserManager<Account> _AccountManager;
+        private readonly IPaymentService _paymentService;
         private readonly IConfiguration _conf;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CompanyService(IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IMapper mapper,  IUnitOfWork unitOfWork)
+        public CompanyService(IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IMapper mapper, IUnitOfWork unitOfWork, IPaymentService paymentService)
         {
             _photoService = photoService;
             _AccountManager = accountManager;
             _conf = conf;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _paymentService = paymentService;
+        }
+        public async Task<ApiResponse<string>> WithdrawlBalance(int CompanyId,WithdrawDTO DTO)
+        {
+            var company = await _unitOfWork.Companies.GetById(CompanyId);
+            if (company == null)
+            {
+               return ApiResponse<string>.Error("الشركة غير موجودة");
+            }       
+            var balance = company.Balance;
+            if (balance <= 0) return ApiResponse<string>.Error("الرصيد غير كافي للسحب");
+            var res = await _paymentService.DispurseAsync(DTO.issuer,DTO.WalletPhoneNumber,balance);
+            if (!res.Success)
+                return ApiResponse<string>.Error(res.message);
+            company.Balance = 0;
+            await _unitOfWork.CompleteAsync();
+            return ApiResponse<string>.success("تم تحويل الرصيد بنجاح");
         }
         public async Task<ApiResponse<CompanyDTO>> CreateCompanyAsync(CompanyRegisterDTO DTO)
         {
@@ -103,15 +123,6 @@ namespace Tazkartk.Application.Services
             await _unitOfWork.CompleteAsync();
             return ApiResponse<CompanyDTO>.success("تم حذف الشركة بنجاح ");
         }
-        //public async Task changeLogos()
-        //{
-        //    var comps = await _context.Companies.ToListAsync();
-        //    foreach (var comp in comps)
-        //    {
-        //        comp.Logo = _conf["Logo"];
-        //    }
-        //    await _context.SaveChangesAsync();
-        //}
 
 
 

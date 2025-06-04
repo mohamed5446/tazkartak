@@ -8,6 +8,7 @@ using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.DTO.Google;
 using Tazkartk.Application.DTO.Email;
+using Tazkartk.Application.Interfaces.External;
 
 namespace Tazkartk.Application.Services
 {

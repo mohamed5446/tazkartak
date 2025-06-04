@@ -29,14 +29,6 @@ namespace Tazkartk.Infrastructure.Repositories
         {
             return await _context.Set<T>().ToListAsync();
         }
-        public async Task<IEnumerable<TType>> GetAll<TType>(Expression<Func<T, bool>> match, Expression<Func<T, TType>> select) where TType : class
-        {
-            return await _context.Set<T>().AsNoTracking().Where(match).Select(select).ToListAsync();
-        }
-        public async Task<IEnumerable<TType>> GetAll<TType>(Expression<Func<T, TType>> select) where TType : class
-        {
-            return await _context.Set<T>().AsNoTracking().Select(select).ToListAsync();
-        }
 
         public async Task<T?> GetById(int id)
         {

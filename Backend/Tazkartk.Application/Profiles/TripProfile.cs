@@ -9,7 +9,6 @@ namespace Tazkartk.Application.Profiles
     public class TripProfile : Profile
     {
         private const char RightToLeftCharacter = (char)0x200F;
-        private readonly CultureInfo arabicCulture;
         public TripProfile()
         {
 
@@ -35,9 +34,9 @@ namespace Tazkartk.Application.Profiles
                .ForMember(dest => dest.Avaliblility, opt => opt.MapFrom(src => src.Avaliblility))
                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-               .ForMember(dest => dest.DepartureDay, opt => opt.MapFrom(src => src.Date.ToString("dddd", arabicCulture)))
-               .ForMember(dest => dest.DepartureDate, opt => opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd", arabicCulture)))
-               .ForMember(dest => dest.DepartureTime, opt => opt.MapFrom(src => RightToLeftCharacter + src.Time.ToString("hh:mm tt", arabicCulture)))
+               .ForMember(dest => dest.DepartureDay, opt => opt.MapFrom(src => src.Date.ToArabicDayString()))
+               .ForMember(dest => dest.DepartureDate, opt => opt.MapFrom(src => src.Date.ToArabicDateString()))
+               .ForMember(dest => dest.DepartureTime, opt => opt.MapFrom(src => RightToLeftCharacter + src.Time.ToArabicTimeString()))
                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.company.Name))
                .ForMember(dest => dest.BookedSeats, opt => opt.MapFrom(src => src.bookings.SelectMany(b => b.seats.Where(s => s.State == SeatState.Booked).Select(s => s.Number)).ToList()));
 

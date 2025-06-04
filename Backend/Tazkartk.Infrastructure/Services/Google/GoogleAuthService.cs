@@ -4,9 +4,9 @@ using static Google.Apis.Auth.GoogleJsonWebSignature;
 using Tazkartk.Domain.Models;
 using Tazkartk.Infrastructure.Extensions;
 using Tazkartk.Infrastructure.Data;
-using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.DTO.Google;
 using Tazkartk.Infrastructure.Helpers;
+using Tazkartk.Application.Interfaces.External;
 namespace Tazkartk.Infrastructure.Google
 {
     public class GoogleAuthService : IGoogleAuthService

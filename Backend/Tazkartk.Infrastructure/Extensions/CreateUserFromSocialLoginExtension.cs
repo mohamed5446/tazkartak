@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Extensions;
+using Tazkartk.Application;
 using Tazkartk.Application.DTO.Google;
 using Tazkartk.Domain.Models;
-using Tazkartk.Domain.Models.Enums;
 using Tazkartk.Infrastructure.Data;
 using Tazkartk.Infrastructure.Google;
 

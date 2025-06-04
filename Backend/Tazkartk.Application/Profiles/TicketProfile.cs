@@ -40,4 +40,3 @@ namespace Tazkartk.Application.Profiles
         }
     }
 }
-                //.ForMember(dest => dest.DepartureDate, opt => opt.MapFrom(src => src.trip.Date.ToString("yyyy-MM-dd", arabicCulture)))

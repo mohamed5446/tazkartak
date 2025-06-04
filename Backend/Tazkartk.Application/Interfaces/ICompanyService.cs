@@ -1,4 +1,5 @@
 ﻿using Tazkartk.Application.DTO.CompanyDTOs;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.DTO.Response;
 
 namespace Tazkartk.Application.Interfaces
@@ -10,6 +11,6 @@ namespace Tazkartk.Application.Interfaces
         Task<CompanyDTO?> GetCompanyByIdAsync(int id);
         Task<ApiResponse<CompanyDTO>> EditCompanyAsync(int Id, CompanyEditDTO DTO);
         Task<ApiResponse<CompanyDTO>> DeleteCompanyAsync(int CompanyId);
-        //Task changeLogos();
+       Task<ApiResponse<string>> WithdrawlBalance(int CompanyId,WithdrawDTO DTO);
     }
 }

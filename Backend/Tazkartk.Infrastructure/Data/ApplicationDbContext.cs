@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Reflection.Emit;
 using Tazkartk.Domain.Models;
-using Tazkartk.Domain.Models.Enums;
 
 namespace Tazkartk.Infrastructure.Data
 {
@@ -26,9 +25,9 @@ namespace Tazkartk.Infrastructure.Data
         private void SeedRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityRole<int>>().HasData(
-            new IdentityRole<int> { Id = 1, Name =Domain.Models.Enums.Roles.Admin.ToString(), NormalizedName = Domain.Models.Enums.Roles.Admin.ToString().ToUpper() },
-            new IdentityRole<int> { Id = 2, Name = Domain.Models.Enums.Roles.User.ToString(), NormalizedName = Domain.Models.Enums.Roles.User.ToString().ToUpper() },
-                new IdentityRole<int> { Id = 3, Name = Domain.Models.Enums.Roles.Company.ToString(), NormalizedName = Domain.Models.Enums.Roles.Company.ToString().ToUpper() }
+            new IdentityRole<int> { Id = 1, Name = Application.Roles.Admin.ToString(), NormalizedName = Application.Roles.Admin.ToString().ToUpper() },
+            new IdentityRole<int> { Id = 2, Name = Application.Roles.User.ToString(), NormalizedName = Application.Roles.User.ToString().ToUpper() },
+                new IdentityRole<int> { Id = 3, Name = Application.Roles.Company.ToString(), NormalizedName = Application.Roles.Company.ToString().ToUpper() }
             );
         }
         public DbSet<User> Users { get; set; }

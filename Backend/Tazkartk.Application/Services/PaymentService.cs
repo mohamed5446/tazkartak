@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Tazkartk.Application.DTO;
+using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.Interfaces;
+using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models.Enums;
 
@@ -41,7 +43,6 @@ namespace Tazkartk.Application.Services
         {
             throw new NotImplementedException();
         }
-
         public async Task<ApiResponse<bool>> handleCallback(HttpRequest Request)
         {
             var result = await _paymentGateway.HandleCallBack(Request);
@@ -56,7 +57,6 @@ namespace Tazkartk.Application.Services
                     if (!Done)
                     {
                         return ApiResponse<bool>.Error("failed to refund");
-                        // return BadRequest("failed to refund");
                     }
                     return ApiResponse<bool>.success("refunded successfully");
                 }
@@ -70,60 +70,30 @@ namespace Tazkartk.Application.Services
                     return ApiResponse<bool>.success("confirmed successfully");
                 }
             }
-             
-               
-                //if (!done)
-                //{
-                //    return BadRequest();
-                //}
+        //public async Task<string> Genrateaccesstoken()
+        //{
+        //    return await _paymentGateway.GenerateAccessTokenn();
+        //}
 
-
-                //return Ok();
-            
+        public async Task<dispurseresponse> DispurseAsync(string issuer,string walletnumber,double amount)
+        {
+            var balance = await _paymentGateway.BalanceInquiry();
+            if (amount > balance)
+            {
+                return new dispurseresponse
+                {
+                    Success = false,
+                    message = "برجاء التواصل معنا ",
+                };
+                }
+            return await _paymentGateway.DispurseAsync(issuer,walletnumber,amount);
         }
-            //using var reader = new StreamReader(Request.Body);
-            //string body = await reader.ReadToEndAsync();
-            //string receivedHmac = Request.Query["hmac"].ToString();
+       public async Task<double> BalanceInquiry()
+        {
+            var res = await _paymentGateway.BalanceInquiry();
+            return res;
+        }
 
-            //var callback = JsonConvert.DeserializeObject<paymobresponse>(body);
-
-            //var valid = _PaymobService.ValidateHmac(callback, receivedHmac);
-            //if (!valid)
-            //{
-            //    return Unauthorized("invalid hmac");
-            //}
-            //var obj = callback.obj;
-            //var success = obj.success;
-            //if (!obj.success)
-            //{
-            //    return BadRequest();
-            //}
-            //string transactionId = obj.id.ToString();
-            //var paymentMethod = obj.source_data.sub_type;
-
-            //if (obj.is_refunded)
-            //{
-            //    var Done = await _BookingService.CancelAsync(transactionId);
-            //    if (!Done)
-            //    {
-            //        return BadRequest("failed to refund");
-            //    }
-            //    return Ok("refunded successfully");
-            //}
-
-            //var bookingDTO = new BookingDTO
-            //{
-            //    UserId = obj.payment_key_claims.extra.userid,
-            //    TripId = obj.payment_key_claims.extra.tripid,
-            //    SeatsNumbers = obj.payment_key_claims.extra.seats,
-            //};
-            //var done = await _BookingService.ConfirmBookingAsync(bookingDTO, transactionId, paymentMethod);
-            //if (!done)
-            //{
-            //    return BadRequest();
-            //}
-
-
-            //return Ok();
+    }
         }
  

@@ -13,19 +13,10 @@ namespace Tazkartk.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthService _authService;
-        //private readonly ISMSService _smsService;
-        public AccountController(IAuthService authService /*ISMSService smsService*/)
+        public AccountController(IAuthService authService )
         {
             _authService = authService;
-            //_smsService = smsService;
         }
-        //[HttpPost("Send_SMS")]
-        //public async Task<IActionResult>SendSMS(SmsDTO DTO)
-        //{
-        //    var result =await  _smsService.Send(DTO.PhoneNumber, DTO.Body);
-        //    if (!string.IsNullOrEmpty(result.ErrorMessage)) return BadRequest(result.ErrorMessage);
-        //    return Ok(result);
-        //}
         //[Authorize]
         //[HttpGet("curr")]
         //public async Task<IActionResult>Getcurrent()
@@ -34,13 +25,7 @@ namespace Tazkartk.API.Controllers
         //    //var email = User.FindFirst(ClaimTypes.Email);
         //    return Ok(id);
         //}
-        [HttpPost("SignIn-Google")]
-        [SwaggerOperation(Summary = "Sign Up/In With Google")]
-        public async Task<IActionResult> GoogleSignIn(GooglesigninDTO model)
-        {
-            var result = await _authService.SignInWithGoogleAsync(model);
-            return StatusCode((int)result.StatusCode, result);
-        }
+       
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDTO userRegisterDTO)
         {
@@ -63,6 +48,13 @@ namespace Tazkartk.API.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             var result = await _authService.LoginAsync(loginDTO);
+            return StatusCode((int)result.StatusCode, result);
+        }
+        [HttpPost("SignIn-Google")]
+        [SwaggerOperation(Summary = "Sign Up/In With Google")]
+        public async Task<IActionResult> GoogleSignIn(GooglesigninDTO model)
+        {
+            var result = await _authService.SignInWithGoogleAsync(model);
             return StatusCode((int)result.StatusCode, result);
         }
         [HttpPost("Send-OTP")]
@@ -89,15 +81,13 @@ namespace Tazkartk.API.Controllers
             var result = await _authService.ResetPasswordAsync(DTO);
             return StatusCode((int)result.StatusCode, result);
         }
-        [Authorize]
+       // [Authorize]
         [HttpPut("Change-Password")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO DTO)
         {
-            //// var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // var result = await _authService.ChangePasswordAsync(userid,DTO);
             var result = await _authService.ChangePasswordAsync(DTO);
             return StatusCode((int)result.StatusCode, result);
         }
+
     }
 }
