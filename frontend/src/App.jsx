@@ -25,6 +25,7 @@ import CompanyInfo from "./pages/company/InfoForm";
 import ShowCompanyTrips from "./pages/company/Trips";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Trip from "./pages/admin/Trip";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -34,25 +35,26 @@ const AdminPages = ({ children }) => {
     return <Navigate to={"/"} />;
   }
 };
-// const CompanyPages = ({ children }) => {
-//   const { isAuthenticated, role } = useAuthStore();
+export const UserOnly = ({ children }) => {
+  const { isAuthenticated, role } = useAuthStore();
+  return isAuthenticated && role === "User" ? children : <Navigate to="/" />;
+};
 
-//   if (isAuthenticated && role === "Company") {
-//     return children;
-//   } else {
-//     return <Navigate to={"/"} />;
-//   }
-// };
-// const ProtectedRoute = ({ children }) => {
-//   const { isAuthenticated } = useAuthStore();
+// Only for logged-in companies
+export const CompanyOnly = ({ children }) => {
+  const { isAuthenticated, role } = useAuthStore();
+  return isAuthenticated && role === "Company" ? children : <Navigate to="/" />;
+};
+const RoleRedirect = () => {
+  const { isAuthenticated, role } = useAuthStore();
 
-//   if (!isAuthenticated) {
-//     return <Navigate to="/login" replace />;
-//   }
+  if (!isAuthenticated) return <Home />;
 
-//   return children;
-// };
+  if (role === "Admin") return <Navigate to="/admin/profile" />;
+  if (role === "Company") return <Navigate to="/company/profile" />;
 
+  return <Home />; // Keep regular users on `/`
+};
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
 
@@ -69,7 +71,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route path="" element={<Home />} />
+            <Route path="" element={<RoleRedirect />} />
             <Route
               path="login"
               element={
@@ -102,7 +104,14 @@ function App() {
             <Route path="forget-password" element={<ForgetPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
 
-            <Route path="profile" element={<Profile />}>
+            <Route
+              path="profile"
+              element={
+                <UserOnly>
+                  <Profile />
+                </UserOnly>
+              }
+            >
               <Route path="" element={<InfoForm />} />
               <Route path="tickets" element={<Tickets />} />
               <Route path="change-password" element={<ChangePassword />} />
@@ -110,15 +119,15 @@ function App() {
             <Route path="/tickets" element={<Tickets />} />
             <Route path="trip-details/:id" element={<TripDetails />} />
           </Route>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route
-              path="profile"
-              element={
-                <AdminPages>
-                  <AdminProfile />
-                </AdminPages>
-              }
-            >
+          <Route
+            path="/admin"
+            element={
+              <AdminPages>
+                <AdminLayout />
+              </AdminPages>
+            }
+          >
+            <Route path="profile" element={<AdminProfile />}>
               <Route path="" element={<AdminInfoForm />} />
               <Route path="change-password" element={<ChangePassword />} />
               <Route path="Companies" element={<Companies />} />
@@ -127,13 +136,23 @@ function App() {
             <Route path="user/:id" element={<UserTickets />} />
 
             <Route path=":id" element={<CompanyTrips />} />
+
+            <Route path="trip/:tripId" element={<Trip />} />
           </Route>
-          <Route path="/company" element={<AdminLayout />}>
+          <Route
+            path="/company"
+            element={
+              <CompanyOnly>
+                <AdminLayout />
+              </CompanyOnly>
+            }
+          >
             <Route path="profile" element={<Companyprofile />}>
               <Route path="change-password" element={<ChangePassword />} />
               <Route path="" element={<CompanyInfo />} />
               <Route path="trips" element={<ShowCompanyTrips />} />
             </Route>
+            <Route path="trip/:tripId" element={<Trip />} />
           </Route>
           <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>

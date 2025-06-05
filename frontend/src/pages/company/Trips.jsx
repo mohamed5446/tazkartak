@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
 import TripForm from "../../components/TripForm";
 import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router";
 const customStyles = {
   content: {
     top: "50%",
@@ -31,6 +32,8 @@ export default function CompanyTrips() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isDeleting, setisDeleting] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -171,6 +174,12 @@ export default function CompanyTrips() {
                 "حذف"
               )}
             </motion.button>
+            <button
+              onClick={() => navigate(`/company/trip/${trip.tripId}`)}
+              className="bg-cyan-dark text-white px-8 p-2 m-1 rounded"
+            >
+              تعديل
+            </button>
           </div>
         ))
       ) : (

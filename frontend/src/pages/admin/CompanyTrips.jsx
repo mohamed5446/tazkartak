@@ -2,7 +2,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { useEffect, useReducer, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,6 +31,7 @@ export default function CompanyTrips() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isDeleting, setisDeleting] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   function closeModal() {
     setIsOpen(false);
   }
@@ -152,18 +153,26 @@ export default function CompanyTrips() {
               </div>
             </div>
 
-            <motion.button
-              type="button"
-              disabled={isDeleting[trip.tripId]}
-              onClick={() => cancleTrip(trip.tripId)}
-              className="bg-red-500 text-white px-8 p-2 rounded"
-            >
-              {isDeleting[trip.tripId] ? (
-                <Loader className="animate-spin mx-auto" size={24} />
-              ) : (
-                "حذف"
-              )}
-            </motion.button>
+            <div>
+              <motion.button
+                type="button"
+                disabled={isDeleting[trip.tripId]}
+                onClick={() => cancleTrip(trip.tripId)}
+                className="bg-red-500 text-white px-8 p-2 rounded"
+              >
+                {isDeleting[trip.tripId] ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "حذف"
+                )}
+              </motion.button>
+              <button
+                onClick={() => navigate(`/admin/trip/${trip.tripId}`)}
+                className="bg-cyan-dark text-white px-8 p-2 my-1 rounded"
+              >
+                تعديل
+              </button>
+            </div>
           </div>
         ))
       ) : (
