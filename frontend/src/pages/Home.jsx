@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { createSearchParams, useNavigate } from "react-router";
 const Home = () => {
+  const [isfetching, setIsFetching] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -17,6 +19,7 @@ const Home = () => {
   const [companies, setCompanies] = useState([]);
   const navigate = useNavigate();
   const fetchCompanies = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         "https://tazkartk-api.runasp.net/api/Companies"
@@ -25,6 +28,8 @@ const Home = () => {
       setCompanies(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   useEffect(() => {
@@ -198,12 +203,16 @@ const Home = () => {
       </div>
 
       {/* Bus Companies Section */}
-      <div className="mt-8">
-        <h2 className="text-xl font-bold text-center">الشركات</h2>
-        <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
-          <CompanyCard Children={companies} />
+      {isfetching ? (
+        <p className="text-center p-4">جاري التحميل...</p>
+      ) : (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold text-center">الشركات</h2>
+          <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
+            <CompanyCard Children={companies} />
+          </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 };

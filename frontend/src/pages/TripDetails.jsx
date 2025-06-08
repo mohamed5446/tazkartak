@@ -13,6 +13,8 @@ export default function TripDetails() {
   const { id } = useAuthStore();
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
+  const [isfetching, setIsFetching] = useState(false);
+
   const [seatsData, setSeatData] = useState(
     Array.from({ length: 48 }, (_, i) => ({
       id: i + 1,
@@ -33,6 +35,7 @@ export default function TripDetails() {
     }
   };
   const tripDetail = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         `https://tazkartk-api.runasp.net/api/Trips/${tripId}`
@@ -49,6 +52,8 @@ export default function TripDetails() {
       console.log(updatedSeatsData);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const bookTicket = async () => {
@@ -80,6 +85,8 @@ export default function TripDetails() {
     tripDetail();
     console.log(trip);
   }, []);
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col h-full m-4 gap-2 pb-6">
       <p className="text-end m-4 text-2xl  font-semibold">بيانات الرحلة</p>

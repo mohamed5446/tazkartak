@@ -37,11 +37,13 @@ export default function Companies() {
   const [modal2IsOpen, set2IsOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isfetching, setIsFetching] = useState(false);
 
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
 
   const fetchCompanies = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         "https://tazkartk-api.runasp.net/api/Companies"
@@ -50,6 +52,8 @@ export default function Companies() {
       setCompanies(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const {
@@ -209,6 +213,8 @@ export default function Companies() {
       console.log(error);
     }
   };
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col  items-end w-full  xl:w-1/2 gap-4 ">
       <div className="flex items-center  justify-between w-full ">

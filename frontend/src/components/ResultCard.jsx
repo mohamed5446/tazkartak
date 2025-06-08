@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router";
 
-export default function ResultsList({ trips }) {
+export default function ResultsList({ trips, isfetching }) {
   const navigate = useNavigate();
   const showTrip = (id) => {
     navigate(`/trip-details/${id}`);
   };
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col gap-6 w-full  ">
       {trips.length >= 1 ? (

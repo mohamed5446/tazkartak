@@ -30,6 +30,7 @@ function Trip() {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isLoading, setisLoading] = useState(false);
+  const [isfetching, setIsFetching] = useState(false);
 
   const {
     register,
@@ -83,6 +84,7 @@ function Trip() {
     }
   };
   const getPeople = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         `https://tazkartk-api.runasp.net/api/Trips/${tripId}/Passengers`
@@ -90,6 +92,8 @@ function Trip() {
       setPeople(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const tripDetail = async () => {
@@ -132,6 +136,8 @@ function Trip() {
     getPeople();
     console.log(trip);
   }, [ignored]);
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className=" flex flex-col items-end">
       <p className="text-end m-4 text-2xl  font-semibold">بيانات الرحلة</p>

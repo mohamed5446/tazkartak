@@ -8,7 +8,10 @@ export default function Tickets() {
   const [tickets, setTickets] = useState([]);
   const { id } = useParams();
   const [loadingStates, setisLoading] = useState({});
+  const [isfetching, setIsFetching] = useState(false);
+
   const getTickets = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         `https://tazkartk-api.runasp.net/api/${id}/tickets`
@@ -17,6 +20,8 @@ export default function Tickets() {
       setTickets(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const errorCancelling = (message) =>
@@ -49,6 +54,8 @@ export default function Tickets() {
       errorCancelling(error.response.data.message);
     }
   };
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col w-full   p-4 gap-4">
       {tickets.length >= 1 ? (

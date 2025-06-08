@@ -35,7 +35,9 @@ export default function Users() {
   const [isDeleting, setisDeleting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showAdminsOnly, setShowAdminsOnly] = useState(false);
 
+  const [isfetching, setIsFetching] = useState(false);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
 
@@ -67,12 +69,25 @@ export default function Users() {
     setValue,
   } = useForm();
   const fetchUsers = async () => {
+    setIsFetching(true);
     try {
-      const res = await axios.get("https://tazkartk-api.runasp.net/api/Users");
-      console.log(res);
-      setusers(res.data);
+      if (showAdminsOnly) {
+        const res = await axios.get(
+          "https://tazkartk-api.runasp.net/api/Users/Admins"
+        );
+        console.log(res);
+        setusers(res.data);
+      } else {
+        const res = await axios.get(
+          "https://tazkartk-api.runasp.net/api/Users"
+        );
+        console.log(res);
+        setusers(res.data);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const addedSuccessfully = () =>
@@ -96,7 +111,7 @@ export default function Users() {
       setisLoading(false);
       console.log(error);
     }
-  }, [ignored]);
+  }, [ignored, showAdminsOnly]);
   function openModal(user) {
     setuser(user);
     console.log(user);
@@ -205,6 +220,8 @@ export default function Users() {
       console.log(error);
     }
   };
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col m-4 items-end  gap-4 p-2 w-full xl:w-2/4">
       <div className="flex items-center  justify-between w-full gap-2  ">
@@ -212,21 +229,29 @@ export default function Users() {
           <button
             type="button"
             onClick={() => openModal2("user")}
-            className="bg-cyan-dark mr-2 text-white p-2 rounded shadow-lg hover:cursor-pointer"
+            className="bg-cyan-dark mr-2 text-white p-2 rounded shadow-lg hover:cursor-pointer m-2"
           >
             اضافة مستخدم
           </button>
           <button
             type="button"
             onClick={() => openModal2("admin")}
-            className="bg-cyan-dark text-white p-2 rounded shadow-lg hover:cursor-pointer"
+            className="bg-cyan-dark text-white p-2 rounded shadow-lg hover:cursor-pointer m-2"
           >
             اضافة ادمن
           </button>
         </div>
-
-        <p className="text-3xl text-cyan-dark font-bold ">المستخدمين</p>
       </div>
+      <button
+        type="button"
+        onClick={() => setShowAdminsOnly((prev) => !prev)}
+        className="bg-cyan-dark text-white p-2 rounded shadow hover:cursor-pointer m-2"
+      >
+        {showAdminsOnly ? "عرض  المستخدمين" : "عرض الادمن "}
+      </button>
+      <p className="text-3xl text-cyan-dark font-bold ">
+        {showAdminsOnly ? "الادمن" : "المستخدمين"}
+      </p>
       {users.map((user) => (
         <div
           key={user.id}
@@ -239,12 +264,16 @@ export default function Users() {
             >
               تعديل
             </button>
-            <button
-              onClick={() => navigate(`/admin/user/${user.id}`)}
-              className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
-            >
-              عرض التذاكر
-            </button>
+            {showAdminsOnly ? (
+              ""
+            ) : (
+              <button
+                onClick={() => navigate(`/admin/user/${user.id}`)}
+                className="bg-cyan-dark text-white p-2 px-6 rounded hover:cursor-pointer"
+              >
+                عرض التذاكر
+              </button>
+            )}
           </div>
 
           <div className="flex flex-col-reverse md:flex-row gap-2 items-center p-2">

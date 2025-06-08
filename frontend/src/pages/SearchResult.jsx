@@ -10,11 +10,13 @@ export default function SearchResult() {
   const [trips, setTrips] = useState([]);
   const { register, handleSubmit, setValue } = useForm();
   const [isLoading, setisLoading] = useState(false);
+  const [isfetching, setIsFetching] = useState(false);
 
   const to = searchParams.get("to");
   const from = searchParams.get("from");
   const date = searchParams.get("date");
   const getTrips = async (to, date, from) => {
+    setIsFetching(true);
     try {
       setisLoading(true);
       const res = await axios.get(
@@ -28,6 +30,8 @@ export default function SearchResult() {
     } catch (error) {
       setisLoading(false);
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   useEffect(() => {
@@ -44,7 +48,7 @@ export default function SearchResult() {
   };
   return (
     <div className="p-4 flex md:flex-row flex-col-reverse w-full gap-2">
-      <ResultsList className="grow" trips={trips} />
+      <ResultsList className="grow" trips={trips} isfetching={isfetching} />
       <div className="bottom-4 left-4   rounded-lg text-center h-fit shadow">
         <form
           onSubmit={handleSubmit(onSubmit)}

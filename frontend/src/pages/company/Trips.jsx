@@ -32,12 +32,15 @@ export default function CompanyTrips() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isDeleting, setisDeleting] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isfetching, setIsFetching] = useState(false);
+
   const navigate = useNavigate();
 
   function closeModal() {
     setIsOpen(false);
   }
   const getTrips = async () => {
+    setIsFetching(true);
     try {
       const res = await axios.get(
         `https://tazkartk-api.runasp.net/api/${id}/Trips`
@@ -47,6 +50,8 @@ export default function CompanyTrips() {
       console.log(trips);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const cancleTrip = async (id) => {
@@ -103,6 +108,8 @@ export default function CompanyTrips() {
   useEffect(() => {
     getTrips();
   }, [ignored]);
+  if (isfetching) return <p className="text-center p-4">جاري التحميل...</p>;
+
   return (
     <div className="flex flex-col gap-6 w-full p-4  items-end ">
       <ToastContainer position="top-right" autoClose={3000} />
