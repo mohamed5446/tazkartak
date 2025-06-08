@@ -49,11 +49,11 @@ export default function Profile() {
         )}
 
         <div className="p-10 pt-0">
-          <ul>
+          <ul className="flex gap-2 flex-col">
             <li>
               <Link
                 to={"/company/profile"}
-                className={`m-b2 hover:text-cyan-dark ${
+                className={` hover:text-cyan-dark ${
                   isActive("/company/profile") ? "font-bold " : ""
                 }`}
               >
@@ -63,16 +63,16 @@ export default function Profile() {
             <li>
               <Link
                 to={"/company/profile/trips"}
-                className={`m-b2 hover:text-cyan-dark ${
+                className={` hover:text-cyan-dark ${
                   isActive("/company/profile/trips") ? "font-bold " : ""
                 }`}
               >
                 الرحلات
               </Link>
             </li>
-            <li className="mb-2 hover:text-cyan-dark cursor-pointer">
+            <li>
               <Link
-                className={`m-b2 hover:text-cyan-dark ${
+                className={` hover:text-cyan-dark ${
                   isActive("/company/profile/change-password")
                     ? "font-bold "
                     : ""
@@ -82,9 +82,19 @@ export default function Profile() {
                 تغيير كلمة السر
               </Link>
             </li>
+            <li>
+              <Link
+                className={` hover:text-cyan-dark ${
+                  isActive("/company/profile/earnings") ? "font-bold " : ""
+                }`}
+                to={"/company/profile/earnings"}
+              >
+                الرصيد
+              </Link>
+            </li>
             <li
               onClick={signOut}
-              className="text-red-600 hover:text-red-800 cursor-pointer border-t-2 pt-4 border-dashed border-black "
+              className="text-red-600 hover:text-red-800 cursor-pointer border-t-2 pt-4 border-dashed border-black mt-4 "
             >
               تسجيل الخروج
             </li>

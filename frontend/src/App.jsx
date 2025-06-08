@@ -26,6 +26,7 @@ import ShowCompanyTrips from "./pages/company/Trips";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Trip from "./pages/admin/Trip";
+import Earnings from "./pages/company/Earnings";
 const AdminPages = ({ children }) => {
   const { isAuthenticated, role } = useAuthStore();
 
@@ -151,6 +152,7 @@ function App() {
               <Route path="change-password" element={<ChangePassword />} />
               <Route path="" element={<CompanyInfo />} />
               <Route path="trips" element={<ShowCompanyTrips />} />
+              <Route path="earnings" element={<Earnings />} />
             </Route>
             <Route path="trip/:tripId" element={<Trip />} />
           </Route>

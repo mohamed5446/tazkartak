@@ -18,14 +18,12 @@ export const useAuthStore = create(
       fetchUser: async (id) => {
         try {
           const JWTToken = Cookies.get("token");
-          console.log(JWTToken);
           const res = await axios.get(
             `https://tazkartk-api.runasp.net/api/Users/${id}`,
             {
               headers: { Authorization: `Bearer ${JWTToken}` },
             }
           );
-          console.log("hellooooooo");
           set({ User: res.data });
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -34,14 +32,12 @@ export const useAuthStore = create(
       fetchCompany: async (id) => {
         try {
           const JWTToken = Cookies.get("token");
-          console.log(JWTToken);
           const res = await axios.get(
             `https://tazkartk-api.runasp.net/api/Companies/${id}`,
             {
               headers: { Authorization: `Bearer ${JWTToken}` },
             }
           );
-          console.log("hellooooooo");
           set({ User: res.data });
         } catch (error) {
           console.error("Error fetching user data:", error);
