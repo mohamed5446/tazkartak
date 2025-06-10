@@ -4,7 +4,7 @@ namespace Tazkartk.Application.DTO.AccontDTOs
 {
     public class SendOTPDTO
     {
-        [Required, EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح"), RegularExpression(@"^[^@]+@[^@]+\.[^@]+$", ErrorMessage = "يرجى إدخال رقم هاتف صحيح")]
+        [Required, EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح"), RegularExpression(@"^[^@]+@[^@]+\.[^@]+$", ErrorMessage = "البريد الإلكتروني غير صالح")]
         public string Email { get; set; }
     }
 }

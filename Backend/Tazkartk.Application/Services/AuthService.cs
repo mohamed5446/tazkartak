@@ -9,6 +9,8 @@ using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.DTO.Google;
 using Tazkartk.Application.DTO.Email;
 using Tazkartk.Application.Interfaces.External;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Tazkartk.Application.Services
 {
@@ -37,7 +39,6 @@ namespace Tazkartk.Application.Services
         #region User
         public async Task<AuthModel> RegisterAsync(RegisterDTO DTO, Roles Role = Roles.User)
         {
-
 
             if (await _AccountManager.FindByEmailAsync(DTO.Email) != null)
             {
@@ -117,8 +118,7 @@ namespace Tazkartk.Application.Services
        
         #region OTP
         public async Task<AuthModel> SendOTP(string email, bool IsReset = false)
-        {
-           
+        {    
             var account = await _AccountManager.FindByEmailAsync(email);
             if (account == null)
             {
@@ -132,7 +132,8 @@ namespace Tazkartk.Application.Services
             }
             
             string OTP = GenerateOTP();
-            _cache.SetData(key, OTP, 5);
+            var hashedotp = ComputeHash(OTP);
+            _cache.SetData(key, hashedotp, 5);
           
             await _AccountManager.UpdateAsync(account);
             var emailrequest = new EmailRequest
@@ -142,8 +143,6 @@ namespace Tazkartk.Application.Services
                 Body = IsReset
                           ?_emailBodyService.ResetPasswordEmailBody(OTP)
                           :_emailBodyService.ConfirmationEmailBody(OTP)
-                        //? EmailBodyHelper.GetResetPasswordEmailBody(OTP)
-                        //: EmailBodyHelper.GetVerificationEmailBody(OTP)    
             };
             await _EmailService.SendEmail(emailrequest);
             return AuthModel.Succeed("تم إرسال رمز التحقق إلى بريدك الإلكتروني", account.Email);
@@ -164,8 +163,8 @@ namespace Tazkartk.Application.Services
 
             var key = $"OTP_{Email}";
             var cachedOTP = _cache.GetData<string>(key);
-
-            if (cachedOTP == null || cachedOTP != enteredOtp)
+            var hashedenteredOTP= ComputeHash(enteredOtp);
+            if (cachedOTP == null || cachedOTP != hashedenteredOTP)
             {
                 return AuthModel.Error("رمز التحقق غير صالح أو منتهي الصلاحية", Account.EmailConfirmed);
             }
@@ -196,7 +195,7 @@ namespace Tazkartk.Application.Services
         }
         #endregion
 
-
+       
         #region password
         public async Task<AuthModel> ForgotPasswordAsync(string Email)
         {
@@ -206,7 +205,6 @@ namespace Tazkartk.Application.Services
             {
                 return AuthModel.Error("المستخدم غير موجود");
             }
-
             return await SendOTP(Email, true);
         }
         public async Task<AuthModel> ChangePasswordAsync(ChangePasswordDTO DTO)
@@ -233,7 +231,6 @@ namespace Tazkartk.Application.Services
 
         public async Task<AuthModel> ResetPasswordAsync(ResetPasswordDTO DTO)
         {
-
             var Account = await _AccountManager.FindByEmailAsync(DTO.email);
             if (Account == null)
             {
@@ -305,8 +302,14 @@ namespace Tazkartk.Application.Services
                 PhoneNumberNeeded=true,
             };
         }
-
-
-
+        private string ComputeHash(string data)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(data);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
     }
 }

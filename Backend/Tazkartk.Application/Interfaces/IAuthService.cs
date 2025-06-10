@@ -17,6 +17,5 @@ namespace Tazkartk.Application.Interfaces
         Task<AuthModel> ForgotPasswordAsync(string Email);
         Task<AuthModel> ResetPasswordAsync(ResetPasswordDTO DTO);
         Task<AuthModel> ChangePasswordAsync(ChangePasswordDTO DTO);
-
     }
 }

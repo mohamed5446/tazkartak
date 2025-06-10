@@ -45,7 +45,7 @@ namespace Tazkartk.API.Controllers
         {
             var user = await _UserService.GetUserByIdAsync(userId);
             if (user == null) return NotFound();
-            var bookings = await _BookingService.GetUserHistoryTicketsAsync(userId);
+            var bookings = await _BookingService.GetUserHistoryBookingsAsync(userId);
             return bookings == null ? NotFound() : Ok(bookings);
         }
 
@@ -53,7 +53,7 @@ namespace Tazkartk.API.Controllers
         [SwaggerOperation(Summary = "Get Ticket By Id")]
         public async Task<IActionResult> GetTicket(int Id)
         {
-            var ticket = await _BookingService.GetTicketAsync(Id);
+            var ticket = await _BookingService.GetBookingByIdAsync(Id);
             return ticket == null ? NotFound() : Ok(ticket);
         }
 
@@ -95,6 +95,13 @@ namespace Tazkartk.API.Controllers
             //  return !result ? BadRequest() : Ok("refund requested"); 
         }
 
+        [HttpPost("{TicketId}")]
+        [SwaggerOperation(Summary = "Manual/offline Refund")]
+        public async Task<IActionResult> ManaulRefund(int TicketId)
+        {
+            var result = await _BookingService.ManualRefund(TicketId);
+            return StatusCode((int)result.StatusCode, result);
+        }
         [HttpDelete("{TicketId}")]
         [SwaggerOperation(Summary = "delete ticket")]
         public async Task<IActionResult> DeleteBooking(int TicketId)

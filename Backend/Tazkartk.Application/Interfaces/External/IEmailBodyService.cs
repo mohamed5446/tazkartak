@@ -12,7 +12,7 @@ namespace Tazkartk.Application.Interfaces.External
         string ConfirmationEmailBody(string OTP);
         string ResetPasswordEmailBody(string OTP);
         string TripReminderEmailBody(TicketDTO ticket);
-
-
+        string BalanceTransferEmailBody(string CompanyName, int TripId, string From, string To, string Date, double amount);
+        string PayoutConfirmationEmailBody(string companyName, double amount, string date, string walletNumber);
     }
 }

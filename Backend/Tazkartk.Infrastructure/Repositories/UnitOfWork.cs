@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Tazkartk.Infrastructure.Data;
 using Tazkartk.Application.Interfaces;
-using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Storage;
+using Tazkartk.Application.Repository;
 
 namespace Tazkartk.Infrastructure.Repositories
 {
@@ -16,8 +16,7 @@ namespace Tazkartk.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
         private  IDbContextTransaction _transaction;
-        // private readonly IMapper _mapper;
-        // private Dictionary<Type, object> _repositories;
+       
 
         public IUserRepository Users {get;private set;}
 
@@ -28,6 +27,8 @@ namespace Tazkartk.Infrastructure.Repositories
         public ITicketRepository Bookings { get;private set;}
 
         public IPaymentRepository Payments {get;private set;}
+        public IMessagesRepository Messages { get;private set;}
+        public IPayoutsRepository Payouts {  get;private set;}
 
        
         public UnitOfWork(ApplicationDbContext context,IMapper _mapper)
@@ -39,6 +40,8 @@ namespace Tazkartk.Infrastructure.Repositories
             Companies=new CompanyRepository(_context,_mapper);
             Bookings=new TicketRepository(_context,_mapper);
             Payments=new PaymentRepository(_context,_mapper);
+            Messages = new MessagesRepository(_context, _mapper);
+            Payouts=new PayoutsRepository(_context,_mapper);
 
 
         }

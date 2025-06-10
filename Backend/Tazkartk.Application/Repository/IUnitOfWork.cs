@@ -9,11 +9,11 @@ namespace Tazkartk.Application.Repository
         ICompanyRepository Companies { get; }
         ITicketRepository Bookings { get; }
         IPaymentRepository Payments { get; }
-        // public IGenericRepository<T> Repository<T>() where T : class;
+        IMessagesRepository Messages { get; }
+        IPayoutsRepository Payouts { get; }
         Task BeginTransactionAsync();
         Task commitTransactionAsync();
         Task RollBackAsdync();
-
         Task<int> CompleteAsync();
     }
 }

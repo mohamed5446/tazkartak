@@ -12,9 +12,11 @@ namespace Tazkartk.Application
             Services.AddScoped<ITripService, TripService>();
             Services.AddScoped<IAuthService, AuthService>();
             Services.AddScoped<IUserService, UserService>();
+            Services.AddScoped<IMessagesService, MessagesService>();
             Services.AddScoped<ICompanyService, CompanyService>(); 
             Services.AddScoped<IPaymentService, PaymentService>();
             Services.AddScoped<IBookingService, BookingService>();
+        
            // Services.AddScoped<ITokenService,ITokenService>();
 
             Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

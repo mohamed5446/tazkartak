@@ -107,12 +107,7 @@ namespace Tazkartk.API.Controllers
             var result = await _TripService.DeleteTripAsync(Id);
             return StatusCode((int)result.StatusCode, result);
         }
-        [HttpPost("{TripId}/Send_Email")]
-        public async Task<IActionResult> SendEmail(int TripId, EmailDTO DTO)
-        {
-            var result = await _TripService.send_Email_to_passengersAsync(TripId, DTO);
-            return Ok(result);
-        }
+
         #region Extras
         //[HttpPut("transfer")]
         //public async Task<IActionResult>Transfer(int TripId)
@@ -158,6 +153,12 @@ namespace Tazkartk.API.Controllers
         //{
         //    var trips=await _TripService.GetBookingsByTrip(TripId);
         //    return Ok(trips);
+        //}
+        //[HttpPost("{TripId}/Send_Email")]
+        //public async Task<IActionResult> SendEmail(int TripId, EmailDTO DTO)
+        //{
+        //    var result = await _TripService.send_Email_to_passengersAsync(TripId, DTO);
+        //    return Ok(result);
         //}
         #endregion
     }

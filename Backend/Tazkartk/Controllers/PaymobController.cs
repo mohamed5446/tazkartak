@@ -31,12 +31,12 @@ namespace Tazkartk.API.Controllers
         //    var res = await _PaymentService.Genrateaccesstoken();
         //    return Ok(res);
         //}
-        [HttpPost("callback")]
-        public async Task<IActionResult> CallBack()
-        {
-            var result = await _PaymentService.handleCallback(Request);
-            return StatusCode((int)result.StatusCode, result);
-        }
+        //[HttpPost("callback")]
+        //public async Task<IActionResult> CallBack()
+        //{
+        //    var result = await _PaymentService.handleCallback(Request);
+        //    return StatusCode((int)result.StatusCode, result);
+        //}
     }
 
 }

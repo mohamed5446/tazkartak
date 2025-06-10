@@ -175,7 +175,7 @@ namespace Tazkartk.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Account", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,12 +211,6 @@ namespace Tazkartk.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("OTP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("OTPExpiry")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,7 +245,7 @@ namespace Tazkartk.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Booking", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Booking", b =>
                 {
                     b.Property<int>("BookingId")
                         .ValueGeneratedOnAdd()
@@ -289,7 +283,36 @@ namespace Tazkartk.Migrations
                     b.ToTable("bookings");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Payment", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Tazkartk.Domain.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
                         .ValueGeneratedOnAdd()
@@ -315,18 +338,60 @@ namespace Tazkartk.Migrations
                     b.Property<double>("amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("bookingId")
+                    b.Property<int?>("bookingId")
                         .HasColumnType("int");
 
                     b.HasKey("PaymentId");
 
                     b.HasIndex("bookingId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[bookingId] IS NOT NULL");
 
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Seat", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Payout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PayoutId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WalletNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Wallet_Issuer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Payouts");
+                });
+
+            modelBuilder.Entity("Tazkartk.Domain.Models.Seat", b =>
                 {
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -349,7 +414,7 @@ namespace Tazkartk.Migrations
                     b.ToTable("Seats");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Trip", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Trip", b =>
                 {
                     b.Property<int>("TripId")
                         .ValueGeneratedOnAdd()
@@ -359,6 +424,9 @@ namespace Tazkartk.Migrations
 
                     b.Property<bool>("Avaliblility")
                         .HasColumnType("bit");
+
+                    b.Property<int>("BookedSeats")
+                        .HasColumnType("int");
 
                     b.Property<string>("Class")
                         .IsRequired()
@@ -392,9 +460,6 @@ namespace Tazkartk.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TripCode")
-                        .HasColumnType("int");
-
                     b.HasKey("TripId");
 
                     b.HasIndex("CompanyId");
@@ -402,9 +467,9 @@ namespace Tazkartk.Migrations
                     b.ToTable("Trips");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Company", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Company", b =>
                 {
-                    b.HasBaseType("Tazkartk.Models.Account");
+                    b.HasBaseType("Tazkartk.Domain.Models.Account");
 
                     b.Property<double>("Balance")
                         .HasColumnType("float");
@@ -430,9 +495,9 @@ namespace Tazkartk.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.User", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.User", b =>
                 {
-                    b.HasBaseType("Tazkartk.Models.Account");
+                    b.HasBaseType("Tazkartk.Domain.Models.Account");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -461,7 +526,7 @@ namespace Tazkartk.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +535,7 @@ namespace Tazkartk.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,7 +550,7 @@ namespace Tazkartk.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,20 +559,20 @@ namespace Tazkartk.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Booking", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Booking", b =>
                 {
-                    b.HasOne("Tazkartk.Models.User", "user")
+                    b.HasOne("Tazkartk.Domain.Models.User", "user")
                         .WithMany("books")
                         .HasForeignKey("UserId");
 
-                    b.HasOne("Tazkartk.Models.Trip", "trip")
+                    b.HasOne("Tazkartk.Domain.Models.Trip", "trip")
                         .WithMany("bookings")
                         .HasForeignKey("tripId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -518,26 +583,35 @@ namespace Tazkartk.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Payment", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Payment", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Booking", "booking")
+                    b.HasOne("Tazkartk.Domain.Models.Booking", "booking")
                         .WithOne("payment")
-                        .HasForeignKey("Tazkartk.Models.Payment", "bookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Tazkartk.Domain.Models.Payment", "bookingId");
 
                     b.Navigation("booking");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Seat", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Payout", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Trip", "trip")
+                    b.HasOne("Tazkartk.Domain.Models.Company", "Company")
+                        .WithMany("Payouts")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Tazkartk.Domain.Models.Seat", b =>
+                {
+                    b.HasOne("Tazkartk.Domain.Models.Trip", "trip")
                         .WithMany("seats")
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Tazkartk.Models.Booking", "booking")
+                    b.HasOne("Tazkartk.Domain.Models.Booking", "booking")
                         .WithMany("seats")
                         .HasForeignKey("bookingId");
 
@@ -546,9 +620,9 @@ namespace Tazkartk.Migrations
                     b.Navigation("trip");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Trip", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Trip", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Company", "company")
+                    b.HasOne("Tazkartk.Domain.Models.Company", "company")
                         .WithMany("Trips")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -557,25 +631,25 @@ namespace Tazkartk.Migrations
                     b.Navigation("company");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Company", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Company", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithOne()
-                        .HasForeignKey("Tazkartk.Models.Company", "Id")
+                        .HasForeignKey("Tazkartk.Domain.Models.Company", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.User", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.User", b =>
                 {
-                    b.HasOne("Tazkartk.Models.Account", null)
+                    b.HasOne("Tazkartk.Domain.Models.Account", null)
                         .WithOne()
-                        .HasForeignKey("Tazkartk.Models.User", "Id")
+                        .HasForeignKey("Tazkartk.Domain.Models.User", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Booking", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Booking", b =>
                 {
                     b.Navigation("payment")
                         .IsRequired();
@@ -583,19 +657,21 @@ namespace Tazkartk.Migrations
                     b.Navigation("seats");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Trip", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Trip", b =>
                 {
                     b.Navigation("bookings");
 
                     b.Navigation("seats");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.Company", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.Company", b =>
                 {
+                    b.Navigation("Payouts");
+
                     b.Navigation("Trips");
                 });
 
-            modelBuilder.Entity("Tazkartk.Models.User", b =>
+            modelBuilder.Entity("Tazkartk.Domain.Models.User", b =>
                 {
                     b.Navigation("books");
                 });

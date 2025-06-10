@@ -16,6 +16,22 @@ namespace Tazkartk.API.Controllers
         {
             _companyService = companyService;
         }
+        [SwaggerOperation(Summary ="test method :increase company Balance")]
+        [HttpPost("{CompanyId}/increase")]
+        public async Task<IActionResult>IncreaseBalance(int CompanyId)
+        {
+            var res = await _companyService.IncreaseCompanyBalance(CompanyId);
+            return StatusCode((int)res.StatusCode, res);
+
+        }
+        [SwaggerOperation(Summary="List Company Payouts History ")]
+        [HttpGet("{CompanyId}/Payouts")]
+        public async Task<IActionResult> GetCompanyPayouts(int CompanyId)
+        {
+            var res = await _companyService.GetCompanyPayouts(CompanyId);
+            return Ok(res);
+        }
+
         /// <summary>
         /// Withdraw Comapny Balance to mobile wallet.
         /// </summary>

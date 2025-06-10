@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tazkartk.Application.DTO.Payments
+namespace Tazkartk.Application.DTO.Ticket
 {
     public class UserBookingDetails
     {
@@ -15,7 +15,6 @@ namespace Tazkartk.Application.DTO.Payments
         public string phoneNumber { get; set; }
         public string email { get; set; }
         public List<int> seatNumbers { get; set; }
-       
-      //  int userId, int tripId, List<int> seatNumbers, double amount, string firstname, string lastname, string PhoneNumber, string Email
+
     }
 }

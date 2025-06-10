@@ -15,7 +15,7 @@ namespace Tazkartk.Domain.Models
         // public DateTime ArriveTime { get; set; }
         public string Location { get; set; }
         public double Price { get; set; }
-        public int TripCode { get; set; }
+        public int BookedSeats {  get; set; }
         public int CompanyId { get; set; }
         public Company company { get; set; }
         public List<Seat> seats { get; set; }

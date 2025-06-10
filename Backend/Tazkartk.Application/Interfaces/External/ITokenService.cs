@@ -10,7 +10,5 @@ namespace Tazkartk.Application.Interfaces.External
     public interface ITokenService
     {
         Task<string> GenerateToken(Account account);
-
-
     }
 }

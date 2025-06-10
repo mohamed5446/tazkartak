@@ -30,12 +30,14 @@ namespace Tazkartk.Infrastructure.Data
                 new IdentityRole<int> { Id = 3, Name = Application.Roles.Company.ToString(), NormalizedName = Application.Roles.Company.ToString().ToUpper() }
             );
         }
+        public DbSet<Message> Messages {  get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Booking> bookings { get; set; }
+        public DbSet<Payout> Payouts {  get; set; }
 
 
 

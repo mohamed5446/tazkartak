@@ -25,7 +25,7 @@ namespace Tazkartk.API.Controllers
         //    //var email = User.FindFirst(ClaimTypes.Email);
         //    return Ok(id);
         //}
-       
+        
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDTO userRegisterDTO)
         {

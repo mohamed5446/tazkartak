@@ -17,6 +17,12 @@ namespace Tazkartk.API.Controllers
         {
             _paymentService = paymentService;
         }
+        [HttpPost("/api/paymob/callback")]
+        public async Task<IActionResult> CallBack()
+        {
+            var result = await _paymentService.handleCallback(Request);
+            return StatusCode((int)result.StatusCode, result);
+        }
 
         [HttpGet("balance")]
         [SwaggerOperation(Summary="paymob balance")]
@@ -25,12 +31,7 @@ namespace Tazkartk.API.Controllers
             var res = await _paymentService.BalanceInquiry();
             return Ok(res);
         }
-        //[HttpPost("dispurse")]
-        //public async Task<IActionResult> diss(withdrawldto DTO)
-        //{
-        //    var res = await _paymentService.DispurseAsync(DTO.Issuer, DTO.walletnumber, DTO.amount);
-        //    return Ok(res);
-        //}
+       
         [HttpGet]
         [SwaggerOperation(Summary = "List All Payments")]
 

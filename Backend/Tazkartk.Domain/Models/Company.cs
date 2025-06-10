@@ -10,5 +10,6 @@ namespace Tazkartk.Domain.Models
         public string? Logo { get; set; }
         public double Balance { get; set; }
         public ICollection<Trip> Trips { get; set; } = new List<Trip>();
+        public ICollection<Payout> Payouts { get; set; } = new List<Payout>();
     }
 }

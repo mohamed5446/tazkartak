@@ -18,8 +18,11 @@ namespace Tazkartk.Infrastructure.Configurations
                  .WithOne(t => t.company)
                  .HasForeignKey(t => t.CompanyId)
                   .OnDelete(DeleteBehavior.Restrict);
-
-
+            // 1 company->m payouts
+            builder.HasMany(c => c.Payouts)
+               .WithOne(p => p.Company)
+               .HasForeignKey(p => p.CompanyId)
+               .OnDelete(DeleteBehavior.Cascade);
 
 
 

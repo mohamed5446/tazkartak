@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
-using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.TripDTOs;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
@@ -43,50 +41,10 @@ namespace Tazkartk.Infrastructure.Repositories
           //  _mapper.Map<Trip>(TripDtos);
         }
 
-        public async Task<IEnumerable<PassengerDetailsDTO>> GetPassengersAsync(int TripId)
-        {
-            var userPassengers = await _context.bookings
-        .Where(b => b.tripId == TripId && !b.IsCanceled && b.user != null)
-        .GroupBy(b => b.user)
-        .Select(g => new PassengerDetailsDTO
-        {
-            FirstName = g.Key.FirstName,
-            LastName = g.Key.LastName,
-            Email = g.Key.Email,
-            PhoneNumber = g.Key.PhoneNumber,
-            Seats = g.SelectMany(b => b.seats.Select(s => s.Number)).Distinct().ToList()
-        })
-        .ToListAsync();
-
-            var guestPassengers = await _context.bookings
-                .Where(b => b.tripId == TripId && !b.IsCanceled && b.user == null)
-                .GroupBy(b => new { b.GuestFirstName, b.GuestLastName, b.GuestPhoneNumber })
-                .Select(g => new PassengerDetailsDTO
-                {
-                    FirstName = g.Key.GuestFirstName,
-                    LastName = g.Key.GuestLastName,
-                    PhoneNumber = g.Key.GuestPhoneNumber,
-                    Email = null,
-                    Seats = g.SelectMany(b => b.seats.Select(s => s.Number)).Distinct().ToList()
-                })
-                .ToListAsync();
-
-            return userPassengers.Concat(guestPassengers);
-
-            //return await _context.bookings
-            //    .Where(b=>!b.IsCanceled&&b.tripId == TripId)
-            //    .GroupBy(b=>b.user)
-            //    .ProjectTo<PassengerDetailsDTO>(_mapper.ConfigurationProvider)
-            //    .AsNoTracking()
-            //    .ToListAsync();
-            //return await _context.Trips
-            //     .Where(t => t.TripId == TripId)
-            //     .SelectMany(t => t.bookings)
-            //     .Where(b => !b.IsCanceled)
-            //     .ProjectTo<PassengerDetailsDTO>(_mapper.ConfigurationProvider)
-            //     .AsNoTracking()
-            //     .ToListAsync();
-        }
+        //public async Task<IEnumerable<PassengerDetailsDTO>> GetPassengersAsync(int TripId)
+        //{
+        //   //return await _context.bookings.Where(b=>b.tripId==TripId&&!b.IsCanceled)
+        //}
 
        
         public async Task<Trip?> GetTripWithBookingAndUer(int TripId)

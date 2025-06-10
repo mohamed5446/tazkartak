@@ -6,6 +6,18 @@ namespace Tazkartk.Application.Extensions
 {
     public static class DateTimeExtensions
     {
+        public static string ToEgyptDateString(this DateTime dateTime)
+        {
+            var arabicCulture = new CultureInfo("ar-EG");
+            arabicCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+            arabicCulture.DateTimeFormat.AMDesignator = "صباحا";
+            arabicCulture.DateTimeFormat.PMDesignator = "مساء";
+
+            var egyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
+            var egyTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, egyTimeZone);
+            return egyTime.ToString("yyyy-MM-dd");
+
+        }
         public static string ToEgyptTimeString(this DateTime utcDate)
         {
             var arabicCulture = new CultureInfo("ar-EG");
@@ -21,7 +33,7 @@ namespace Tazkartk.Application.Extensions
         {
             var arabicCulture = new CultureInfo("ar-EG");
             return date.ToString("yyyy-MM-dd", arabicCulture);
-        }
+        }   
 
         public static string ToArabicDayString(this DateOnly date)
         {

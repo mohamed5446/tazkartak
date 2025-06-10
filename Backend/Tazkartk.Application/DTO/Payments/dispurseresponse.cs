@@ -10,8 +10,11 @@ namespace Tazkartk.Application.DTO
     {
         public string TransactionId {  get; set; }
         public bool Success {  get; set; }  
+        public string Issuer {  get; set; }
+        public string mssidn {  get; set; } 
         public string Status { get; set; }  
         public double amount {  get; set; }
         public string message { get; set; } 
+        public DateTime Date {  get; set; }
     }
 }

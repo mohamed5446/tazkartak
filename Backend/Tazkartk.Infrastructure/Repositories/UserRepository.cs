@@ -1,14 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tazkartk.Application.DTO.UserDTOs;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 using Tazkartk.Infrastructure.Data;

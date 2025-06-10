@@ -13,7 +13,6 @@ namespace Tazkartk.Domain.Models
         public string? GuestFirstName { get; set; }
         public string? GuestLastName { get; set; }
         public string? GuestPhoneNumber { get; set; }
-
         public Trip trip { get; set; }
         public User? user { get; set; }
         public Payment payment { get; set; }

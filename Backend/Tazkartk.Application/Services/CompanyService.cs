@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.CompanyDTOs;
+using Tazkartk.Application.DTO.Email;
 using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.DTO.Response;
+using Tazkartk.Application.Extensions;
 using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
+using Tazkartk.Domain.Models.Enums;
 
 
 namespace Tazkartk.Application.Services
@@ -20,7 +24,9 @@ namespace Tazkartk.Application.Services
         private readonly IConfiguration _conf;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CompanyService(IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IMapper mapper, IUnitOfWork unitOfWork, IPaymentService paymentService)
+        private readonly IEmailBodyService _emailBodyService;
+        private readonly IEmailService _emailService;
+        public CompanyService(IPhotoService photoService, UserManager<Account> accountManager, IConfiguration conf, IMapper mapper, IUnitOfWork unitOfWork, IPaymentService paymentService, IEmailBodyService emailBodyService, IEmailService emailService)
         {
             _photoService = photoService;
             _AccountManager = accountManager;
@@ -28,6 +34,13 @@ namespace Tazkartk.Application.Services
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _paymentService = paymentService;
+            _emailBodyService = emailBodyService;
+            _emailService = emailService;
+        }
+
+        public async Task<List<payoutDTO>>GetCompanyPayouts(int CompanyId)
+        {
+            return await _unitOfWork.Payouts.ProjectToList<payoutDTO>(p=>p.CompanyId==CompanyId);
         }
         public async Task<ApiResponse<string>> WithdrawlBalance(int CompanyId,WithdrawDTO DTO)
         {
@@ -41,9 +54,30 @@ namespace Tazkartk.Application.Services
             var res = await _paymentService.DispurseAsync(DTO.issuer,DTO.WalletPhoneNumber,balance);
             if (!res.Success)
                 return ApiResponse<string>.Error(res.message);
+
             company.Balance = 0;
+            var payout = new Payout
+            {
+                Amount = balance,
+                CompanyId = CompanyId,
+                Date = DateTime.UtcNow,
+                PaymentMethod = PaymentMethods.Wallet,
+                Wallet_Issuer = res.Issuer,
+                WalletNumber = res.mssidn,
+                Status = PaymentStatus.Succeeded.GetDisplayName(),
+                PayoutId = res.TransactionId
+            };
+            await _unitOfWork.Payouts.Add(payout);
             await _unitOfWork.CompleteAsync();
+            var Email = new EmailRequest
+            {
+                Email = company.Email,
+                Subject = "..",
+                Body = _emailBodyService.PayoutConfirmationEmailBody(company.Name, balance, DateTime.Now.ToUniversalTime().ToEgyptDateString(),DTO.WalletPhoneNumber)
+            };
+           await _emailService.SendEmail(Email);
             return ApiResponse<string>.success("تم تحويل الرصيد بنجاح");
+           
         }
         public async Task<ApiResponse<CompanyDTO>> CreateCompanyAsync(CompanyRegisterDTO DTO)
         {
@@ -124,7 +158,19 @@ namespace Tazkartk.Application.Services
             return ApiResponse<CompanyDTO>.success("تم حذف الشركة بنجاح ");
         }
 
-
+        #region Extra
+        public async Task<ApiResponse<string>> IncreaseCompanyBalance(int CompanyId)
+        {
+            var company = await _unitOfWork.Companies.GetById(CompanyId);
+            if (company == null)
+            {
+                return ApiResponse<string>.Error("error");
+            }
+            company.Balance += 1;
+            await _unitOfWork.CompleteAsync();
+            return ApiResponse<string>.success("balance increased by 1");
+        }
+        #endregion
 
 
     }

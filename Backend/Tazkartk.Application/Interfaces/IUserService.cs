@@ -8,8 +8,8 @@ namespace Tazkartk.Application.Interfaces
     public interface IUserService
     {
         Task<IReadOnlyList<UserDetails>> GetUsersAsync(Roles Role);
-        Task<ApiResponse<UserDetails>> AddUserAsync(RegisterDTO DTO, Roles role);
         Task<UserDetails?> GetUserByIdAsync(int id);
+        Task<ApiResponse<UserDetails>> AddUserAsync(RegisterDTO DTO, Roles role);
         Task<ApiResponse<UserDetails>> EditUserAsync(int Id, EditUserDTO DTO);
         Task<ApiResponse<string>> DeleteUserAsync(int Id);
 

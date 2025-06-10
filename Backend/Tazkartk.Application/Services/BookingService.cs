@@ -5,9 +5,10 @@ using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.DTO.UserDTOs;
-using Tazkartk.Application.Repository;
 using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.DTO.Payments;
+using Tazkartk.Application.DTO.Ticket;
+using Tazkartk.Application.Repository;
 
 namespace Tazkartk.Application.Services
 {
@@ -39,7 +40,7 @@ namespace Tazkartk.Application.Services
 
         }
 
-        public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryTicketsAsync(int userId)
+        public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryBookingsAsync(int userId)
         {
             var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
             if (user == null) return null;
@@ -52,7 +53,7 @@ namespace Tazkartk.Application.Services
                 && b.trip.Time < nowTime)));
 
         }
-        public async Task<TicketDTO?> GetTicketAsync(int id)
+        public async Task<TicketDTO?> GetBookingByIdAsync(int id)
         {
             return await _unitOfWork.Bookings.GetById<TicketDTO>(t => t.BookingId == id);
         }
@@ -112,7 +113,6 @@ namespace Tazkartk.Application.Services
                 user = user,
                 UserId = user.Id,
                 IsCanceled = false,
-
             };
 
             var seats = DTO.SeatsNumbers.Select(seatNumber => new Seat
@@ -145,6 +145,7 @@ namespace Tazkartk.Application.Services
                 booking.payment = payment;
                 await _unitOfWork.Bookings.Add(booking);
                 await _unitOfWork.Payments.Add(payment);
+                trip.BookedSeats += seats.Count();
                 await _unitOfWork.commitTransactionAsync();
                 return true;
             }
@@ -159,7 +160,7 @@ namespace Tazkartk.Application.Services
             var Trip = await _unitOfWork.Trips.GetById(t => t.TripId == TripId, t => t.seats);
             if (Trip == null || Trip.Avaliblility == false)
             {
-                return ApiResponse<string>.Error("حدث خطا");
+                return ApiResponse<string>.Error("الرحلة غير متاحة");
             }
            
             var isbooked = DTO.Seats.Any(number => Trip.seats.Any(s => s.Number == number && s.State == SeatState.Booked));
@@ -288,18 +289,29 @@ namespace Tazkartk.Application.Services
         }
         #endregion
 
-        public async Task<ApiResponse<string>> DeleteBookingAsync(int Id)
+        public async Task<ApiResponse<string>> ManualRefund(int Id)
         {
             var booking = await _unitOfWork.Bookings.GetById(b => b.BookingId == Id, b => b.seats,b=>b.payment);
+            if(booking==null)
+            {
+                return ApiResponse<string>.Error("الحجز غير موجود");
+            }
+                booking.IsCanceled=true;    
+                booking.payment.IsRefunded=true;
+                await _unitOfWork.CompleteAsync();
+                return ApiResponse<string>.success("تم حذف الحجز");
+        }
+        public async Task<ApiResponse<string>> DeleteBookingAsync(int Id)
+        {
+            var booking = await _unitOfWork.Bookings.GetById(b => b.BookingId == Id, b => b.seats, b => b.payment);
+            if (booking == null)
+            {
+                return ApiResponse<string>.Error("الحجز غير موجود");
+            }
             _unitOfWork.Bookings.DeleteTicket(booking);
-            await _unitOfWork.CompleteAsync();  
+            await _unitOfWork.CompleteAsync();
             return ApiResponse<string>.success("تم حذف الحجز");
         }
-
-
-
-      
-       
     }
 
 }

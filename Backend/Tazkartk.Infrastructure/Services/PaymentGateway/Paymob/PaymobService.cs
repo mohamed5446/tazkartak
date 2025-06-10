@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.Payments;
+using Tazkartk.Application.DTO.Ticket;
 using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Infrastructure.Helpers;
 using Tazkartk.Infrastructure.Services.PaymentGateway.Paymob.DTOs;
@@ -310,6 +311,9 @@ namespace Tazkartk.Infrastructure.Services.PaymentGateway.Paymob
                 Status = disbursementResponse.DisbursementStatus,
                 Success = disbursementResponse.DisbursementStatus == "successful",
                 message = disbursementResponse.StatusDescription,
+                mssidn=disbursementResponse.Msisdn,
+                Issuer = disbursementResponse.Issuer,
+                Date=disbursementResponse.CreatedAt
             };
 
         }

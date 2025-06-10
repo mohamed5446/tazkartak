@@ -8,11 +8,10 @@ namespace Tazkartk.Application.Interfaces
 {
     public interface IPaymentService
     {
-        Task<bool> TransferFunds(int TripId);
         Task<IReadOnlyList<PaymentDTO>> GetAllPaymentsAsync();
         Task<PaymentDTO> GetPaymentByIdAsync(int id);
+        Task<bool> TransferCompanyFunds(int TripId);
         Task<ApiResponse<bool>> handleCallback(HttpRequest request);
-        // Task<string> Genrateaccesstoken();
         Task<double> BalanceInquiry();
         Task<dispurseresponse> DispurseAsync(string issuer, string walletnumber, double amount);
 

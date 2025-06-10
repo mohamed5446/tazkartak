@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using Tazkartk.Application.DTO;
-using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.Repository;
 using Tazkartk.Domain.Models;
 using Tazkartk.Infrastructure.Data;
@@ -21,14 +17,7 @@ namespace Tazkartk.Infrastructure.Repositories
         }
 
         
-        public async Task<IReadOnlyList<PaymentDTO>> GetAllPaymentsAsync()
-        {
-
-            return await _context.Payments
-                .AsNoTracking()
-                .ProjectTo<PaymentDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-        }
+       
 
       
     }

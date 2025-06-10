@@ -12,7 +12,6 @@ namespace Tazkartk.Application.DTO.Response
         public bool? IsEmailConfirmed { get; set; }
         public bool? isAuthenticated { get; set; }
         public string? Token { get; set; }
-        //public DateTime? ExpiresOn { get; set; }
         public IList<string>? Roles { get; set; }
         public bool PhoneNumberNeeded {  get; set; }=false;
         public AuthModel()

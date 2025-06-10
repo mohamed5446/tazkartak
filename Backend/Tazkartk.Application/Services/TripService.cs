@@ -7,9 +7,9 @@ using Tazkartk.Application.DTO.TripDTOs;
 using Tazkartk.Application.DTO;
 using Tazkartk.Application.DTO.Response;
 using Tazkartk.Application.Interfaces;
-using Tazkartk.Application.Repository;
 using Tazkartk.Application.DTO.Email;
 using Tazkartk.Application.Interfaces.External;
+using Tazkartk.Application.Repository;
 namespace Tazkartk.Application.Services
 {
     public class TripService : ITripService
@@ -58,7 +58,8 @@ namespace Tazkartk.Application.Services
         }
         public async Task<IEnumerable<PassengerDetailsDTO>> GetPassengersAsync(int TripId)
         {
-            return  await _unitOfWork.Trips.GetPassengersAsync(TripId);
+            return await _unitOfWork.Bookings.ProjectToList<PassengerDetailsDTO>(b => b.tripId == TripId && !b.IsCanceled);
+           // return  await _unitOfWork.Trips.GetPassengersAsync(TripId);
         }
         public async Task<IReadOnlyList<TicketDTO>?> GetBookingsByTripAsync(int TripId)
         {
@@ -167,29 +168,7 @@ namespace Tazkartk.Application.Services
             _unitOfWork.CompleteAsync();    
             return true;
         }
-        public async Task<bool> send_Email_to_passengersAsync(int TripId, EmailDTO DTO)
-        {
-            var Trip = await _unitOfWork.Trips.GetTripWithBookingAndUer(TripId);// then include user
-            if (Trip == null) return false;
-            var users = Trip.bookings.Where(b => b.UserId != null).Select(b => new PassDTO
-            {
-                Email = b.user.Email,
-                FirstName = b.user.FirstName,
-                LastName = b.user.LastName,
-            });
-
-            foreach (var passenger in users)
-            {
-                var emailrequest = new EmailRequest
-                {
-                    Email = passenger.Email,
-                    Subject = DTO.Subject,
-                    Body = DTO.Body
-                };
-                await _EmailService.SendEmail(emailrequest);
-            }
-            return true;
-        }
+        
 
         public async Task<List<CreateTripDtos>>ImportFromExcelAsync(int CompanyId,IFormFile file)
         {
@@ -292,7 +271,7 @@ namespace Tazkartk.Application.Services
                 departureDateTimeOffset);
 
             var job3Id = _backgroundService.AddSchedule<PaymentService>(
-                service => service.TransferFunds(TripId),
+                service => service.TransferCompanyFunds(TripId),
                 departureDateTimeOffset);
 
         }

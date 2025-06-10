@@ -8,7 +8,6 @@ namespace Tazkartk.Application.DTO
         public string LastName { get; set; }
         [Required, RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "يرجى إدخال رقم هاتف صحيح")]
         public string PhoneNumber { get; set; }
-        //   public string PhotoUrl {  get; set; }
         public List<int> Seats { get; set; }
     }
 }

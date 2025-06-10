@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Tazkartk.Application.DTO;
+using Tazkartk.Application.DTO.Email;
 using Tazkartk.Application.DTO.Payments;
 using Tazkartk.Application.DTO.Response;
+using Tazkartk.Application.Extensions;
 using Tazkartk.Application.Interfaces;
 using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Application.Repository;
@@ -14,15 +16,17 @@ namespace Tazkartk.Application.Services
         private readonly IUnitOfWork _unitOfWork; 
         private readonly IPaymentGateway _paymentGateway;
         private readonly IBookingService _bookingService;
+        private readonly IEmailBodyService _emailBodyService;
 
-        public PaymentService( IUnitOfWork unitOfWork, IPaymentGateway paymentGateway, IBookingService bookingService)
+        public PaymentService( IUnitOfWork unitOfWork, IPaymentGateway paymentGateway, IBookingService bookingService,IEmailBodyService emailBodyService)
         {
 
             _unitOfWork = unitOfWork;
             _paymentGateway = paymentGateway;
             _bookingService = bookingService;
+            _emailBodyService = emailBodyService;
         }
-        public async Task<bool> TransferFunds(int TripId)
+        public async Task<bool> TransferCompanyFunds(int TripId)
         {
             var trip = await _unitOfWork.Trips.GetById(t => t.TripId == TripId, t => t.company, t => t.seats);
             if (trip == null) throw new Exception("error happened");
@@ -32,6 +36,12 @@ namespace Tazkartk.Application.Services
             company.Balance += total;
             _unitOfWork.Companies.Update(company);
             _unitOfWork.CompleteAsync();
+            var EmailRequest = new EmailRequest
+            {
+                Email=company.Email,
+                Subject="..",
+                Body=_emailBodyService.BalanceTransferEmailBody(company.Name,TripId,trip.From,trip.To,DateTime.Now.ToEgyptDateString(),total)
+            };
             return true;
         }
         public async Task<IReadOnlyList<PaymentDTO>> GetAllPaymentsAsync()
@@ -70,10 +80,6 @@ namespace Tazkartk.Application.Services
                     return ApiResponse<bool>.success("confirmed successfully");
                 }
             }
-        //public async Task<string> Genrateaccesstoken()
-        //{
-        //    return await _paymentGateway.GenerateAccessTokenn();
-        //}
 
         public async Task<dispurseresponse> DispurseAsync(string issuer,string walletnumber,double amount)
         {
@@ -85,8 +91,18 @@ namespace Tazkartk.Application.Services
                     Success = false,
                     message = "برجاء التواصل معنا ",
                 };
-                }
+            }
+
             return await _paymentGateway.DispurseAsync(issuer,walletnumber,amount);
+
+        }
+        private string GetIssuerFromNumber(string WalletNunmber)
+        {
+            if (WalletNunmber.StartsWith("010")) return "vodafone";
+            if (WalletNunmber.StartsWith("011")) return "etisalat";
+            if (WalletNunmber.StartsWith("012")) return "orange";
+            if (WalletNunmber.StartsWith("015")) return "we";
+            return "";
         }
        public async Task<double> BalanceInquiry()
         {

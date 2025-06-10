@@ -13,7 +13,7 @@ namespace Tazkartk.Infrastructure.BackgroundJob
         {
             _jobClient = jobClient;
         }
-
+       
         public string AddSchedule<T>(Expression<Action<T>> methodcall, DateTimeOffset time) where T : class
         {
           

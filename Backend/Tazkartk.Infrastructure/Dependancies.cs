@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Tazkartk.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Tazkartk.Infrastructure.Helpers;
-using Tazkartk.Application.Repository;
 using Tazkartk.Infrastructure.Repositories;
 using Hangfire;
 using Tazkartk.Domain.Models;
@@ -17,6 +16,8 @@ using Tazkartk.Infrastructure.Email;
 using Tazkartk.Infrastructure.Cloudinary;
 using Tazkartk.Application.Interfaces.External;
 using Tazkartk.Infrastructure.Services.PaymentGateway.Paymob;
+using Tazkartk.Application.Interfaces;
+using Tazkartk.Application.Repository;
 
 
 namespace Tazkartk.Infrastructure
@@ -30,6 +31,8 @@ namespace Tazkartk.Infrastructure
             Services.AddScoped<ICompanyRepository,CompanyRepository>();
             Services.AddScoped<ITicketRepository,TicketRepository>();
             Services.AddScoped<IPaymentRepository,PaymentRepository>();
+            Services.AddScoped<IMessagesRepository,MessagesRepository>();
+            Services.AddScoped<IPayoutsRepository, PayoutsRepository>();
             Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             Services.AddScoped<IUnitOfWork,UnitOfWork>();
 

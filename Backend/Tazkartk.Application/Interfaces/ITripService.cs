@@ -10,18 +10,16 @@ namespace Tazkartk.Application.Interfaces
     {
         Task<IReadOnlyList<TripDtos>> GetTripsAsync();
         Task<IReadOnlyList<TripDtos>> GetAvailableTripsAsync();
-        Task<IReadOnlyList<TripDtos>> GetCompanyTripsAsync(int companyId);
         Task<IReadOnlyList<TripDtos>> SearchAsync(string? from, string? to, DateOnly? date);
+        Task<IReadOnlyList<TripDtos>> GetCompanyTripsAsync(int companyId);
         Task<TripDTO?> GetTripByIdAsync(int id);
         Task<IEnumerable<PassengerDetailsDTO>> GetPassengersAsync(int TripId);
         Task<IReadOnlyList<TicketDTO>?> GetBookingsByTripAsync(int TripId);
         Task<ApiResponse<TripDtos>> AddTripAsync(int companyId, CreateTripDtos DTO);
         Task<ApiResponse<TripDtos>> EditTripAsync(int Id, UpdateTripDtos DTO);
         Task<ApiResponse<string>> DeleteTripAsync(int Id);
-
         Task<bool> SendReminderEmailAsync(int TripId);
         Task<bool> MarkTripUnavailableAsync(int TripId);
-        Task<bool> send_Email_to_passengersAsync(int TripId, EmailDTO DTO);
         Task<List<CreateTripDtos>> ImportFromExcelAsync(int CompanyId, IFormFile file);
         Task deletejobs(int tripId);
         void deletejob(string jobId);

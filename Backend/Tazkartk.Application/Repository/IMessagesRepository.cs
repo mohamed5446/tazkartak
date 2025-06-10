@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Tazkartk.Domain.Models;
+
+namespace Tazkartk.Application.Repository
+{
+    public interface IMessagesRepository:IGenericRepository<Message>
+    {
+    }
+}
