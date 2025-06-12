@@ -35,9 +35,7 @@ namespace Tazkartk.Application.Services
             var user = await _unitOfWork.Users.GetUserWtihBookingDetails(userId);
             if (user == null) return null;
 
-            return _mapper.Map<List<TicketDTO>>(user.books
-                .Where(b => b.trip.Avaliblility));
-
+            return _mapper.Map<List<TicketDTO>>(user.books);
         }
 
         public async Task<IReadOnlyList<TicketDTO>> GetUserHistoryBookingsAsync(int userId)
