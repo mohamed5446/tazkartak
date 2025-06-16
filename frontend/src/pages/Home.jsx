@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import playStore from "../assets/play-store.62f26490 1.png";
 import appStore from "../assets/app-store.81a46c9f 1.png";
-import payMethodes from "../assets/Frame 21.png";
+import payMethodes from "../assets/payment.jpg";
 import HeroImage from "../assets/HeroImage.png";
 import CompanyCard from "../components/CompanyCard";
 import { useEffect, useState } from "react";
